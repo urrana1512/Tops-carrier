@@ -1,0 +1,31 @@
+Inheritance : When one class derived the properties into another class it is called Inheritance
+
+3 Types of Inheritance :
+    (1) Single level Inheritance
+        A (PARENT, BASE, ROOT)
+        |
+        B (CHILD, SUB-CLASS, DERIVED)
+    
+    (2) Multi level Inheritance
+        A (GRAND-PARENT)
+        |
+        B (PARENT)
+        |
+        C (CHILD)
+
+    (3) Multiple Inheritance
+        A   B (PARENT)
+          |
+          c (CHILD)
+
+    (4) Hirarchy Inheritance
+            A (PARENT)
+            |
+        B       C (CHILD)
+
+    (5) Hybrid Inheritance
+            A (GRAND-PARENT)
+            |
+        B       C (PARENT)
+            |
+            D (CHILD)

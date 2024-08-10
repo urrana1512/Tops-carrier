@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "WHILE_LOOP.C": "cpp",
+    "FOR_LOOP.C": "cpp",
+    "TABLES.C": "cpp",
+    "DO_WHILE.C": "cpp",
+    "ARRAY.C": "cpp",
+    "MULTI_DIMENTIONAL_ARRAY.C": "cpp",
+    "FUNCTION.C": "cpp"
+  }
+}

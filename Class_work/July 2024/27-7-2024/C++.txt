@@ -1,0 +1,30 @@
+Language : C++
+
+File Save With .cpp Extenion
+
+** Topics **
+
+--> OOPS : Object Oriented programming System
+        (1) Inheritance
+        (2) Polymorphism
+        (3) Encapsulation 
+        (4) Abstraction
+
+ --> Class & Objects 
+ --> Templetes
+ --> Friend Function
+ --> Agreegation 
+ --> Constructor & Destructor 
+
+
+** Syntax **
+
+#include<iostream>
+using namespace std;
+
+main(){
+
+    cout<<"Hello";    (Like Printf())
+    cin>>a;           (Like Scanf())
+
+}

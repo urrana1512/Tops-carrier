@@ -1,0 +1,19 @@
+function : it is a block of code that we can use it again and again
+
+there are mainly 3 steps 
+    1) fuction decalration
+    2) function defination
+    3) function calling
+
+there are 2 types of function 
+1) Built-in function
+    ex. strcpy(), strcmp(), strcat(), etc.
+
+2) user define function 
+    ex. add(), sub(), etc.
+    
+    --> there are 4 types of user define function
+        1) function without parameter & without return type
+        2) function with parameter & without return type
+        3) function without parameter & with return type
+        4) function with parameter & with return type

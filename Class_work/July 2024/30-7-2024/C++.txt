@@ -1,0 +1,17 @@
+Class & Object : Class is a collection of data member and member function
+
+Object : Object is instance of class through the object we can access all the properties of class
+
+
+Access Specifiers
+    (1) Public
+    (2) Private
+    (3) Protected
+
+
+Constructor : Constructor is Special Method that can call automatically when Object is created.(Same name as class name).Constructor is always display first.
+
+There are 3 types of Constructor:
+    (1) Default
+    (2) Pearmeterized
+    (3) Copy

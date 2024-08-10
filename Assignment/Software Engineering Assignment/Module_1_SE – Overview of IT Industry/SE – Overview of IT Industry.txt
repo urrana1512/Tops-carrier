@@ -1,0 +1,65 @@
+﻿Software Engineering Assignment
+MODULE: 1
+SE – Overview of IT Industry
+
+1. What is software? What is software engineering?
+Ans :	Software : The software is basically a set of instructions or user's commands that tell a computer what to do.
+
+	Software Engineering : Software Engineering is the process of designing, developing, testing, and maintaining software. It is 			       a systematic and disciplined approach to software development that aims to create high-quality, 				       reliable, and maintainable software.
+
+2. Explain types of software?
+Ans : (1)Application Software : Software that performs special functions or provides functions that are much more than the basic 				operation of the computer is known as application software.
+				or in other words, application software is designed to perform a specific task for end-users. It is a 				product or a program that is designed only to fulfill end-users’ requirements.
+
+      (2)System Software : It is software that directly operates the computer hardware and provides the basic functionality to the 			   users as well as to the other software to operate smoothly.
+			   or in other words, system software basically controls a computer’s internal functioning and also controls 			   hardware devices such as monitors, printers, and storage devices, etc.
+
+      (3)driver Software : It is also known as device drivers. that operates or controls some specific hardware devices linked to your 			   system.
+			   Some common examples of such device drivers that connect hardware devices to a system easily are as 				   follows:
+			   1. BIOS(Basic Input/Output System) Device Driver
+			   2. Motherboard Drivers
+			   3. Display Drivers
+			   4. Printer Drivers
+
+      (4)Middleware : Middleware in software refers to a layer of software that sits between different components of an application, 		      enabling communication and data management between them. It acts as a bridge, facilitating interaction between 		      disparate systems or components.
+
+      (5)Programming Software : Programming software refers to a range of tools and applications used by developers to create, test, 				debug, and maintain software code. This includes Integrated Development Environments (IDEs) like 				Visual Studio and IntelliJ IDEA, text editors such as Sublime Text and Visual Studio Code, compilers 				like GCC, interpreters like Python's, version control systems like Git, and debuggers/profilers like 				GDB. 
+
+3. What is SDLC? Explain each phase of SDLC.
+Ans : 	Software development life cycle (SDLC) is a structured process that is used to design, develop, and test good-quality 	software. SDLC is a methodology that defines the entire procedure of software development step-by-step.
+	There are 5 phases in SDLC : (1) Analysis
+				     (2) Design
+				     (3) Implementation
+				     (4) Testing
+				     (5) Maintenance
+	(1)Analysis : This phase involves gathering information about the software requirements from stakeholders, such as customers, 		      end-users, and business analysts.
+	(2)Design : In this phase, the software design is created, which includes the overall architecture of the software, data 		    structures, and interfaces.
+	(3)Implementation : The design is then implemented in code, usually in several iterations, and this phase is also called as 			    Development.
+			    This is the longest phase in SDLC model.
+			    This phase consists of Front end + Middleware + Back-end.
+			    In front-end: Development of coding is done even SEO settings are done.
+			    In Middleware: They connect both the front end and back end.
+			    In the back-end: A database is created.
+	(4)Testing : The software is thoroughly tested to ensure that it meets the requirements and works correctly.
+	(5)Maintenance : After detailed testing, the conclusive product is released in phases as per the organization’s strategy. Then 			 it is tested in a real industrial environment. It is important to ensure its smooth performance. If it 			 performs well, the organization sends out the product as a whole. After retrieving beneficial feedback, the 			 company releases it as it is or with auxiliary improvements to make it further helpful for the customers.
+
+4. What is DFD? Create a DFD diagram on Flipkart.
+Ans : 	A data flow diagram (DFD) maps out the flow of information for any process or system. It uses defined symbols like rectangles,               	circles and arrows, plus short text labels, to show data inputs, outputs, storage points and the routes between each 	destination.
+
+	NOTE : DIAGRAM IS OUTSIDE OF THE FILE.
+
+5. What is Flow chart? Create a flowchart to make addition of two numbers.
+Ans :	A flowchart is a type of diagram that represents a workflow or process. A flowchart can also be defined as a diagrammatic       	representation of an algorithm, a step-by-step approach to solving a task.
+
+	NOTE : FLOW CHART IS OUTSIDE OF THE FILE.
+
+6. What is Use case Diagram? Create a use-case on bill payment on Paytm.
+Ans : 	A Use Case Diagram is defined as a graphical representation of the interactions between users (actors) and a system. It 	illustrates the various ways in which users interact with a system to achieve specific goals or tasks.
+	
+	NOTE : USE CASE DIAGRAM IS OUTSIDE OF THE FILE.
+
+
+
+
+
+	
