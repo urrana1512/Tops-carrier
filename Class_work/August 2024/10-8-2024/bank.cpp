@@ -1,3 +1,54 @@
+#include <iostream>
+using namespace std;
+
+class Bank
+{
+public:
+    string name;
+    int acno, deposit, deposit3;
+    int add, wi;
+
+    Details(string name, int acno, int deposit)
+    {
+        this->name = name;
+        this->acno = acno;
+        this->deposit = deposit;
+    }
+
+    deposit1(add)
+    {
+        this->add = add;
+    }
+
+    show()
+    {
+        deposit3 = this->deposit + this->add;
+
+        this->deposit3 = deposit3;
+        cout << "your Total balance is : " << this->deposit3 - this->wi;
+    }
+
+    withdraw(wi)
+    {
+        this->wi = wi;
+    }
+
+    show1()
+    {
+        cout << "\nYour Balance is : " << this->deposit3 - this->wi;
+    }
+};
+
+main()
+{
+    Bank obj;
+    obj.Details("Udit", 133, 5000);
+    obj.deposit1(1000);
+    obj.show();
+    obj.withdraw(2000);
+    obj.show1();
+}
+
 // Mahesh
 #include <iostream>
 using namespace std;
@@ -88,28 +139,3 @@ main()
     ob.withdraw();
     ob.show();
 }
-
-// Udit
-#include <iostream>
-using namespace std;
-
-class Bank_Account
-{
-public:
-    int deposit, balance, withdraw, check;
-    double acc_no;
-    char acc_type;
-
-    Bank_Account()
-    {
-        cout << "Welcome to Bank\n";
-        deposit = acc_no = balance = 0;
-        acc_type = NULL;
-    }
-
-    Details()
-    {
-        cout << "Name of Account Holder : ";
-        cin
-    }
-};

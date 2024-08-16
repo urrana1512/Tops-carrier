@@ -1,0 +1,7 @@
+Encapsulation : Data binding into single entity it is called Encapsulation.
+    EX : class
+
+getdata -> to get value
+setdata -> to set value
+
+this -> // this pointer

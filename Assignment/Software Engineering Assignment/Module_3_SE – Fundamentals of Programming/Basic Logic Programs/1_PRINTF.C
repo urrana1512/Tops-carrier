@@ -3,7 +3,7 @@
 // Header File
 #include <stdio.h>
 // Driver Code
-void main()
+int main()
 {
     // Print Manually
     printf("Udit Rana");

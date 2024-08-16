@@ -1,6 +1,6 @@
 // PROGRAM 4 : FIND AREA OF SQUARE - (START) -------------------->
 #include <stdio.h>
-void main()
+int main()
 {
     // Data member
     float area, a;
