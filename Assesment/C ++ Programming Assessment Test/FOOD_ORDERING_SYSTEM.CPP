@@ -373,6 +373,7 @@ public:
 
 // Main function to run the program
 main()
+
 {
     Choice_item obj; // Create an object of Choice_item class
     obj.getInfo();   // Get customer information
