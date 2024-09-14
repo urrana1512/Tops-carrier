@@ -1,4 +1,4 @@
-Class & Object : Class is a collection of data member and member function
+Class : Class is a collection of data member and member function
 
 Object : Object is instance of class through the object we can access all the properties of class
 

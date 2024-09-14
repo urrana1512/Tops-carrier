@@ -10,11 +10,11 @@ File Save With .cpp Extenion
         (3) Encapsulation 
         (4) Abstraction
 
- --> Class & Objects 
- --> Templetes
- --> Friend Function
- --> Agreegation 
- --> Constructor & Destructor 
+--> Class & Objects 
+--> Templetes
+--> Friend Function
+--> Agreegation 
+--> Constructor & Destructor 
 
 
 ** Syntax **
@@ -26,5 +26,6 @@ main(){
 
     cout<<"Hello";    (Like Printf())
     cin>>a;           (Like Scanf())
-
 }
+
+Object : it is instance of class through the Object we can access all the properties of class.

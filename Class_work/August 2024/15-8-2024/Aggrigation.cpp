@@ -27,7 +27,7 @@ public:
     show2()
     {
         cout << "Name : " << a->name << endl;
-        cout << "Id : " << this->name;
+        cout << "Id : " << this->id;
     }
 };
 
@@ -36,7 +36,7 @@ main()
     A obj;
     obj.hello("Udit", "Ahmedabad");
 
-    B obj;
+    B obj1;
     obj1.show1(1, &obj);
     obj1.show2();
 }

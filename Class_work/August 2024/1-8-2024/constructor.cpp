@@ -1,3 +1,5 @@
+// Type 2 : Perameterized Constructor
+
 #include <iostream>
 using namespace std;
 
@@ -7,8 +9,8 @@ public:
     A(int a, int b) // Parameterized
     {
         cout << "A : " << a;
-        cout << endl
-             << "B : " << b;
+        cout << endl;
+        cout << "B : " << b;
     }
 };
 

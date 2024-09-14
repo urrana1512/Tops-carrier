@@ -1,5 +1,5 @@
-Polymorphism : poly = many
-               phism = Transforming
+Polymorphism : poly = Many
+               phism = Transforming OR Forms
 
 2 Types : (1) Method OverLoading : When one class have same name function it is called overloading.
           (2) Method OverRiding : When inherited class have same name of function it is called OverRiding.
@@ -25,3 +25,22 @@ Polymorphism : poly = many
     
 --> to tackle OverRiding, we have to used Scaope resolution operator in inherited class.    
     EX: Method OverRiding
+
+        class A
+        {
+        public:
+            fun1()
+            {
+                cout << "This is the function 1." << endl;
+            }
+        };
+
+        class B : public A
+        {
+        public:
+            fun1()
+            {
+                A::fun1(); // scope resolution operator
+                cout << "This is the function 2." << endl;
+            }
+        };

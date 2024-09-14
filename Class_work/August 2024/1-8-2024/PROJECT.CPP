@@ -338,7 +338,12 @@ main()
 {
     MarkSheet obj;
     obj.student();
-    obj.subject();
+    if (obj.subject() > 100)
+    {
+        cout << endl
+             << "Error : Please Enter Marks Below 100!";
+        exit(0);
+    }
     obj.percentage();
     obj.DisplayMarksheet();
     obj.grade();

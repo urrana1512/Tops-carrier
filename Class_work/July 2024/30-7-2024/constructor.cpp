@@ -6,7 +6,7 @@ class Myclass
 public:
     int a, b, i, n, factorial = 1, c = 0;
 
-    Myclass()
+    Myclass() // Constructor
     {
         cout << "Welcome" << endl;
     }
@@ -77,7 +77,7 @@ public:
         }
     }
 
-    ~Myclass()
+    ~Myclass() // Destructor
     {
         cout << "Thank you" << endl;
     }

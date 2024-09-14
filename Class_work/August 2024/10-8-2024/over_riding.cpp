@@ -49,7 +49,7 @@ public:
     }
 };
 
-class c : public A, public B
+class C : public A, public B
 {
 public:
     fun1()
