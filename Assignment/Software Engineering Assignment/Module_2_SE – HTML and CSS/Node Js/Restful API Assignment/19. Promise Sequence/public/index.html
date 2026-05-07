@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Sequence | Task 19</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #10b981;
+            --hover: #f9fafb;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 600px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.9rem; font-weight: 300; }
+
+        .pipeline-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .stage-indicator { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+        .stage {
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--muted); font-weight: 700; font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .stage-active { border-color: var(--accent); color: var(--accent); transform: scale(1.1); }
+        .stage-done { background: var(--accent); border-color: var(--accent); color: white; }
+
+        .btn-trigger {
+            background: var(--text);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .btn-trigger:hover { transform: translateY(-2px); background: var(--accent); }
+
+        .monitor {
+            background: var(--hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            min-height: 120px;
+        }
+        .monitor-active { color: var(--text); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Promise Sequence</h1>
+            <p class="subtitle">Orchestrating multi-stage asynchronous data pipelines.</p>
+        </header>
+
+        <section class="pipeline-card">
+            <div class="stage-indicator">
+                <div class="stage" id="stage1">1</div>
+                <div class="stage" id="stage2">2</div>
+            </div>
+
+            <button class="btn-trigger" id="testBtn" onclick="runPipeline()">
+                <i class="ph-bold ph-play"></i>
+                LAUNCH_PIPELINE
+            </button>
+
+            <div class="monitor" id="logMonitor">// Standing by for stage 1...</div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('logMonitor');
+        const s1 = document.getElementById('stage1');
+        const s2 = document.getElementById('stage2');
+        const btn = document.getElementById('testBtn');
+
+        const runPipeline = async () => {
+            btn.disabled = true;
+            s1.className = 'stage stage-active';
+            s2.className = 'stage';
+            monitor.innerText = "// Stage 1: Fetching raw data...";
+            
+            try {
+                // We use our own fetch logic here but the backend orchestrates the chain
+                const res = await fetch('/api/pipeline');
+                
+                // Visualization logic
+                setTimeout(() => {
+                    s1.className = 'stage stage-done';
+                    s2.className = 'stage stage-active';
+                    monitor.innerText = "// Stage 2: Processing transformation...";
+                }, 1500);
+
+                const data = await res.json();
+                
+                setTimeout(() => {
+                    s2.className = 'stage stage-done';
+                    monitor.className = 'monitor monitor-active';
+                    monitor.innerHTML = `> PIPELINE_COMPLETE<br><br><pre style="color:var(--muted)">${JSON.stringify(data, null, 2)}</pre>`;
+                    btn.disabled = false;
+                }, 2500);
+
+            } catch (e) {
+                monitor.innerText = "// Pipeline failure.";
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

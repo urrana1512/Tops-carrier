@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytic Engine | Task 7</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030712;
+            --card: #111827;
+            --accent: #ec4899;
+            --text: #f9fafb;
+            --muted: #9ca3af;
+            --border: #1f2937;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            background-image: radial-gradient(circle at top right, #831843 0%, #030712 60%);
+            min-height: 100vh;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        header { margin-bottom: 4rem; text-align: center; }
+        h1 { font-size: 3rem; font-weight: 800; letter-spacing: -2px; }
+        .badge { font-size: 0.7rem; color: var(--accent); font-weight: 800; letter-spacing: 3px; background: rgba(236, 72, 153, 0.1); padding: 5px 15px; border-radius: 100px; border: 1px solid rgba(236, 72, 153, 0.2); }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 3rem; }
+        
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .stat-card .val { font-size: 4rem; font-weight: 800; line-height: 1; color: var(--accent); }
+        .stat-card .label { font-size: 0.75rem; color: var(--muted); font-weight: 800; letter-spacing: 1px; margin-top: 10px; }
+
+        .domain-list {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 24px;
+        }
+        .domain-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .domain-item:last-child { border-bottom: none; }
+        .domain-name { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text); }
+        .domain-count { background: var(--bg); padding: 4px 12px; border-radius: 8px; font-weight: 800; color: var(--accent); font-size: 0.8rem; }
+
+        .btn-refresh {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            display: block; margin: 2rem auto;
+        }
+        .btn-refresh:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">AGGREGATION_FRAMEWORK // PIPELINE</div>
+            <h1>Analytic Engine</h1>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="val" id="totalCount">0</div>
+                <div class="label">TOTAL_IDENTITIES</div>
+            </div>
+            
+            <div class="domain-list">
+                <div style="font-size: 0.7rem; font-weight: 800; color: var(--muted); margin-bottom: 1.5rem; letter-spacing: 1px;">DOMAIN_BREAKDOWN</div>
+                <div id="domainContainer">
+                    <!-- Dynamic Domains -->
+                </div>
+            </div>
+        </section>
+
+        <button class="btn-refresh" onclick="fetchStats()">
+            <i class="ph-bold ph-arrows-clockwise"></i> RECOMPUTE_METRICS
+        </button>
+    </div>
+
+    <script>
+        const fetchStats = async () => {
+            const res = await fetch('/stats');
+            const data = await res.json();
+            
+            document.getElementById('totalCount').innerText = data.summary.totalUsers;
+            
+            const container = document.getElementById('domainContainer');
+            container.innerHTML = data.domains.map(d => `
+                <div class="domain-item">
+                    <span class="domain-name">${d._id}</span>
+                    <span class="domain-count">${d.count} Users</span>
+                </div>
+            `).join('');
+        };
+
+        // Initial Load
+        fetchStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrity Shield | Task 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030712;
+            --card: #111827;
+            --accent: #10b981;
+            --error: #ef4444;
+            --text: #f9fafb;
+            --muted: #9ca3af;
+            --border: #1f2937;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            background-image: radial-gradient(circle at bottom left, #064e3b 0%, #030712 60%);
+            min-height: 100vh;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        header { margin-bottom: 4rem; text-align: center; }
+        h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; }
+        .status-pill { font-size: 0.65rem; color: var(--accent); font-weight: 800; letter-spacing: 2px; border: 1px solid var(--accent); padding: 4px 12px; border-radius: 100px; display: inline-block; }
+
+        /* Validation Card */
+        .shield-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { font-size: 0.7rem; font-weight: 800; color: var(--muted); letter-spacing: 1px; }
+        input {
+            background: #030712;
+            border: 1px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--accent); }
+        
+        .error-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            border-radius: 12px;
+            padding: 1rem;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .error-item { color: var(--error); font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+
+        .btn-secure {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-secure:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3); }
+
+        .success-overlay {
+            position: fixed; top: 2rem; right: 2rem; background: var(--accent); color: white; padding: 1rem 2rem; border-radius: 12px; font-weight: 800; transform: translateX(200%); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .success-active { transform: translateX(0); }
+    </style>
+</head>
+<body>
+    <div id="successToast" class="success-overlay"><i class="ph-bold ph-shield-check"></i> IDENTITY_SECURED</div>
+
+    <div class="container">
+        <header>
+            <div class="status-pill">DEFENSIVE_MIDDLEWARE // ENABLED</div>
+            <h1>Integrity Shield</h1>
+        </header>
+
+        <section class="shield-card">
+            <div class="error-box" id="errorBox"></div>
+
+            <div class="input-group">
+                <label>MANIFEST_NAME (MIN_3_CHAR)</label>
+                <input type="text" id="nameInput" placeholder="John Doe">
+            </div>
+            <div class="input-group">
+                <label>IDENTITY_EMAIL (VALID_RFC)</label>
+                <input type="email" id="emailInput" placeholder="john@nexus.com">
+            </div>
+            <div class="input-group">
+                <label>SECURITY_KEY (MIN_6_CHAR)</label>
+                <input type="password" id="passInput" placeholder="••••••••">
+            </div>
+
+            <button class="btn-secure" onclick="secureUser()">
+                <i class="ph-bold ph-shield-check"></i>
+                AUTHORIZE_&_PERSIST
+            </button>
+        </section>
+    </div>
+
+    <script>
+        const secureUser = async () => {
+            const name = document.getElementById('nameInput').value;
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passInput').value;
+            const errorBox = document.getElementById('errorBox');
+            const toast = document.getElementById('successToast');
+
+            errorBox.style.display = 'none';
+
+            try {
+                const res = await fetch('/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await res.json();
+
+                if (res.status === 400) {
+                    errorBox.style.display = 'flex';
+                    errorBox.innerHTML = data.errors.map(err => `
+                        <div class="error-item"><i class="ph-bold ph-warning-circle"></i> ${err.msg}</div>
+                    `).join('');
+                } else if (res.ok) {
+                    toast.classList.add('success-active');
+                    setTimeout(() => toast.classList.remove('success-active'), 3000);
+                    document.querySelectorAll('input').forEach(i => i.value = '');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+    </script>
+</body>
+</html>

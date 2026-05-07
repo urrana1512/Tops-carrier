@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Search | Task 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030712;
+            --card: #111827;
+            --accent: #8b5cf6;
+            --text: #f9fafb;
+            --muted: #9ca3af;
+            --border: #1f2937;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            background-image: radial-gradient(circle at top right, #4c1d95 0%, #030712 60%);
+            min-height: 100vh;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        header { margin-bottom: 4rem; text-align: center; }
+        h1 { font-size: 3rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 0.5rem; }
+        .badge { font-size: 0.7rem; color: var(--accent); font-weight: 800; letter-spacing: 3px; background: rgba(139, 92, 246, 0.1); padding: 5px 15px; border-radius: 100px; border: 1px solid rgba(139, 92, 246, 0.2); }
+
+        /* Search Bar */
+        .search-container {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 24px;
+            margin-bottom: 3rem;
+            display: flex;
+            gap: 1rem;
+            backdrop-filter: blur(20px);
+        }
+        .search-input {
+            flex: 1;
+            background: #030712;
+            border: 1px solid var(--border);
+            padding: 15px 20px;
+            border-radius: 16px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .search-input i { color: var(--muted); }
+        .search-input input {
+            background: none; border: none; color: #fff; width: 100%; font-family: inherit; outline: none;
+        }
+        .search-input:focus-within { border-color: var(--accent); }
+
+        /* User Grid */
+        .user-grid { display: grid; gap: 1rem; }
+        .user-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: 0.3s;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .avatar { width: 45px; height: 45px; background: rgba(139, 92, 246, 0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 1.2rem; }
+        .info .name { font-weight: 600; font-size: 1.1rem; display: block; }
+        .info .email { color: var(--muted); font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; }
+
+        .empty-state { padding: 4rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">QUERY_PARAM // FILTER_ENGINE</div>
+            <h1>Nexus Search</h1>
+        </header>
+
+        <section class="search-container">
+            <div class="search-input">
+                <i class="ph-bold ph-magnifying-glass"></i>
+                <input type="text" id="nameQuery" placeholder="Filter by name..." oninput="executeSearch()">
+            </div>
+            <div class="search-input">
+                <i class="ph-bold ph-at"></i>
+                <input type="text" id="emailQuery" placeholder="Filter by email..." oninput="executeSearch()">
+            </div>
+        </section>
+
+        <div class="user-grid" id="userGrid">
+            <!-- Dynamic Users -->
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/users';
+
+        const executeSearch = async () => {
+            const name = document.getElementById('nameQuery').value;
+            const email = document.getElementById('emailQuery').value;
+            
+            const params = new URLSearchParams();
+            if (name) params.append('name', name);
+            if (email) params.append('email', email);
+
+            const res = await fetch(`${API_URL}?${params.toString()}`);
+            const users = await res.json();
+            const grid = document.getElementById('userGrid');
+            
+            if (users.length === 0) {
+                grid.innerHTML = '<div class="empty-state">No matching identities found in the cluster.</div>';
+                return;
+            }
+
+            grid.innerHTML = users.map(user => `
+                <div class="user-card">
+                    <div class="avatar"><i class="ph-bold ph-user"></i></div>
+                    <div class="info">
+                        <span class="name">${user.name}</span>
+                        <span class="email">${user.email}</span>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        // Initial Load
+        executeSearch();
+    </script>
+</body>
+</html>

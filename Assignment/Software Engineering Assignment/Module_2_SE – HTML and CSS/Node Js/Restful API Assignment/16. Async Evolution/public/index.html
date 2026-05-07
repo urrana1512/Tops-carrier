@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async Evolution | Task 16</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #6366f1;
+            --hover: #f9fafb;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 900px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+        h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.95rem; font-weight: 300; }
+
+        .pattern-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 2.5rem 1.5rem;
+            border-radius: 20px;
+            transition: 0.3s;
+            text-align: left;
+        }
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.05); }
+        
+        .card-icon { font-size: 2rem; color: var(--accent); margin-bottom: 1.5rem; }
+        .card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .card p { font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; min-height: 3rem; }
+
+        .btn-test {
+            width: 100%;
+            background: var(--text);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+        .btn-test:hover { background: var(--accent); }
+
+        .monitor {
+            margin-top: 1.5rem;
+            background: var(--hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            min-height: 80px;
+            word-break: break-all;
+        }
+        .monitor b { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Asynchronous Evolution</h1>
+            <p class="subtitle">A comparative study of JavaScript asynchronous patterns.</p>
+        </header>
+
+        <div class="pattern-grid">
+            <!-- Callbacks -->
+            <section class="card">
+                <div class="card-icon"><i class="ph ph-stack"></i></div>
+                <h2>Callbacks</h2>
+                <p>The legacy approach. Functional but prone to deep nesting and complex error handling.</p>
+                <button class="btn-test" onclick="runTest('callback')">EXECUTE_LEGACY</button>
+                <div class="monitor" id="callbackMonitor">// Standby...</div>
+            </section>
+
+            <!-- Promises -->
+            <section class="card">
+                <div class="card-icon"><i class="ph ph-link"></i></div>
+                <h2>Promises</h2>
+                <p>The ES6 refactor. Chainable architecture that linearizes asynchronous control flow.</p>
+                <button class="btn-test" onclick="runTest('promise')">EXECUTE_CHAIN</button>
+                <div class="monitor" id="promiseMonitor">// Standby...</div>
+            </section>
+
+            <!-- Async/Await -->
+            <section class="card">
+                <div class="card-icon" style="color: #10b981;"><i class="ph ph-lightning"></i></div>
+                <h2>Async / Await</h2>
+                <p>The modern standard. Clean, procedural syntax for handling asynchronous operations.</p>
+                <button class="btn-test" onclick="runTest('modern')" style="background: #10b981;">EXECUTE_MODERN</button>
+                <div class="monitor" id="modernMonitor">// Standby...</div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const runTest = async (type) => {
+            const monitor = document.getElementById(`${type}Monitor`);
+            monitor.innerText = "// Requesting...";
+            
+            try {
+                const res = await fetch(`/api/${type}/101`);
+                const data = await res.json();
+                monitor.innerHTML = `<b>> STATUS:</b> ${data.status}<br><b>> DATA:</b> ${JSON.stringify(data.data)}`;
+            } catch (e) {
+                monitor.innerText = "// Error caught.";
+            }
+        };
+    </script>
+</body>
+</html>

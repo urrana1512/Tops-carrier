@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Client | Simple & Classy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #111827;
+            --hover: #f9fafb;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        header { margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+        h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.95rem; font-weight: 300; }
+
+        /* Form Styling */
+        .input-group { display: flex; gap: 0.75rem; margin-bottom: 3rem; }
+        input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.05); }
+        
+        .btn-add {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-add:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* List Styling */
+        .list-container { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .item-card {
+            background: white;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.2s;
+        }
+        .item-card:hover { background: var(--hover); }
+        
+        .item-info .name { font-weight: 600; font-size: 1rem; display: block; }
+        .item-info .category { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+        
+        .price-actions { display: flex; align-items: center; gap: 2rem; }
+        .price { font-weight: 600; font-size: 1rem; color: var(--text); }
+        
+        .actions { display: flex; gap: 0.5rem; }
+        .btn-icon {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-del:hover { border-color: #ef4444; color: #ef4444; }
+
+        .empty-msg { padding: 4rem; text-align: center; color: var(--muted); background: white; border-radius: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Nexus Manager</h1>
+            <p class="subtitle">A refined interface for unified resource orchestration.</p>
+        </header>
+
+        <section class="controls">
+            <div class="input-group">
+                <input type="text" id="nameInput" placeholder="Resource Name">
+                <input type="text" id="catInput" placeholder="Category">
+                <input type="number" id="priceInput" placeholder="Price">
+                <button class="btn-add" onclick="addItem()">
+                    <i class="ph ph-plus"></i>
+                    Add
+                </button>
+            </div>
+        </section>
+
+        <div class="list-container" id="itemList">
+            <!-- Items injected here -->
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api/items';
+
+        // Fetch and display all items
+        const fetchItems = async () => {
+            const res = await fetch(API_URL);
+            const items = await res.json();
+            const container = document.getElementById('itemList');
+            
+            if (items.length === 0) {
+                container.innerHTML = '<div class="empty-msg">No resources found in the registry.</div>';
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="item-card">
+                    <div class="item-info">
+                        <span class="category">${item.category}</span>
+                        <span class="name">${item.name}</span>
+                    </div>
+                    <div class="price-actions">
+                        <span class="price">$${item.price}</span>
+                        <div class="actions">
+                            <button class="btn-icon" onclick="editItem(${item.id})"><i class="ph ph-pencil-simple"></i></button>
+                            <button class="btn-icon btn-del" onclick="deleteItem(${item.id})"><i class="ph ph-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        // Add new item
+        const addItem = async () => {
+            const name = document.getElementById('nameInput').value;
+            const category = document.getElementById('catInput').value;
+            const price = document.getElementById('priceInput').value;
+
+            if (!name || !category || !price) return;
+
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, category, price })
+            });
+
+            // Reset inputs
+            document.getElementById('nameInput').value = '';
+            document.getElementById('catInput').value = '';
+            document.getElementById('priceInput').value = '';
+            
+            fetchItems();
+        };
+
+        // Update item (Simple prompt for demo)
+        const editItem = async (id) => {
+            const newPrice = prompt("Enter new price adjustment:");
+            if (newPrice && !isNaN(newPrice)) {
+                await fetch(`${API_URL}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ price: Number(newPrice) })
+                });
+                fetchItems();
+            }
+        };
+
+        // Delete item
+        const deleteItem = async (id) => {
+            if (confirm("Purge this resource?")) {
+                await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                fetchItems();
+            }
+        };
+
+        // Initial Load
+        fetchItems();
+    </script>
+</body>
+</html>

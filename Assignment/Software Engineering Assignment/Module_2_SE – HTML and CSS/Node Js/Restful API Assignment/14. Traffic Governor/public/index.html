@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Governor | Task 14</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #f97316;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(249, 115, 22, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top left, #431407 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .governor-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: center;
+        }
+
+        .status-display {
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .status-line { margin-bottom: 8px; font-size: 0.8rem; color: #64748b; }
+        .status-line b { color: var(--accent); }
+
+        .btn-trigger {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+        .btn-trigger:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3); }
+
+        #responseMonitor {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 16px;
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #f97316;
+            min-height: 100px;
+        }
+        .throttled { border-color: #ef4444 !important; color: #ef4444 !important; animation: shake 0.4s ease; }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(5px); }
+            50% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">RATE_LIMITING // TRAFFIC_GOVERNOR</div>
+            <h1>Velocity Sentinel</h1>
+        </header>
+
+        <section class="governor-card">
+            <div class="status-display">
+                <div class="status-line">THRESHOLD: <b>5 REQ / 15 SEC</b></div>
+                <div class="status-line">AUDIT_PROTOCOL: <b>ACTIVE</b></div>
+            </div>
+
+            <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 2rem;">Click rapidly to exceed the threshold and trigger the automated throttling protocol.</p>
+
+            <button class="btn-trigger" onclick="triggerRequest()">
+                <i class="ph-bold ph-speedometer"></i>
+                EXECUTE_VELOCITY_TEST
+            </button>
+
+            <div id="responseMonitor">// Monitoring ingress stream...</div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('responseMonitor');
+
+        const triggerRequest = async () => {
+            monitor.className = '';
+            monitor.innerText = "// Transmitting request packet...";
+            
+            try {
+                const res = await fetch('/api/protected-resource');
+                const data = await res.json();
+                
+                if (res.status === 429) {
+                    monitor.classList.add('throttled');
+                }
+                
+                monitor.innerHTML = `<div style="color:#64748b;">> HTTP_STATUS: ${res.status}</div><pre style="margin-top:10px;">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                monitor.innerText = "// Connection severed.";
+            }
+        };
+    </script>
+</body>
+</html>

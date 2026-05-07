@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Callback Handshake | Task 17</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #111827;
+            --hover: #f9fafb;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 600px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.9rem; font-weight: 300; }
+
+        .callback-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .btn-trigger {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .btn-trigger:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .monitor {
+            background: var(--hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            min-height: 120px;
+        }
+        .monitor-active { color: var(--text); }
+        
+        .loader { display: none; margin: 0 auto 1rem; color: var(--accent); animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Callback Handshake</h1>
+            <p class="subtitle">Demonstrating native Node.js asynchronous control flow.</p>
+        </header>
+
+        <section class="callback-card">
+            <button class="btn-trigger" id="testBtn" onclick="initiateHandshake()">
+                <i class="ph-bold ph-hand-pointing"></i>
+                INITIATE_HANDSHAKE
+            </button>
+
+            <div class="monitor" id="logMonitor">
+                <i class="ph-bold ph-circle-notch loader" id="loader"></i>
+                // Awaiting manual trigger...
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('logMonitor');
+        const loader = document.getElementById('loader');
+        const btn = document.getElementById('testBtn');
+
+        const initiateHandshake = async () => {
+            btn.disabled = true;
+            loader.style.display = 'block';
+            monitor.innerHTML = '<i class="ph-bold ph-circle-notch loader" id="loader" style="display:block"></i>// Handshake initiated...<br>// Waiting for callback (2s delay)';
+            
+            try {
+                const res = await fetch('/api/handshake');
+                const data = await res.json();
+                
+                monitor.className = 'monitor monitor-active';
+                monitor.innerHTML = `> CALLBACK_RECEIVED<br><br><pre style="color:var(--muted)">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                monitor.innerText = "// Connection severed.";
+            } finally {
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolution Engine | Task 13</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #22d3ee;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(34, 211, 238, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top right, #083344 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 900px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .evolution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .version-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+            transition: 0.3s;
+        }
+        .version-card:hover { border-color: var(--border); transform: translateY(-5px); }
+        
+        .v-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 0.7rem;
+            color: var(--accent);
+            background: rgba(34, 211, 238, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .payload-preview {
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #64748b;
+            min-height: 250px;
+            margin-top: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        .btn-fetch {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 15px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-fetch:hover { background: var(--accent); color: #083344; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">API_VERSIONS // EVOLUTION_ENGINE</div>
+            <h1>Version Architecture</h1>
+        </header>
+
+        <div class="evolution-grid">
+            <!-- V1 Card -->
+            <section class="version-card">
+                <div class="v-badge">LEGACY_V1</div>
+                <h2>Streamlined Feed</h2>
+                <p style="color: #64748b; font-size: 0.8rem; margin: 10px 0 20px;">The original protocol. Lightweight, stable, and widely compatible with legacy clients.</p>
+                <button class="btn-fetch" onclick="fetchVersion('v1')">
+                    <i class="ph-bold ph-database"></i> FETCH_V1
+                </button>
+                <div class="payload-preview" id="v1Display">// Awaiting request...</div>
+            </section>
+
+            <!-- V2 Card -->
+            <section class="version-card">
+                <div class="v-badge" style="background: var(--accent); color: #083344;">ENHANCED_V2</div>
+                <h2>Extended Manifest</h2>
+                <p style="color: #64748b; font-size: 0.8rem; margin: 10px 0 20px;">The next generation. Introduces advanced metadata, temporal tracking, and status flags.</p>
+                <button class="btn-fetch" onclick="fetchVersion('v2')">
+                    <i class="ph-bold ph-rocket-launch"></i> FETCH_V2
+                </button>
+                <div class="payload-preview" id="v2Display">// Awaiting request...</div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const fetchVersion = async (v) => {
+            const display = document.getElementById(`${v}Display`);
+            display.innerText = "// Handshaking...";
+            
+            try {
+                const res = await fetch(`/api/${v}/items`);
+                const data = await res.json();
+                display.innerHTML = `<pre style="color: ${v === 'v2' ? '#22d3ee' : '#64748b'}">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                display.innerText = "// Request Fault.";
+            }
+        };
+    </script>
+</body>
+</html>

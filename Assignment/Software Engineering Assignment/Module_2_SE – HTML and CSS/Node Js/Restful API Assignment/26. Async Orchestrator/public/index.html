@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async Orchestrator | Task 26</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #111827;
+            --hover: #f9fafb;
+            --async: #10b981;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 600px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.9rem; font-weight: 300; }
+
+        .orchestrator-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .flow-status { display: flex; align-items: center; justify-content: center; gap: 2rem; margin-bottom: 2.5rem; }
+        .node { display: flex; flex-direction: column; gap: 8px; color: var(--muted); font-size: 0.7rem; font-weight: 600; }
+        .node i { font-size: 2rem; transition: 0.3s; }
+        .active i { color: var(--async); transform: scale(1.1); }
+
+        .btn-trigger {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .btn-trigger:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .monitor {
+            background: var(--hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            min-height: 150px;
+            overflow-y: auto;
+        }
+        .monitor-active { color: var(--text); border-color: var(--async); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Async Orchestrator</h1>
+            <p class="subtitle">Synthesizing Express.js route handlers with modern Async/Await logic.</p>
+        </header>
+
+        <section class="orchestrator-card">
+            <div class="flow-status">
+                <div class="node" id="routerNode"><i class="ph ph-tree-structure"></i>ASYNC_ROUTER</div>
+                <div style="color: var(--border); font-size: 1.5rem;"><i class="ph-bold ph-lightning"></i></div>
+                <div class="node" id="cloudNode"><i class="ph ph-cloud-arrow-down"></i>CLOUD_INGEST</div>
+            </div>
+
+            <button class="btn-trigger" id="testBtn" onclick="triggerAsyncRouter()">
+                <i class="ph-bold ph-activity"></i>
+                EXECUTE_ASYNC_HANDLER
+            </button>
+
+            <div class="monitor" id="logMonitor">// Awaiting route orchestration...</div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('logMonitor');
+        const router = document.getElementById('routerNode');
+        const cloud = document.getElementById('cloudNode');
+        const btn = document.getElementById('testBtn');
+
+        const triggerAsyncRouter = async () => {
+            btn.disabled = true;
+            router.classList.add('active');
+            cloud.classList.add('active');
+            monitor.innerText = "// Calling async route /api/async-data...";
+            
+            try {
+                const res = await fetch('/api/async-data');
+                const data = await res.json();
+                
+                router.classList.remove('active');
+                cloud.classList.remove('active');
+                
+                monitor.className = 'monitor monitor-active';
+                monitor.innerHTML = `> ROUTE_HANDSHAKE_COMPLETE<br><b>CLOUD_USERS_INGESTED:</b> ${data.count}<br><br><pre style="color:var(--muted)">${JSON.stringify(data.users[0], null, 2)}</pre>`;
+            } catch (e) {
+                monitor.innerText = "// Route orchestration failure.";
+            } finally {
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

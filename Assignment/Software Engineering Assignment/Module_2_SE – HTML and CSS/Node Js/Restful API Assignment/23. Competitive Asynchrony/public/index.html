@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Race | Task 23</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #f59e0b;
+            --hover: #f9fafb;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 600px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.9rem; font-weight: 300; }
+
+        .race-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .track { display: flex; justify-content: space-around; margin-bottom: 2.5rem; position: relative; }
+        .track::after { content: ''; position: absolute; bottom: -10px; width: 100%; height: 1px; background: var(--border); }
+        
+        .participant {
+            display: flex; flex-direction: column; gap: 8px;
+            color: var(--muted); font-size: 0.7rem; font-weight: 600;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .participant i { font-size: 1.5rem; }
+        .winner { color: var(--accent); transform: translateY(-10px) scale(1.2); }
+
+        .btn-trigger {
+            background: var(--text);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .btn-trigger:hover { transform: translateY(-2px); background: var(--accent); }
+
+        .monitor {
+            background: var(--hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            min-height: 120px;
+        }
+        .monitor-active { color: var(--text); border-color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Competitive Asynchrony</h1>
+            <p class="subtitle">Capturing the first resolved Promise through race orchestration.</p>
+        </header>
+
+        <section class="race-card">
+            <div class="track">
+                <div class="participant" id="p1"><i class="ph ph-flag"></i>PARTICIPANT_1 (2s)</div>
+                <div class="participant" id="p2"><i class="ph ph-flag"></i>PARTICIPANT_2 (1s)</div>
+            </div>
+
+            <button class="btn-trigger" id="testBtn" onclick="runRace()">
+                <i class="ph-bold ph-timer"></i>
+                EXECUTE_RACE_TEST
+            </button>
+
+            <div class="monitor" id="logMonitor">// Awaiting race initiation...</div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('logMonitor');
+        const p1 = document.getElementById('p1');
+        const p2 = document.getElementById('p2');
+        const btn = document.getElementById('testBtn');
+
+        const runRace = async () => {
+            btn.disabled = true;
+            p1.className = 'participant';
+            p2.className = 'participant';
+            monitor.innerText = "// Race in progress: Promise.race() active...";
+            
+            try {
+                const res = await fetch('/api/race');
+                const data = await res.json();
+                
+                const winnerId = data.outcome.winner === 'Participant_1' ? 'p1' : 'p2';
+                document.getElementById(winnerId).classList.add('winner');
+                
+                monitor.className = 'monitor monitor-active';
+                monitor.innerHTML = `> RACE_CONCLUDED<br><b>WINNER:</b> ${data.outcome.winner}<br><br><pre style="color:var(--muted)">${JSON.stringify(data.outcome, null, 2)}</pre>`;
+            } catch (e) {
+                monitor.innerText = "// Race circuit fault.";
+            } finally {
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

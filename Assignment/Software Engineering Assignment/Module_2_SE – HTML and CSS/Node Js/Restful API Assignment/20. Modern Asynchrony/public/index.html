@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Asynchrony | Task 20</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #6366f1;
+            --hover: #f9fafb;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 600px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.9rem; font-weight: 300; }
+
+        .async-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: var(--hover);
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-trigger {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .btn-trigger:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2); }
+
+        .monitor {
+            background: var(--hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            min-height: 120px;
+        }
+        .monitor-active { color: var(--text); border-color: var(--accent); }
+        
+        .loader { display: none; margin-bottom: 1rem; color: var(--accent); animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Modern Asynchrony</h1>
+            <p class="subtitle">Refining asynchronous flows with procedural Async/Await syntax.</p>
+        </header>
+
+        <section class="async-card">
+            <div class="status-badge" id="statusBadge">IDLE_STANDBY</div>
+            
+            <button class="btn-trigger" id="testBtn" onclick="runAsyncFlow()">
+                <i class="ph-bold ph-lightning"></i>
+                EXECUTE_ASYNC_AWAIT
+            </button>
+
+            <div class="monitor" id="logMonitor">
+                <i class="ph-bold ph-circle-notch loader" id="loader"></i>
+                // Awaiting function execution...
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('logMonitor');
+        const loader = document.getElementById('loader');
+        const btn = document.getElementById('testBtn');
+        const badge = document.getElementById('statusBadge');
+
+        const runAsyncFlow = async () => {
+            btn.disabled = true;
+            badge.innerText = 'EXECUTING_FLOW';
+            badge.style.color = '#6366f1';
+            loader.style.display = 'inline-block';
+            monitor.innerHTML = '// Running fetchAndProcessData()...<br>// Awaiting stage 1...';
+            
+            try {
+                const res = await fetch('/api/async-handshake');
+                const data = await res.json();
+                
+                badge.innerText = 'FLOW_SUCCESS';
+                badge.style.color = '#10b981';
+                monitor.className = 'monitor monitor-active';
+                monitor.innerHTML = `> FLOW_CONCLUDED<br><br><pre style="color:var(--muted)">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                badge.innerText = 'FLOW_FAULT';
+                badge.style.color = '#ef4444';
+                monitor.innerText = "// Fault detected in async stream.";
+            } finally {
+                btn.disabled = false;
+                loader.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async Resilience | Task 9</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030712;
+            --card: #111827;
+            --accent: #38bdf8;
+            --text: #f9fafb;
+            --muted: #64748b;
+            --border: #1e293b;
+            --error: #f43f5e;
+            --success: #10b981;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            background-image: radial-gradient(circle at bottom left, #082f49 0%, #030712 60%);
+            min-height: 100vh;
+        }
+        .container { max-width: 650px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; }
+        .subtitle { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+
+        /* Resilience Card */
+        .resilience-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        }
+        
+        .btn-test {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 1.5rem;
+            border-radius: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .btn-test i { font-size: 2rem; color: var(--accent); }
+        .btn-test:hover { border-color: var(--accent); transform: translateY(-5px); background: rgba(56, 189, 248, 0.05); }
+
+        .terminal {
+            grid-column: span 2;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            min-height: 120px;
+            color: var(--muted);
+            margin-top: 1rem;
+        }
+        .term-active { border-color: var(--accent); color: var(--text); }
+        .res-err { color: var(--error); }
+        .res-ok { color: var(--success); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Async Resilience</h1>
+            <p class="subtitle">Managing non-deterministic faults with Hybrid Error Orchestration.</p>
+        </header>
+
+        <section class="resilience-card">
+            <button class="btn-test" onclick="runTest('/api/test-try-catch', 'TRY_CATCH')">
+                <i class="ph-bold ph-brackets-curly"></i>
+                PROCEDURAL_ASYNC<br><span style="font-size:0.6rem; font-weight:400; opacity:0.6">try { await ... } catch</span>
+            </button>
+            
+            <button class="btn-test" onclick="runTest('/api/test-promise-catch', 'PROMISE_CATCH')">
+                <i class="ph-bold ph-git-merge"></i>
+                PROTOTYPE_ASYNC<br><span style="font-size:0.6rem; font-weight:400; opacity:0.6">.then().catch()</span>
+            </button>
+
+            <div class="terminal" id="terminal">// Awaiting chaos handshake (50% fail probability)...</div>
+        </section>
+    </div>
+
+    <script>
+        const term = document.getElementById('terminal');
+
+        const runTest = async (endpoint, pattern) => {
+            term.className = 'terminal';
+            term.innerText = `// Initiating ${pattern} probe...`;
+            
+            try {
+                const res = await fetch(endpoint);
+                const data = await res.json();
+                
+                term.className = 'terminal term-active';
+                const statusClass = res.ok ? 'res-ok' : 'res-err';
+                
+                term.innerHTML = `> PROBE_COMPLETE<br><b>PATTERN:</b> ${pattern}<br><b>STATUS:</b> <span class="${statusClass}">${data.status}</span><br><br><pre style="color:var(--muted)">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                term.innerText = "// Connection handshake failed.";
+            }
+        };
+    </script>
+</body>
+</html>

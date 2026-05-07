@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity Vault | Task 5</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030712;
+            --card: #111827;
+            --accent: #3b82f6;
+            --text: #f9fafb;
+            --muted: #9ca3af;
+            --border: #1f2937;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            background-image: radial-gradient(circle at center, #1e3a8a 0%, #030712 100%);
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .container { max-width: 450px; width: 100%; }
+        
+        header { margin-bottom: 2.5rem; text-align: center; }
+        h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; }
+        .meta { font-size: 0.7rem; color: var(--accent); font-weight: 800; letter-spacing: 2px; }
+
+        /* Auth Card */
+        .auth-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 32px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+        }
+        
+        .tabs { display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+        .tab { 
+            padding-bottom: 10px; font-size: 0.8rem; font-weight: 800; color: var(--muted); cursor: pointer; transition: 0.3s;
+            letter-spacing: 1px;
+        }
+        .tab-active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+
+        .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+        .input-group label { font-size: 0.7rem; font-weight: 800; color: var(--muted); letter-spacing: 1px; }
+        input {
+            background: #030712;
+            border: 1px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--accent); }
+
+        .btn-auth {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 1rem;
+            border-radius: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+        .btn-auth:hover { filter: brightness(1.2); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4); }
+
+        .token-display {
+            margin-top: 2rem; padding: 1.5rem; background: rgba(0,0,0,0.3); border: 1px dashed var(--border); border-radius: 16px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; word-break: break-all; color: var(--accent);
+            display: none;
+        }
+        .message { font-size: 0.85rem; margin-top: 1rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="meta">ENCRYPTION_LAYER // JWT</div>
+            <h1>Identity Vault</h1>
+        </header>
+
+        <section class="auth-card">
+            <div class="tabs">
+                <div class="tab tab-active" id="loginTab" onclick="switchTab('login')">LOGIN</div>
+                <div class="tab" id="registerTab" onclick="switchTab('register')">REGISTER</div>
+            </div>
+
+            <div class="input-group">
+                <label>IDENTITY_EMAIL</label>
+                <input type="email" id="email" placeholder="john@nexus.com">
+            </div>
+            <div class="input-group">
+                <label>SECURITY_KEY</label>
+                <input type="password" id="password" placeholder="••••••••">
+            </div>
+
+            <button class="btn-auth" id="authBtn" onclick="handleAuth()">AUTHORIZE_ACCESS</button>
+
+            <div class="message" id="message"></div>
+            <div class="token-display" id="tokenDisplay"></div>
+        </section>
+    </div>
+
+    <script>
+        let mode = 'login';
+
+        const switchTab = (newMode) => {
+            mode = newMode;
+            document.getElementById('loginTab').className = mode === 'login' ? 'tab tab-active' : 'tab';
+            document.getElementById('registerTab').className = mode === 'register' ? 'tab tab-active' : 'tab';
+            document.getElementById('authBtn').innerText = mode === 'login' ? 'AUTHORIZE_ACCESS' : 'ENCRYPT_IDENTITY';
+            document.getElementById('tokenDisplay').style.display = 'none';
+            document.getElementById('message').innerText = '';
+        };
+
+        const handleAuth = async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const endpoint = mode === 'login' ? '/login' : '/register';
+            
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+            const msg = document.getElementById('message');
+            const tokenBox = document.getElementById('tokenDisplay');
+
+            if (res.ok) {
+                msg.style.color = '#10b981';
+                msg.innerText = data.message;
+                if (data.token) {
+                    tokenBox.innerText = `BEARER_TOKEN: ${data.token}`;
+                    tokenBox.style.display = 'block';
+                }
+            } else {
+                msg.style.color = '#ef4444';
+                msg.innerText = data.message;
+            }
+        };
+    </script>
+</body>
+</html>

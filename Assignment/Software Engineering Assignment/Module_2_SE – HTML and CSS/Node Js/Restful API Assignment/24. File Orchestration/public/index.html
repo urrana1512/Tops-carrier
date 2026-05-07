@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Orchestration | Task 24</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #111827;
+            --hover: #f9fafb;
+            --io: #3b82f6;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 600px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.9rem; font-weight: 300; }
+
+        .file-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .io-visualizer { display: flex; align-items: center; justify-content: center; gap: 2rem; margin-bottom: 2.5rem; }
+        .file-node { display: flex; flex-direction: column; gap: 8px; color: var(--muted); font-size: 0.7rem; font-weight: 600; }
+        .file-node i { font-size: 2rem; transition: 0.3s; }
+        .active i { color: var(--io); transform: scale(1.1); }
+
+        .btn-trigger {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .btn-trigger:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .monitor {
+            background: var(--hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            min-height: 120px;
+        }
+        .monitor-active { color: var(--text); border-color: var(--io); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>File Orchestration</h1>
+            <p class="subtitle">Asynchronous manifest processing via fs.promises.</p>
+        </header>
+
+        <section class="file-card">
+            <div class="io-visualizer">
+                <div class="file-node" id="inputNode"><i class="ph ph-file-text"></i>INPUT.TXT</div>
+                <div style="color: var(--border); font-size: 1.5rem;"><i class="ph-bold ph-arrow-right"></i></div>
+                <div class="file-node" id="outputNode"><i class="ph ph-file-arrow-down"></i>OUTPUT.TXT</div>
+            </div>
+
+            <button class="btn-trigger" id="testBtn" onclick="runFileOrchestration()">
+                <i class="ph-bold ph-hard-drives"></i>
+                PROCESS_ASYNC_MANIFEST
+            </button>
+
+            <div class="monitor" id="logMonitor">// Awaiting I/O trigger...</div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('logMonitor');
+        const inputNode = document.getElementById('inputNode');
+        const outputNode = document.getElementById('outputNode');
+        const btn = document.getElementById('testBtn');
+
+        const runFileOrchestration = async () => {
+            btn.disabled = true;
+            inputNode.classList.add('active');
+            outputNode.classList.remove('active');
+            monitor.innerText = "// Reading source manifest (input.txt)...";
+            
+            try {
+                const res = await fetch('/api/process-file');
+                const data = await res.json();
+                
+                inputNode.classList.remove('active');
+                outputNode.classList.add('active');
+                
+                monitor.className = 'monitor monitor-active';
+                monitor.innerHTML = `> I/O_SEQUENCE_COMPLETE<br><br><pre style="color:var(--muted)">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                monitor.innerText = "// I/O Operation fault.";
+            } finally {
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

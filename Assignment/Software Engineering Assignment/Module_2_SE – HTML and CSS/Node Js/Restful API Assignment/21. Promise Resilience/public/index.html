@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Resilience | Task 21</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --accent: #ef4444;
+            --success: #10b981;
+            --hover: #f9fafb;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 4rem 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 600px; margin: 0 auto; text-align: center; }
+        
+        header { margin-bottom: 4rem; }
+        h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        p.subtitle { color: var(--muted); font-size: 0.9rem; font-weight: 300; }
+
+        .resilience-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .btn-trigger {
+            background: var(--text);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        .btn-trigger:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .monitor {
+            background: var(--hover);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            min-height: 120px;
+            transition: 0.3s;
+        }
+        .monitor-success { border-color: var(--success); color: var(--success); }
+        .monitor-fault { border-color: var(--accent); color: var(--accent); }
+        
+        .loader { display: none; margin: 0 auto 1rem; animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Promise Resilience</h1>
+            <p class="subtitle">Orchestrating randomized fault interception in asynchronous streams.</p>
+        </header>
+
+        <section class="resilience-card">
+            <button class="btn-trigger" id="testBtn" onclick="runResilienceTest()">
+                <i class="ph-bold ph-shield-check"></i>
+                EXECUTE_RESILIENCE_TEST
+            </button>
+
+            <div class="monitor" id="logMonitor">
+                <i class="ph-bold ph-circle-notch loader" id="loader"></i>
+                // Awaiting manual trigger...
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('logMonitor');
+        const loader = document.getElementById('loader');
+        const btn = document.getElementById('testBtn');
+
+        const runResilienceTest = async () => {
+            btn.disabled = true;
+            loader.style.display = 'block';
+            monitor.className = 'monitor';
+            monitor.innerHTML = '<i class="ph-bold ph-circle-notch loader" id="loader" style="display:block"></i>// Handshaking (50% fail probability)...';
+            
+            try {
+                const res = await fetch('/api/resilience-test');
+                const data = await res.json();
+                
+                if (res.ok) {
+                    monitor.className = 'monitor monitor-success';
+                    monitor.innerHTML = `> PROMISE_RESOLVED<br><br><pre style="color:inherit">${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    monitor.className = 'monitor monitor-fault';
+                    monitor.innerHTML = `> PROMISE_REJECTED<br><br><pre style="color:inherit">${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            } catch (e) {
+                monitor.innerText = "// Connection severed.";
+            } finally {
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
