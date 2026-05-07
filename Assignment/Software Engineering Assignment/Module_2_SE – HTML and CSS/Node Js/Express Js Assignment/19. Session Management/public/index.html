@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Vault | Task 19</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #f59e0b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(245, 158, 11, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 0% 0%, #451a03 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 500px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .vault-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.7rem; font-weight: 800; color: #64748b; letter-spacing: 2px; margin-bottom: 8px; }
+        input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            outline: none;
+            font-size: 1rem;
+        }
+        input:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+            border: none;
+        }
+        .btn-login { background: var(--accent); color: #451a03; }
+        .btn-login:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3); }
+        .btn-logout { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); margin-top: 1rem; }
+
+        #dashboardView {
+            margin-top: 2rem;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .hint { margin-top: 2rem; color: #333; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">SESSION_AUTH // STATEFUL_VAULT</div>
+            <h1>Session Vault</h1>
+        </header>
+
+        <section class="vault-card" id="authSection">
+            <div class="input-group">
+                <label>IDENTIFIER</label>
+                <input type="text" id="userInput" placeholder="admin">
+            </div>
+            <div class="input-group">
+                <label>VAULT_SECRET</label>
+                <input type="password" id="passInput" placeholder="••••••••">
+            </div>
+            <button class="btn btn-login" onclick="performLogin()">
+                <i class="ph-bold ph-key"></i>
+                OPEN_VAULT
+            </button>
+        </section>
+
+        <div id="dashboardView">
+            <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 10px;">SESSION_ACTIVE_FOR:</div>
+            <div id="activeUser" style="font-size: 1.5rem; font-weight: 800; color: var(--accent); margin-bottom: 20px;"></div>
+            <div style="color: #10b981; font-weight: 600; font-size: 0.9rem;">✅ Access to Protected Nexus granted.</div>
+            <button class="btn btn-logout" onclick="performLogout()">
+                <i class="ph-bold ph-sign-out"></i>
+                CLOSE_VAULT
+            </button>
+        </div>
+
+        <div class="hint">// DEFAULT: admin / nexus123</div>
+    </div>
+
+    <script>
+        const authSection = document.getElementById('authSection');
+        const dashboardView = document.getElementById('dashboardView');
+        const activeUser = document.getElementById('activeUser');
+
+        const checkSession = async () => {
+            const res = await fetch('/api/dashboard');
+            const data = await res.json();
+            if (res.ok) {
+                showDashboard(data.user);
+            }
+        };
+
+        const showDashboard = (user) => {
+            authSection.style.display = 'none';
+            dashboardView.style.display = 'block';
+            activeUser.innerText = user.toUpperCase();
+        };
+
+        const performLogin = async () => {
+            const username = document.getElementById('userInput').value;
+            const password = document.getElementById('passInput').value;
+
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                showDashboard(username);
+            } else {
+                alert(data.message);
+            }
+        };
+
+        const performLogout = async () => {
+            await fetch('/api/logout', { method: 'POST' });
+            location.reload();
+        };
+
+        checkSession();
+    </script>
+</body>
+</html>

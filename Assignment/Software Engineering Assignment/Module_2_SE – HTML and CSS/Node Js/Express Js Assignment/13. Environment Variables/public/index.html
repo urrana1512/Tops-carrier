@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variable Sentinel | Task 13</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #facc15;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(250, 204, 21, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top left, #422006 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(250, 204, 21, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3rem; letter-spacing: -2px; }
+
+        .config-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .config-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .config-row:last-child { border-bottom: none; }
+        .label { font-size: 0.75rem; font-weight: 800; color: #64748b; letter-spacing: 1px; }
+        .value { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--accent); }
+
+        .btn-refresh {
+            width: 100%;
+            background: var(--accent);
+            color: #422006;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .btn-refresh:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(250, 204, 21, 0.3); }
+
+        #envLog {
+            margin-top: 2rem;
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">ENV_ORCHESTRATOR // CONFIG_VAULT</div>
+            <h1>Variable Sentinel</h1>
+        </header>
+
+        <section class="config-card">
+            <div id="configGrid">
+                <!-- Data injected here -->
+            </div>
+            <button class="btn-refresh" onclick="fetchConfig()">
+                <i class="ph-bold ph-arrow-clockwise"></i>
+                POLL_ENVIRONMENT_LAYER
+            </button>
+        </section>
+
+        <div id="envLog">// Sentinel active. Monitoring process.env stream...</div>
+    </div>
+
+    <script>
+        const configGrid = document.getElementById('configGrid');
+        const envLog = document.getElementById('envLog');
+
+        const fetchConfig = async () => {
+            envLog.innerText = "// Handshake with Dotenv engine initiated...";
+            try {
+                const res = await fetch('/api/config');
+                const data = await res.json();
+                
+                configGrid.innerHTML = `
+                    <div class="config-row"><span class="label">ENVIRONMENT</span><span class="value">${data.environment}</span></div>
+                    <div class="config-row"><span class="label">PROJECT_IDENTIFIER</span><span class="value">${data.project}</span></div>
+                    <div class="config-row"><span class="label">DB_CONNECTION</span><span class="value">${data.database_link}</span></div>
+                    <div class="config-row"><span class="label">CONFIG_STATUS</span><span class="value">SYNCHRONIZED</span></div>
+                `;
+                envLog.innerText = "// All variables successfully retrieved from .env storage.";
+            } catch (e) {
+                envLog.innerText = "// Error: Configuration layer unreachable.";
+            }
+        };
+
+        fetchConfig();
+    </script>
+</body>
+</html>

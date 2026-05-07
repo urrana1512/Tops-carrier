@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Nexus | Task 7</title>
+    <!-- Requirement: Access CSS via URL -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="badge">STATIC_ASSET // DISTRIBUTION</div>
+        <h1>Asset Nexus</h1>
+        <p>This page, its styling, and its logic are being served as static assets by the Express engine.</p>
+        
+        <div class="asset-grid">
+            <div class="asset-item">
+                <i class="ph-bold ph-html5-logo"></i>
+                <span>INDEX.HTML</span>
+            </div>
+            <div class="asset-item">
+                <i class="ph-bold ph-css3-logo"></i>
+                <span>STYLE.CSS</span>
+            </div>
+            <div class="asset-item">
+                <i class="ph-bold ph-file-js"></i>
+                <span>SCRIPT.JS</span>
+            </div>
+        </div>
+
+        <button id="nexusBtn" class="btn">INITIALIZE_ASSET_PING</button>
+    </div>
+
+    <!-- Requirement: Access JS via URL -->
+    <script src="/script.js"></script>
+</body>
+</html>

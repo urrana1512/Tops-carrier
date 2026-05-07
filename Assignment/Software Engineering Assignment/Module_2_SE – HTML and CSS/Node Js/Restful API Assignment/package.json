@@ -1,0 +1,43 @@
+{
+  "name": "restful-api-assignment",
+  "version": "1.0.0",
+  "description": "Restful API Assignment Series",
+  "main": "index.js",
+  "scripts": {
+    "task1": "node \"1. Book Archive/index.js\"",
+    "dev1": "nodemon \"1. Book Archive/index.js\"",
+    "task2": "node \"2. Basic API/index.js\"",
+    "dev2": "nodemon \"2. Basic API/index.js\"",
+    "task3": "node \"3. Product Catalog/index.js\"",
+    "dev3": "nodemon \"3. Product Catalog/index.js\"",
+    "task4": "node \"4. Protocol Validation/index.js\"",
+    "dev4": "nodemon \"4. Protocol Validation/index.js\"",
+    "task5": "node \"5. Traffic Logger/index.js\"",
+    "dev5": "nodemon \"5. Traffic Logger/index.js\"",
+    "task6": "node \"6. Search Engine/index.js\"",
+    "dev6": "nodemon \"6. Search Engine/index.js\"",
+    "task7": "node \"7. MongoDB Persistence/index.js\"",
+    "dev7": "nodemon \"7. MongoDB Persistence/index.js\"",
+    "task8": "node \"8. Fault Tolerance/index.js\"",
+    "dev8": "nodemon \"8. Fault Tolerance/index.js\"",
+    "task9": "node \"9. Identity Shield/index.js\"",
+    "dev9": "nodemon \"9. Identity Shield/index.js\"",
+    "task10": "node \"10. Pagination Engine/index.js\"",
+    "dev10": "nodemon \"10. Pagination Engine/index.js\"",
+    "task11": "node \"11. Bridge Protocol/index.js\"",
+    "dev11": "nodemon \"11. Bridge Protocol/index.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Udit Rana",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

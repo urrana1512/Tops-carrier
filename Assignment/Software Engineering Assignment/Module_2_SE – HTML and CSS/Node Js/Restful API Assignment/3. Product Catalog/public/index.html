@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog | Task 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030303;
+            --accent: #10b981;
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(16, 185, 129, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at bottom left, #064e3b 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 800px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .catalog-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-grid { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 1rem; margin-bottom: 3rem; }
+        input {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+        }
+        input:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); }
+
+        .btn-add {
+            background: var(--accent);
+            color: #064e3b;
+            border: none;
+            padding: 0 25px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-add:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3); }
+
+        .item-list { display: grid; gap: 1rem; }
+        .item-row {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 20px 25px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.3s;
+        }
+        .item-row:hover { border-color: var(--border); background: rgba(16, 185, 129, 0.05); }
+        
+        .item-meta h3 { font-size: 1.1rem; margin-bottom: 4px; }
+        .item-meta .category { font-size: 0.7rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+        
+        .item-price { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #fff; font-size: 1.2rem; }
+        .item-price::before { content: '$'; font-size: 0.8rem; color: #64748b; margin-right: 4px; }
+
+        .actions { display: flex; gap: 10px; }
+        .btn-icon {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: #64748b;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-icon:hover { background: var(--accent); color: #064e3b; transform: translateY(-3px); }
+        .btn-del:hover { background: #ef4444; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">REST_ORCHESTRATOR // PRODUCT_CATALOG</div>
+            <h1>Catalog Nexus</h1>
+        </header>
+
+        <section class="catalog-card">
+            <div class="input-grid">
+                <input type="text" id="itemName" placeholder="Asset Name">
+                <input type="number" id="itemPrice" placeholder="Value">
+                <input type="text" id="itemCategory" placeholder="Class">
+                <button class="btn-add" onclick="createItem()">
+                    <i class="ph-bold ph-plus"></i>
+                </button>
+            </div>
+
+            <div class="item-list" id="itemContainer">
+                <!-- Data injected here -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const itemContainer = document.getElementById('itemContainer');
+
+        const syncCatalog = async () => {
+            const res = await fetch('/api/items');
+            const data = await res.json();
+            
+            itemContainer.innerHTML = '';
+            data.data.forEach(item => {
+                itemContainer.innerHTML += `
+                    <div class="item-row">
+                        <div class="item-meta">
+                            <div class="category">${item.category.toUpperCase()}</div>
+                            <h3>${item.name}</h3>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 30px;">
+                            <div class="item-price">${item.price}</div>
+                            <div class="actions">
+                                <button class="btn-icon" onclick="updateItem(${item.id})">
+                                    <i class="ph-bold ph-pencil-simple"></i>
+                                </button>
+                                <button class="btn-icon btn-del" onclick="deleteItem(${item.id})">
+                                    <i class="ph-bold ph-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        };
+
+        const createItem = async () => {
+            const name = document.getElementById('itemName').value;
+            const price = document.getElementById('itemPrice').value;
+            const category = document.getElementById('itemCategory').value;
+            if (!name || !price) return;
+
+            await fetch('/api/items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, price: parseFloat(price), category })
+            });
+
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemPrice').value = '';
+            document.getElementById('itemCategory').value = '';
+            syncCatalog();
+        };
+
+        const updateItem = async (id) => {
+            const newPrice = prompt("Enter new price adjustment:");
+            if (newPrice) {
+                await fetch(`/api/items/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ price: parseFloat(newPrice) })
+                });
+                syncCatalog();
+            }
+        };
+
+        const deleteItem = async (id) => {
+            if (confirm("Permanently decommission this asset record?")) {
+                await fetch(`/api/items/${id}`, { method: 'DELETE' });
+                syncCatalog();
+            }
+        };
+
+        syncCatalog();
+    </script>
+</body>
+</html>

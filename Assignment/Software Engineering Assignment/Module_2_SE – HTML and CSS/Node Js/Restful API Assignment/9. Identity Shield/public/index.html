@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity Shield | Task 9</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #f472b6;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(244, 114, 182, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 100% 100%, #500724 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 500px; text-align: center; }
+        header { margin-bottom: 3rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(244, 114, 182, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .auth-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.7rem; font-weight: 800; color: #64748b; letter-spacing: 2px; margin-bottom: 8px; }
+        input {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            outline: none;
+            font-size: 1rem;
+        }
+        input:focus { border-color: var(--accent); background: rgba(255,255,255,0.05); }
+
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+        .btn {
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-reg { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-login { background: var(--accent); color: #fff; }
+        .btn:hover { transform: translateY(-3px); }
+
+        #protectedSector {
+            margin-top: 2rem;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">JWT_PROTOCOL // STATELESS_SECURITY</div>
+            <h1>Identity Shield</h1>
+        </header>
+
+        <section class="auth-card" id="authUI">
+            <div class="input-group">
+                <label>IDENTIFIER</label>
+                <input type="text" id="userInput" placeholder="Nexus-User">
+            </div>
+            <div class="input-group">
+                <label>VAULT_SECRET</label>
+                <input type="password" id="passInput" placeholder="••••••••">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-reg" onclick="register()">REGISTER</button>
+                <button class="btn btn-login" onclick="login()">AUTHORIZE</button>
+            </div>
+        </section>
+
+        <div id="protectedSector">
+            <div style="font-size: 0.7rem; color: #64748b; margin-bottom: 8px; letter-spacing: 2px;">SECURED_ACCESS_GRANTED</div>
+            <h2 id="welcomeMsg" style="color: var(--accent); margin-bottom: 15px;"></h2>
+            <p id="secretData" style="color: #64748b; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace;"></p>
+            <button class="btn btn-reg" style="width: 100%; margin-top: 2rem;" onclick="location.reload()">TERMINATE_SESSION</button>
+        </div>
+    </div>
+
+    <script>
+        let authToken = null;
+
+        const register = async () => {
+            const username = document.getElementById('userInput').value;
+            const password = document.getElementById('passInput').value;
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            alert(data.message);
+        };
+
+        const login = async () => {
+            const username = document.getElementById('userInput').value;
+            const password = document.getElementById('passInput').value;
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                authToken = data.token;
+                accessProtected();
+            } else {
+                alert(data.message);
+            }
+        };
+
+        const accessProtected = async () => {
+            const res = await fetch('/api/protected', {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                document.getElementById('authUI').style.display = 'none';
+                document.getElementById('protectedSector').style.display = 'block';
+                document.getElementById('welcomeMsg').innerText = `Welcome, ${data.user}`;
+                document.getElementById('secretData').innerText = `> ${data.secret_data}`;
+            }
+        };
+    </script>
+</body>
+</html>

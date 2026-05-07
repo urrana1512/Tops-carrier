@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Nexus | Task 18</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #22c55e;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(34, 197, 94, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top right, #052e16 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .nexus-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-row { display: flex; gap: 12px; margin-bottom: 2.5rem; }
+        input {
+            flex: 1;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            outline: none;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--accent); background: rgba(255,255,255,0.05); }
+
+        .btn-add {
+            background: var(--accent);
+            color: #052e16;
+            border: none;
+            padding: 0 25px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-add:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); }
+
+        .task-list { display: flex; flex-direction: column; gap: 12px; }
+        .task-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.3s;
+        }
+        .task-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border); }
+        .task-info { display: flex; align-items: center; gap: 15px; flex: 1; cursor: pointer; }
+        .task-text { font-weight: 600; font-size: 0.95rem; }
+        .task-text.completed { text-decoration: line-through; color: #444; }
+        .check-icon { font-size: 1.2rem; color: #444; transition: 0.3s; }
+        .task-info:hover .check-icon { color: var(--accent); }
+        .task-item.completed .check-icon { color: var(--accent); }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: #444;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            padding: 5px;
+        }
+        .btn-delete:hover { color: #ef4444; transform: scale(1.2); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">CRUD_LIFECYCLE // TASK_NEXUS</div>
+            <h1>Task Nexus</h1>
+        </header>
+
+        <section class="nexus-card">
+            <div class="input-row">
+                <input type="text" id="taskInput" placeholder="Establish new objective...">
+                <button class="btn-add" onclick="createTask()">
+                    <i class="ph-bold ph-plus"></i>
+                </button>
+            </div>
+
+            <div class="task-list" id="taskContainer">
+                <!-- Tasks injected here -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const taskContainer = document.getElementById('taskContainer');
+        const taskInput = document.getElementById('taskInput');
+
+        const syncNexus = async () => {
+            const res = await fetch('/api/todos');
+            const data = await res.json();
+            
+            taskContainer.innerHTML = '';
+            data.data.forEach(todo => {
+                taskContainer.innerHTML += `
+                    <div class="task-item ${todo.completed ? 'completed' : ''}">
+                        <div class="task-info" onclick="toggleTask(${todo.id}, ${todo.completed})">
+                            <i class="check-icon ph-bold ${todo.completed ? 'ph-check-circle' : 'ph-circle'}"></i>
+                            <span class="task-text ${todo.completed ? 'completed' : ''}">${todo.task}</span>
+                        </div>
+                        <button class="btn-delete" onclick="deleteTask(${todo.id})">
+                            <i class="ph-bold ph-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        };
+
+        const createTask = async () => {
+            const task = taskInput.value;
+            if (!task) return;
+
+            await fetch('/api/todos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task })
+            });
+
+            taskInput.value = '';
+            syncNexus();
+        };
+
+        const toggleTask = async (id, currentStatus) => {
+            await fetch(`/api/todos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ completed: !currentStatus })
+            });
+            syncNexus();
+        };
+
+        const deleteTask = async (id) => {
+            await fetch(`/api/todos/${id}`, { method: 'DELETE' });
+            syncNexus();
+        };
+
+        // Trigger on Enter
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') createTask();
+        });
+
+        syncNexus();
+    </script>
+</body>
+</html>

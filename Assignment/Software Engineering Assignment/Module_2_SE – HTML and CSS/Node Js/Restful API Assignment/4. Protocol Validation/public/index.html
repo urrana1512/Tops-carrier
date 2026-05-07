@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocol Validation | Task 4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #6366f1;
+            --error: #ef4444;
+            --success: #10b981;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(99, 102, 241, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top left, #1e1b4b 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 650px; text-align: center; }
+        header { margin-bottom: 3rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3rem; letter-spacing: -2px; }
+
+        .validation-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+        input {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+        }
+        input:focus { border-color: var(--accent); }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-submit:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3); }
+
+        #responseMonitor {
+            margin-top: 2rem;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .res-success { border-color: var(--success) !important; color: var(--success); }
+        .res-error { border-color: var(--error) !important; color: var(--error); }
+        
+        .hint { margin-top: 1.5rem; font-size: 0.75rem; color: #444; text-align: center; font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">PROTOCOL_AUDIT // STATUS_CODES</div>
+            <h1>Validation Node</h1>
+        </header>
+
+        <section class="validation-card">
+            <div class="form-row">
+                <input type="text" id="assetName" placeholder="Resource Name">
+                <input type="number" id="assetQty" placeholder="Quantity">
+            </div>
+
+            <button class="btn-submit" onclick="submitData()">
+                <i class="ph-bold ph-shield-check"></i>
+                AUDIT_AND_COMMIT
+            </button>
+
+            <div id="responseMonitor">
+                // Standing by for protocol handshake...
+            </div>
+
+            <div class="hint">// Try submitting empty fields to trigger 400 ERROR.</div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('responseMonitor');
+
+        const submitData = async () => {
+            const name = document.getElementById('assetName').value;
+            const quantity = document.getElementById('assetQty').value;
+            
+            // Note: We send the quantity as it is (string from input) if it's not a number to let server handle validation
+            // But we'll parse it here to match the type validation
+            const payload = { 
+                name, 
+                quantity: quantity === "" ? undefined : Number(quantity) 
+            };
+
+            monitor.innerText = "// Transmitting payload...";
+            monitor.className = "";
+
+            try {
+                const res = await fetch('/api/items', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await res.json();
+                
+                monitor.className = res.ok ? 'res-success' : 'res-error';
+                monitor.innerHTML = `<div>> HTTP_STATUS: ${res.status}</div><pre style="margin-top:10px;">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                monitor.innerText = "// Connection severed.";
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault Access | Task 11</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #6366f1;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 450px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 2.8rem; letter-spacing: -1px; }
+
+        .auth-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.75rem; font-weight: 800; color: #64748b; letter-spacing: 1px; margin-bottom: 8px; }
+        input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); }
+
+        .btn-auth {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+        .btn-auth:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
+
+        #authStatus {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .success { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .failure { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+        .hint { margin-top: 2rem; color: #333; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">AUTH_LAYER // SECURE_HANDSHAKE</div>
+            <h1>Vault Access</h1>
+        </header>
+
+        <section class="auth-card">
+            <div class="input-group">
+                <label>IDENTITY_NAME</label>
+                <input type="text" id="userInput" placeholder="e.g. admin">
+            </div>
+            <div class="input-group">
+                <label>VAULT_TOKEN</label>
+                <input type="password" id="passInput" placeholder="••••••••">
+            </div>
+            <button class="btn-auth" onclick="commenceAuth()">
+                <i class="ph-bold ph-key"></i>
+                COMMENCE_HANDSHAKE
+            </button>
+        </section>
+
+        <div id="authStatus"></div>
+
+        <div class="hint">// DEFAULT: admin / nexus_pass_2026</div>
+    </div>
+
+    <script>
+        const statusBox = document.getElementById('authStatus');
+
+        const commenceAuth = async () => {
+            const username = document.getElementById('userInput').value;
+            const password = document.getElementById('passInput').value;
+
+            try {
+                const res = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                statusBox.style.display = 'block';
+                statusBox.innerText = data.message;
+                statusBox.className = res.ok ? 'success' : 'failure';
+            } catch (error) {
+                statusBox.style.display = 'block';
+                statusBox.innerText = "Internal Link Failure.";
+                statusBox.className = 'failure';
+            }
+        };
+    </script>
+</body>
+</html>

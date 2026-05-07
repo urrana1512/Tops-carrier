@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine | Task 6</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #ec4899;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(236, 72, 153, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at bottom right, #500724 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 650px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(236, 72, 153, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .search-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .search-bar { position: relative; margin-bottom: 2rem; }
+        .search-bar i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--accent); font-size: 1.2rem; }
+        input {
+            width: 100%;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 18px 18px 18px 55px;
+            border-radius: 20px;
+            color: #fff;
+            outline: none;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(236, 72, 153, 0.1); }
+
+        .results { display: grid; gap: 12px; }
+        .result-item {
+            background: rgba(255,255,255,0.02);
+            padding: 15px 20px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.03);
+            animation: slideIn 0.4s ease;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        .item-name { font-weight: 800; font-size: 0.9rem; }
+        .item-cat { font-size: 0.7rem; font-weight: 800; color: #64748b; letter-spacing: 1px; }
+
+        .empty-state { text-align: center; color: #64748b; font-size: 0.9rem; padding: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">QUERY_PARAMS // DATA_FILTERING</div>
+            <h1>Discovery Engine</h1>
+        </header>
+
+        <section class="search-card">
+            <div class="search-bar">
+                <i class="ph-bold ph-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search archive (e.g. tablet, keyboard, vr)..." oninput="performSearch()">
+            </div>
+
+            <div class="results" id="resultContainer">
+                <!-- Data injected here -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const container = document.getElementById('resultContainer');
+        const input = document.getElementById('searchInput');
+
+        const performSearch = async () => {
+            const query = input.value;
+            const res = await fetch(`/api/items?search=${encodeURIComponent(query)}`);
+            const data = await res.json();
+
+            if (data.status === 'EMPTY' || data.data.length === 0) {
+                container.innerHTML = `<div class="empty-state">// ${data.message || 'Registry yielded no matches.'}</div>`;
+                return;
+            }
+
+            container.innerHTML = data.data.map(item => `
+                <div class="result-item">
+                    <span class="item-name">${item.name}</span>
+                    <span class="item-cat">${item.category.toUpperCase()}</span>
+                </div>
+            `).join('');
+        };
+
+        // Initial Load
+        performSearch();
+    </script>
+</body>
+</html>

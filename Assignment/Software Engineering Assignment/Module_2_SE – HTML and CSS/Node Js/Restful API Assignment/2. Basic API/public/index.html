@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Entrypoint | Task 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #22d3ee;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(34, 211, 238, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top left, #083344 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .api-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .terminal {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #67e8f9;
+            min-height: 150px;
+            overflow: auto;
+        }
+
+        .btn-test {
+            width: 100%;
+            background: var(--accent);
+            color: #083344;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+            margin-top: 2rem;
+        }
+        .btn-test:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">REST_CORE // ENTRYPOINT</div>
+            <h1>API Entrypoint</h1>
+        </header>
+
+        <section class="api-card">
+            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 2rem;">Initiate a handshake with the Express engine to retrieve the structured greeting payload.</p>
+            
+            <div class="terminal" id="respContainer">
+                // Standby for API synchronization...
+            </div>
+
+            <button class="btn-test" onclick="testAPI()">
+                <i class="ph-bold ph-lightning"></i>
+                EXECUTE_HANDSHAKE
+            </button>
+        </section>
+    </div>
+
+    <script>
+        const respContainer = document.getElementById('respContainer');
+
+        const testAPI = async () => {
+            respContainer.innerText = "// Requesting payload...";
+            try {
+                const res = await fetch('/api');
+                const data = await res.json();
+                respContainer.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                respContainer.innerText = "// ERROR: Link failure.";
+            }
+        };
+    </script>
+</body>
+</html>

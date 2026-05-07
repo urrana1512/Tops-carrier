@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fault Tolerance | Task 8</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #ef4444;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(239, 68, 68, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top left, #450a0a 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .fault-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3.5rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: center;
+        }
+
+        .btn-group { display: grid; gap: 1rem; }
+        .btn-trigger {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 16px;
+            color: var(--accent);
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+        .btn-trigger:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3); }
+
+        #errorMonitor {
+            margin-top: 2.5rem;
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: #ef4444;
+            min-height: 120px;
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            display: none;
+            animation: shake 0.5s ease;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(5px); }
+            50% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">ERROR_HANDLING // FAULT_TOLERANCE</div>
+            <h1>Fault Sentinel</h1>
+        </header>
+
+        <section class="fault-card">
+            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 2rem;">Manually trigger system exceptions to verify the global interception logic.</p>
+            
+            <div class="btn-group">
+                <button class="btn-trigger" onclick="triggerSimulatedError()">
+                    <i class="ph-bold ph-warning-octagon"></i>
+                    ENGAGE_SIMULATED_FAULT
+                </button>
+                <button class="btn-trigger" onclick="triggerReferenceError()">
+                    <i class="ph-bold ph-skull"></i>
+                    TRIGGER_UNEXPECTED_CRASH
+                </button>
+            </div>
+
+            <div id="errorMonitor"></div>
+        </section>
+    </div>
+
+    <script>
+        const monitor = document.getElementById('errorMonitor');
+
+        const triggerSimulatedError = async () => {
+            monitor.style.display = 'block';
+            monitor.innerText = "// Handshaking with fault engine...";
+            try {
+                const res = await fetch('/api/simulate-fault');
+                const data = await res.json();
+                monitor.innerHTML = `<div style="color:#64748b;">> RESPONSE_CAPTURED</div><pre style="margin-top:10px;">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                monitor.innerText = "// Connection severed.";
+            }
+        };
+
+        const triggerReferenceError = async () => {
+            monitor.style.display = 'block';
+            monitor.innerText = "// Triggering memory corruption simulation...";
+            try {
+                const res = await fetch('/api/crash-test');
+                const data = await res.json();
+                monitor.innerHTML = `<div style="color:#64748b;">> RESPONSE_CAPTURED</div><pre style="margin-top:10px;">${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (e) {
+                monitor.innerText = "// Connection severed.";
+            }
+        };
+    </script>
+</body>
+</html>

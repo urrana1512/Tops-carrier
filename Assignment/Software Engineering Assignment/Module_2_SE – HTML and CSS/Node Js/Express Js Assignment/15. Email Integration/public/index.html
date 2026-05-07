@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Dispatcher | Task 15</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #38bdf8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(56, 189, 248, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 50% 50%, #0c4a6e 0%, #000 70%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3rem; letter-spacing: -2px; }
+
+        .email-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.7rem; font-weight: 800; color: #64748b; letter-spacing: 2px; margin-bottom: 8px; }
+        input, textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+        textarea { height: 120px; resize: none; font-family: 'JetBrains Mono', monospace; }
+        input:focus, textarea:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); }
+
+        .btn-dispatch {
+            width: 100%;
+            background: var(--accent);
+            color: #0c4a6e;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+        .btn-dispatch:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3); }
+
+        #statusView {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 20px;
+            background: #000;
+            border: 1px solid var(--border);
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .preview-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.8rem;
+            border-bottom: 2px solid var(--accent);
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">NODEMAILER // SMTP_DISPATCH</div>
+            <h1>Signal Dispatcher</h1>
+        </header>
+
+        <section class="email-card">
+            <div class="input-group">
+                <label>RECIPIENT_ADDRESS</label>
+                <input type="email" id="emailTo" placeholder="target@example.com" value="test@express.nexus">
+            </div>
+            <div class="input-group">
+                <label>SIGNAL_SUBJECT</label>
+                <input type="text" id="emailSubject" placeholder="Handshake Initialized">
+            </div>
+            <div class="input-group">
+                <label>ENCRYPTED_PAYLOAD (BODY)</label>
+                <textarea id="emailBody" placeholder="Message content goes here..."></textarea>
+            </div>
+            <button class="btn-dispatch" onclick="dispatchSignal()">
+                <i class="ph-bold ph-paper-plane-tilt"></i>
+                COMMENCE_DISPATCH
+            </button>
+        </section>
+
+        <div id="statusView">
+            <div id="statusText" style="color: #10b981; font-weight: 800;">Signal successfully dispatched.</div>
+            <a id="previewLink" href="#" target="_blank" class="preview-link">VIEW_VIRTUAL_TRANSMISSION</a>
+        </div>
+    </div>
+
+    <script>
+        const statusView = document.getElementById('statusView');
+        const previewLink = document.getElementById('previewLink');
+
+        const dispatchSignal = async () => {
+            const to = document.getElementById('emailTo').value;
+            const subject = document.getElementById('emailSubject').value;
+            const body = document.getElementById('emailBody').value;
+
+            document.getElementById('statusText').innerText = "Establishing SMTP link...";
+            statusView.style.display = 'block';
+
+            try {
+                const res = await fetch('/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ to, subject, body })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    document.getElementById('statusText').innerText = data.message;
+                    previewLink.href = data.preview_url;
+                    previewLink.style.display = 'inline-block';
+                } else {
+                    document.getElementById('statusText').innerText = "Dispatch Failed.";
+                    document.getElementById('statusText').style.color = "#ef4444";
+                    previewLink.style.display = 'none';
+                }
+            } catch (error) {
+                document.getElementById('statusText').innerText = "Connection Severed.";
+                document.getElementById('statusText').style.color = "#ef4444";
+            }
+        };
+    </script>
+</body>
+</html>

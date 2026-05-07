@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Nexus | Task 1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #6366f1;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(99, 102, 241, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top right, #1e1b4b 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 800px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .nexus-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; margin-bottom: 3rem; }
+        input {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 16px;
+            border-radius: 16px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+        }
+        input:focus { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); }
+
+        .btn-add {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0 30px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-add:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
+
+        .book-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        .book-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 20px 25px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.3s;
+        }
+        .book-item:hover { border-color: var(--border); background: rgba(255,255,255,0.04); }
+        .book-info h3 { font-size: 1.1rem; margin-bottom: 4px; }
+        .book-info p { font-size: 0.8rem; color: #64748b; font-weight: 600; }
+        
+        .status-badge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 100px;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        .available { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .checked-out { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+        .actions { display: flex; gap: 10px; }
+        .btn-action {
+            background: rgba(255,255,255,0.05);
+            border: none;
+            color: #64748b;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-action:hover { background: var(--accent); color: #fff; transform: translateY(-3px); }
+        .btn-delete:hover { background: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">RESTFUL_API // RESOURCE_ARCHIVE</div>
+            <h1>Library Nexus</h1>
+        </header>
+
+        <section class="nexus-card">
+            <div class="input-row">
+                <input type="text" id="bookTitle" placeholder="Literature Title">
+                <input type="text" id="bookAuthor" placeholder="Author Name">
+                <button class="btn-add" onclick="createBook()">
+                    <i class="ph-bold ph-plus"></i>
+                </button>
+            </div>
+
+            <div class="book-grid" id="bookContainer">
+                <!-- Records injected here -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const bookContainer = document.getElementById('bookContainer');
+
+        const syncLibrary = async () => {
+            const res = await fetch('/api/books');
+            const data = await res.json();
+            
+            bookContainer.innerHTML = '';
+            data.data.forEach(book => {
+                bookContainer.innerHTML += `
+                    <div class="book-item">
+                        <div class="book-info">
+                            <h3>${book.title}</h3>
+                            <p>${book.author.toUpperCase()}</p>
+                            <div class="status-badge ${book.status === 'Available' ? 'available' : 'checked-out'}">
+                                ${book.status.toUpperCase()}
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-action" onclick="toggleStatus(${book.id}, '${book.status}')">
+                                <i class="ph-bold ph-swap"></i>
+                            </button>
+                            <button class="btn-action btn-delete" onclick="deleteBook(${book.id})">
+                                <i class="ph-bold ph-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        };
+
+        const createBook = async () => {
+            const title = document.getElementById('bookTitle').value;
+            const author = document.getElementById('bookAuthor').value;
+            if (!title || !author) return;
+
+            await fetch('/api/books', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, author })
+            });
+
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookAuthor').value = '';
+            syncLibrary();
+        };
+
+        const toggleStatus = async (id, currentStatus) => {
+            const newStatus = currentStatus === 'Available' ? 'Checked Out' : 'Available';
+            await fetch(`/api/books/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            });
+            syncLibrary();
+        };
+
+        const deleteBook = async (id) => {
+            await fetch(`/api/books/${id}`, { method: 'DELETE' });
+            syncLibrary();
+        };
+
+        syncLibrary();
+    </script>
+</body>
+</html>

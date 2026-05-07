@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Intake | Task 17</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #a855f7;
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(168, 85, 247, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 100% 0%, #2e1065 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .upload-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3.5rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: center;
+            position: relative;
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 2rem;
+        }
+        .drop-zone:hover { border-color: var(--accent); background: rgba(168, 85, 247, 0.05); }
+        .drop-zone i { font-size: 3rem; color: var(--accent); margin-bottom: 1rem; }
+        .drop-zone p { font-size: 0.85rem; color: #64748b; font-weight: 600; }
+
+        #fileInput { display: none; }
+
+        .btn-upload {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+        .btn-upload:hover { transform: scale(1.02); box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3); }
+
+        #manifestView {
+            margin-top: 2rem;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #d8b4fe;
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">MULTER_INTAKE // MULTIPART_STREAM</div>
+            <h1>Asset Intake</h1>
+        </header>
+
+        <section class="upload-card">
+            <!-- Requirement: Create a form for uploading files and set the form's enctype to multipart/form-data -->
+            <!-- Note: I am using fetch for a better UI experience, but the data is sent as multipart/form-data -->
+            <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+                <i class="ph-bold ph-cloud-arrow-up"></i>
+                <p id="fileNameDisplay">Select or Drop Asset Packet</p>
+            </div>
+            
+            <input type="file" id="fileInput" name="nexusFile" onchange="updateFileName()">
+            
+            <button class="btn-upload" onclick="performUpload()">
+                <i class="ph-bold ph-rocket-launch"></i>
+                COMMENCE_INGESTION
+            </button>
+
+            <div id="manifestView"></div>
+        </section>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const manifestView = document.getElementById('manifestView');
+
+        const updateFileName = () => {
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.innerText = fileInput.files[0].name;
+                fileNameDisplay.style.color = "#a855f7";
+            }
+        };
+
+        const performUpload = async () => {
+            if (fileInput.files.length === 0) return alert("No asset packet selected.");
+
+            manifestView.style.display = 'block';
+            manifestView.innerText = "// Establishing multipart stream...";
+
+            const formData = new FormData();
+            formData.append('nexusFile', fileInput.files[0]);
+
+            try {
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    manifestView.innerHTML = `<div>> ASSET_MANIFEST_GENERATED</div><pre style="margin-top:10px;">${JSON.stringify(data.file_details, null, 2)}</pre>`;
+                } else {
+                    manifestView.innerText = `// INGESTION_FAILED: ${data.message}`;
+                }
+            } catch (e) {
+                manifestView.innerText = "// Connection Severed.";
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Vault | Task 10</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030303;
+            --accent: #10b981;
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(16, 185, 129, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top right, #064e3b 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 650px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .vault-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; margin-bottom: 2rem; }
+        input {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px;
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        input:focus { border-color: var(--accent); }
+
+        .btn-commit {
+            background: var(--accent);
+            color: #064e3b;
+            border: none;
+            padding: 0 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+        .btn-commit:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+
+        .record-list {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        }
+        .record-item:last-child { border-bottom: none; }
+        .record-name { font-weight: 700; color: #fff; }
+        .record-email { font-size: 0.75rem; color: #64748b; font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">MONGODB_VAULT // PERSISTENCE_LAYER</div>
+            <h1>Data Vault</h1>
+        </header>
+
+        <section class="vault-card">
+            <div class="input-row">
+                <input type="text" id="userName" placeholder="Full Name">
+                <input type="email" id="userEmail" placeholder="network@alias.com">
+                <button class="btn-commit" onclick="commitData()"><i class="ph-bold ph-database"></i></button>
+            </div>
+
+            <div class="record-list" id="recordContainer">
+                <div style="color: #444; font-size: 0.8rem; text-align: center;">// Standing by for database synchronization...</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const recordContainer = document.getElementById('recordContainer');
+
+        const syncVault = async () => {
+            try {
+                const res = await fetch('/api/users');
+                const data = await res.json();
+                
+                if (data.data.length === 0) {
+                    recordContainer.innerHTML = '<div style="color: #444; font-size: 0.8rem; text-align: center;">// Vault is currently empty.</div>';
+                    return;
+                }
+
+                recordContainer.innerHTML = '';
+                data.data.forEach(user => {
+                    recordContainer.innerHTML += `
+                        <div class="record-item">
+                            <div class="record-name">${user.name}</div>
+                            <div class="record-email">${user.email}</div>
+                        </div>
+                    `;
+                });
+            } catch (e) {
+                recordContainer.innerHTML = '<div style="color: #ef4444; font-size: 0.8rem; text-align: center;">// ERROR: Database link severed.</div>';
+            }
+        };
+
+        const commitData = async () => {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            if (!name || !email) return;
+
+            try {
+                const res = await fetch('/api/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                });
+                const data = await res.json();
+                
+                if (data.status === "ERROR") {
+                    alert(data.message);
+                } else {
+                    document.getElementById('userName').value = '';
+                    document.getElementById('userEmail').value = '';
+                    syncVault();
+                }
+            } catch (error) {
+                alert("Commit protocol failed.");
+            }
+        };
+
+        syncVault();
+    </script>
+</body>
+</html>

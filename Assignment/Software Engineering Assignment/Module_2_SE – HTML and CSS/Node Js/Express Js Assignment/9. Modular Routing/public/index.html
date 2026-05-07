@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registry | Task 9</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #6366f1;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(99, 102, 241, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top left, #1e1b4b 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 650px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .nexus-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .input-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; margin-bottom: 2rem; }
+        input {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px;
+            border-radius: 12px;
+            color: #fff;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        input:focus { border-color: var(--accent); }
+
+        .btn-add {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+        .btn-add:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
+
+        .user-list {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .user-item:last-child { border-bottom: none; }
+        .user-name { font-weight: 700; color: #fff; }
+        .user-role { font-size: 0.75rem; color: var(--accent); letter-spacing: 1px; font-weight: 800; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">MODULAR_ROUTER // DOMAIN_ISOLATION</div>
+            <h1>User Registry</h1>
+        </header>
+
+        <section class="nexus-card">
+            <div class="input-row">
+                <input type="text" id="userName" placeholder="Identity Name">
+                <input type="text" id="userRole" placeholder="Access Role">
+                <button class="btn-add" onclick="addUser()"><i class="ph-bold ph-plus"></i></button>
+            </div>
+
+            <div class="user-list" id="userContainer">
+                <!-- Users injected here -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const userContainer = document.getElementById('userContainer');
+
+        const fetchUsers = async () => {
+            const res = await fetch('/api/users');
+            const data = await res.json();
+            
+            userContainer.innerHTML = '';
+            data.data.forEach(user => {
+                userContainer.innerHTML += `
+                    <div class="user-item">
+                        <div class="user-name">${user.name}</div>
+                        <div class="user-role">${user.role.toUpperCase()}</div>
+                    </div>
+                `;
+            });
+        };
+
+        const addUser = async () => {
+            const name = document.getElementById('userName').value;
+            const role = document.getElementById('userRole').value;
+            if (!name) return;
+
+            await fetch('/api/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, role })
+            });
+
+            document.getElementById('userName').value = '';
+            document.getElementById('userRole').value = '';
+            fetchUsers();
+        };
+
+        fetchUsers();
+    </script>
+</body>
+</html>

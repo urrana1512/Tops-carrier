@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Governor | Task 14</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #070708;
+            --accent: #f87171;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(248, 113, 113, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 100% 100%, #450a0a 0%, #000 60%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(248, 113, 113, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3rem; letter-spacing: -2px; }
+
+        .governor-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: center;
+        }
+
+        .meter-container {
+            margin-bottom: 2.5rem;
+            background: #000;
+            padding: 2rem;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+        }
+        .count-display { font-family: 'JetBrains Mono', monospace; font-size: 4rem; font-weight: 800; color: var(--accent); line-height: 1; }
+        .count-label { font-size: 0.7rem; font-weight: 800; color: #64748b; letter-spacing: 2px; margin-top: 10px; }
+
+        .btn-ping {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+        .btn-ping:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(248, 113, 113, 0.3); }
+
+        #logArea {
+            margin-top: 2rem;
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            height: 120px;
+            overflow-y: auto;
+        }
+        .log-entry { margin-bottom: 5px; }
+        .log-entry.denied { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">TRAFFIC_GOVERNOR // VOLUMETRIC_PROTECTION</div>
+            <h1>Governor Node</h1>
+        </header>
+
+        <section class="governor-card">
+            <div class="meter-container">
+                <div class="count-display" id="quotaDisplay">10</div>
+                <div class="count-label">REQUESTS_REMAINING_IN_WINDOW</div>
+            </div>
+
+            <button class="btn-ping" onclick="pingAPI()">
+                <i class="ph-bold ph-broadcast"></i>
+                DISPATCH_SIGNAL_PACKET
+            </button>
+
+            <div id="logArea">
+                <div class="log-entry">// System initialized. Throttling active.</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const quotaDisplay = document.getElementById('quotaDisplay');
+        const logArea = document.getElementById('logArea');
+
+        const addLog = (msg, isDenied = false) => {
+            const entry = document.createElement('div');
+            entry.className = isDenied ? 'log-entry denied' : 'log-entry';
+            entry.innerText = `> [${new Date().toLocaleTimeString()}] ${msg}`;
+            logArea.prepend(entry);
+        };
+
+        const pingAPI = async () => {
+            try {
+                const res = await fetch('/api/ping');
+                const data = await res.json();
+                
+                if (res.status === 200) {
+                    quotaDisplay.innerText = data.remaining;
+                    addLog(`Success: ${data.message}`);
+                } else {
+                    quotaDisplay.innerText = "0";
+                    addLog(`Denied: ${data.message}`, true);
+                }
+            } catch (e) {
+                addLog("Link Failure.", true);
+            }
+        };
+    </script>
+</body>
+</html>

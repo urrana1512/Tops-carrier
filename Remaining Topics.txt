@@ -1,0 +1,41 @@
+Remaining Topics
+
+Implementing JSON Web Tokens (JWT)
+
+Using Environment Variables
+
+Sending Emails with Nodemailer
+
+Handling Cookies and Sessions
+
+Handling Cookies and Sessions
+
+Setting Up Unit Tests with Mocha and Chai
+
+Deploying Your Express Application
+
+Middleware in Express.js
+
+Adding Authentication (Basic or JWT)
+
+Deploying Your RESTful API
+
+Understanding Callbacks
+
+Promises
+
+Chaining Promises
+
+Error Handling in Promises
+
+Using Promise.all()
+
+Using Promise.race()
+
+Handling Asynchronous File Operations
+
+Implementing Pagination
+
+Setting Up a Simple Authentication System
+
+Protecting Routes with Middleware
