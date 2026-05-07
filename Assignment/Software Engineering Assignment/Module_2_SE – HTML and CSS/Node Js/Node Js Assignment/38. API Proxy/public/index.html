@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Gateway | Task 38</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050507;
+            --accent: #06b6d4;
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at 10% 20%, #164e63 0%, #000 40%);
+        }
+        .container { width: 100%; max-width: 700px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3rem; letter-spacing: -2px; }
+
+        .gateway-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+        }
+
+        .proxy-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 2.5rem;
+        }
+        .node {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .arrow { color: var(--accent); animation: pulse 1.5s infinite; }
+
+        .btn-relay {
+            width: 100%;
+            background: var(--accent);
+            color: #083344;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+        .btn-relay:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3); }
+
+        #responseArea {
+            margin-top: 2rem;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            max-height: 250px;
+            overflow-y: auto;
+            color: #94a3b8;
+        }
+        .hidden { display: none; }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">NETWORK_RELAY // PROXY_TUNNEL</div>
+            <h1>Proxy Gateway</h1>
+        </header>
+
+        <section class="gateway-card">
+            <div class="proxy-flow">
+                <div class="node">LOCAL_APP</div>
+                <div class="arrow"><i class="ph-bold ph-arrow-right"></i></div>
+                <div class="node" style="border-color: var(--accent);">PROXY_TUNNEL</div>
+                <div class="arrow"><i class="ph-bold ph-arrow-right"></i></div>
+                <div class="node">JSON_PLACEHOLDER</div>
+            </div>
+
+            <p style="color: #64748b; margin-bottom: 2rem;">Fetching <code>/api/posts/1</code> through the local proxy tunnel.</p>
+            
+            <button class="btn-relay" id="relayBtn" onclick="fireRelay()">
+                <i class="ph-bold ph-broadcast"></i>
+                INITIATE_RELAY
+            </button>
+
+            <div id="responseArea" class="hidden">
+                <div id="jsonOutput"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const relayBtn = document.getElementById('relayBtn');
+        const responseArea = document.getElementById('responseArea');
+        const jsonOutput = document.getElementById('jsonOutput');
+
+        const fireRelay = async () => {
+            relayBtn.disabled = true;
+            relayBtn.innerHTML = '<i class="ph ph-circle-notch spin"></i> RELAYING_PACKETS...';
+            
+            try {
+                // Requesting local proxy endpoint
+                const res = await fetch('/api/posts/1');
+                const data = await res.json();
+
+                responseArea.classList.remove('hidden');
+                jsonOutput.innerHTML = `<span style="color: #06b6d4;">// Data retrieved via local tunnel:</span><br><br>` + JSON.stringify(data, null, 2);
+            } catch (e) {
+                jsonOutput.innerHTML = `<span style="color: #ef4444;">// Tunnel link severed.</span>`;
+            } finally {
+                relayBtn.disabled = false;
+                relayBtn.innerHTML = '<i class="ph-bold ph-broadcast"></i> INITIATE_RELAY';
+            }
+        };
+    </script>
+</body>
+</html>

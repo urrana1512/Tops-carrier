@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity Refactor | Task 22.7</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="glow-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.RENAME</div>
+            <h1>File Identity Refactor</h1>
+            <p>Mutating asset metadata in the core registry</p>
+        </header>
+
+        <section class="refactor-card glass">
+            <div class="identity-flow">
+                <div class="id-box" id="oldId">
+                    <i class="ph ph-file-text"></i>
+                    <span>oldname.txt</span>
+                </div>
+                <div class="connector">
+                    <i class="ph-bold ph-arrow-right"></i>
+                </div>
+                <div class="input-container">
+                    <label>Enter New Name</label>
+                    <input type="text" id="newNameInput" placeholder="e.g. system_v2.txt">
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="renameBtn" class="btn-main">
+                    <i class="ph-bold ph-pencil-simple-line"></i>
+                    <span>Execute Rename</span>
+                </button>
+                <button id="resetBtn" class="btn-sub">
+                    <i class="ph ph-arrows-counter-clockwise"></i>
+                    <span>Reset Identity</span>
+                </button>
+            </div>
+
+            <div id="statusMsg" class="status-box hidden">
+                <i class="ph-fill ph-check-circle"></i>
+                <span>File system successfully refactored!</span>
+            </div>
+        </section>
+
+        <footer>
+            <p>Check the <strong>System Console</strong> for operation success confirmation.</p>
+        </footer>
+    </main>
+
+    <script>
+        const renameBtn = document.getElementById('renameBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const oldId = document.getElementById('oldId');
+        const newNameInput = document.getElementById('newNameInput');
+
+        renameBtn.onclick = async () => {
+            const newName = newNameInput.value.trim();
+            if (!newName) return alert("Please enter a new name.");
+
+            const finalName = newName.endsWith('.txt') ? newName : `${newName}.txt`;
+
+            renameBtn.disabled = true;
+            try {
+                const response = await fetch('/api/rename-file', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ newName })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update the "Source" box to show the newly created name
+                    oldId.querySelector('span').innerText = finalName;
+                    oldId.classList.remove('faded'); // Remove faded so it looks like the current source
+                    
+                    statusMsg.classList.remove('hidden');
+                    statusMsg.querySelector('span').innerText = `Successfully renamed to ${finalName}`;
+                    newNameInput.value = ""; // Clear input for next rename
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert("Refactor failed. Registry locked.");
+            } finally {
+                renameBtn.disabled = false;
+            }
+        };
+
+        resetBtn.onclick = async () => {
+            await fetch('/api/reset-rename', { method: 'POST' });
+            oldId.querySelector('span').innerText = "oldname.txt";
+            oldId.classList.remove('faded');
+            statusMsg.classList.add('hidden');
+            newNameInput.value = "";
+        };
+    </script>
+</body>
+</html>

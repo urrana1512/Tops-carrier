@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite API Master | Professional Dev Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div id="loader" class="loader-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <main class="app-container">
+        <!-- Sidebar: Quick Actions & History -->
+        <aside class="sidebar card">
+            <h3>Quick Tests</h3>
+            <div class="quick-links">
+                <button onclick="setQuickUrl('/posts')">/posts</button>
+                <button onclick="setQuickUrl('/users')">/users</button>
+                <button onclick="setQuickUrl('/comments')">/comments</button>
+            </div>
+
+            <h3>Recent History</h3>
+            <div id="historyList" class="history-list">
+                <!-- History items injected here -->
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+            <header class="card">
+                <div class="header-content">
+                    <i class="ph-fill ph-rocket-launch"></i>
+                    <div>
+                        <h1>Elite API Master</h1>
+                        <p>Dynamic Request Orchestrator</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Request Form (Requirement 3) -->
+            <section class="request-form card">
+                <div class="form-row">
+                    <select id="methodSelect" class="method-dropdown">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                    <input type="text" id="urlInput" placeholder="Enter API endpoint URL..." value="https://jsonplaceholder.typicode.com/posts/1">
+                    <button id="sendBtn" class="send-btn">
+                        <span>Send Request</span>
+                        <i class="ph-bold ph-paper-plane-right"></i>
+                    </button>
+                </div>
+
+                <div class="form-row">
+                    <div class="json-editor-wrapper">
+                        <label>JSON Data Body (POST/PUT)</label>
+                        <textarea id="jsonInput" placeholder="JSON Data not required for this method" disabled></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button onclick="resetForm()" class="btn-text"><i class="ph ph-trash"></i> Clear All</button>
+                </div>
+            </section>
+
+            <!-- Response Display (Requirement 5) -->
+            <section class="response-section card">
+                <div class="response-header">
+                    <h3>Response Output</h3>
+                    <div class="header-actions">
+                        <div id="statusBadge" class="badge">READY</div>
+                        <button onclick="copyResponse()" class="btn-icon" title="Copy Response"><i class="ph ph-copy"></i></button>
+                    </div>
+                </div>
+                <div class="code-container">
+                    <pre id="responseArea">// JSON response will be pretty-printed here...</pre>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

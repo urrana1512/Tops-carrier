@@ -1,0 +1,59 @@
+1. Sass CSS is a CSS Pre-Processor.
+2. Sass (Syntactically Awesome StyleSheet)
+
+
+
+--> To Adding Sass, we have to install Sass in React App
+Command : npm i sass
+
+In Sass Css we have provide some features :
+1. We can add css properties as a Variable
+    Ex : $color: lightblue;
+         $fontsize: 18px;
+         $textcolor: darkblue;
+
+         .MySass{
+            background-color: $color;
+            font-size: $fontsize;
+            text-xolor: $textcolor;
+         }
+
+2. Nested 
+    Ex : Nav{
+        ul{
+            //properties
+        }
+        li{
+            //properties
+        }
+        a{
+            //properties
+        }
+    }
+
+3. Nested properties
+    Ex : .ClassName{
+        text: {
+            // You can add all text properties
+        }
+        font: {
+            // You can add all font properties
+        }
+    }
+
+4. using @extend keyword we can access all the perticular properties to add other class css
+    Ex : .button-basic{
+        border: none;
+        padding: 15px 30px;
+        text-align: center;
+        cursor: pointer;
+        color: white;
+    }
+    .button-red{
+        @extend .button-basic;
+        background-color: red;
+    }
+    .button-purple{
+        @extend .button-basic;
+        background-color: purple;
+    }

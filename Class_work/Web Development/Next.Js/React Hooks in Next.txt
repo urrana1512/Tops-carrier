@@ -1,0 +1,4 @@
+useState() => gives you an error in Next.js
+note : all Next.js components are worked in server side insted of client side 
+       when you want to use client side react functionality that time have to add
+--> "Use Client" => import at first line of the component

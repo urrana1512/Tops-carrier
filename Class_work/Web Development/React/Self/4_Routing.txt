@@ -1,0 +1,34 @@
+Routing in React : Routing is the used to redirect page without Loading the Page.
+
+Create React App doesn't include page routing.
+
+React Router is the most popular solution.
+
+Add React Router
+To add React Router in your application, run this in the terminal from the root directory of the application:
+
+npm i -D react-router-dom
+
+======================================================================================================================
+
+We have 3 steps to Perform Routing:
+1) Install React Router dom 
+   Command : npm i -D react-router-dom
+
+2) After Installing the Router dom we create the navbar and then create routing path Like below example code:
+   Code : In main JSX File where we call the components
+          
+          <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<><Home /></>}></Route>
+                    <Route path="/about" element={<><About /></>}></Route>
+                    <Route path="/contact" element={<><Contact /></>}></Route>
+                </Routes>
+          </BrowserRouter>
+
+3) After Previous code, go to navbar components and write Code like below
+    Code :  <NavLink class="nav-link" to="/">Home</NavLink>    
+            <NavLink class="nav-link" to="/about">About</NavLink>    
+            <NavLink class="nav-link" to="/contact">Contact</NavLink>
+                      
+                       

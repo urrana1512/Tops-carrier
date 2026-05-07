@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Streamer | Task 22.4</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="stream-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.APPENDFILE</div>
+            <h1>Incremental Log Streamer</h1>
+            <p>Appending temporal events to persistent storage</p>
+        </header>
+
+        <section class="stream-interface">
+            <div class="input-panel glass">
+                <input type="text" id="logInput" placeholder="Enter log event (e.g. User Login, API Fetch)...">
+                <button id="appendBtn">
+                    <i class="ph-bold ph-plus"></i>
+                    <span>Append Event</span>
+                </button>
+            </div>
+
+            <div class="stream-view glass">
+                <div class="stream-header">
+                    <div class="dot-red"></div>
+                    <span>LIVE_APPEND_STREAM: append.txt</span>
+                </div>
+                <pre id="streamContent">Awaiting first event...</pre>
+            </div>
+        </section>
+
+        <footer>
+            <p>Check the <strong>Terminal Console</strong> for the full file verification log.</p>
+        </footer>
+    </main>
+
+    <script>
+        const appendBtn = document.getElementById('appendBtn');
+        const logInput = document.getElementById('logInput');
+        const streamContent = document.getElementById('streamContent');
+
+        appendBtn.onclick = async () => {
+            const entry = logInput.value.trim();
+            if(!entry) return alert("Please enter a log event.");
+
+            appendBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/append-data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ logEntry: entry })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    streamContent.innerText = result.updatedContent;
+                    streamContent.scrollTop = streamContent.scrollHeight;
+                    logInput.value = "";
+                }
+            } catch (error) {
+                alert("Stream interruption detected.");
+            } finally {
+                appendBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

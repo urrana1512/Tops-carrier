@@ -1,0 +1,31 @@
+There are some ways to import image in Next.js
+
+1) Simple Way : put images in /public Folder
+                public/slide1.jpg
+            
+2) store in /src folder : in image folder
+        store : src/images/image.jpg
+        import : import image from "@/images/image.jpg"
+        use : <img src={image.src}
+
+3) import : import Image from 'next/image'
+   use : <Image src={image.src} width={400} height={400} />
+         <Image src={image.src} fill />
+
+4) Image display from lie path / third party
+https://nextjs.org/docs/app/getting-started/images
+
+open : next.config.mjs
+        const nextConfig = {
+            images: {
+                remotePatterns: [
+                {
+                    protocol: 'https',
+                    hostname: 's3.amazonaws.com',
+                    port: '',
+                    pathname: '/my-bucket/**',
+                    search: '',
+                },
+                ],
+            },
+        };

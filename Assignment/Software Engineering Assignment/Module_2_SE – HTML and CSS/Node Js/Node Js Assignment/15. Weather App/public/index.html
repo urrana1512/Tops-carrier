@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast Pro Ultimate | Global Weather Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div id="loadingBar" class="progress-bar"></div>
+    <div id="bgLayer" class="bg-layer bg-clear"></div>
+
+    <main class="app-wrapper">
+        <!-- Search -->
+        <header class="search-container">
+            <input type="text" id="citySearch" placeholder="Search any city on Earth..." value="Ahmedabad">
+            <button id="searchBtn" class="search-btn">
+                <i class="ph-bold ph-magnifying-glass"></i>
+            </button>
+        </header>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard">
+            <section class="hero-card">
+                <div class="header">
+                    <h1 id="cityName">Ahmedabad</h1>
+                    <p id="localDate">Wednesday, May 06</p>
+                </div>
+
+                <div class="main-temp">
+                    <h2 id="tempVal">28</h2>
+                    <span>°C</span>
+                </div>
+
+                <div class="main-condition">
+                    <i id="condIcon" class="ph-fill ph-sun" style="color: #fbbf24;"></i>
+                    <span id="condText">Clear Sky</span>
+                </div>
+            </section>
+
+            <section class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="ph-bold ph-thermometer-hot"></i></div>
+                    <div class="info">
+                        <label>Feels Like</label>
+                        <span id="feelsLike">30°C</span>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="ph-bold ph-drop"></i></div>
+                    <div class="info">
+                        <label>Humidity</label>
+                        <span id="humidity">45%</span>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="ph-bold ph-wind"></i></div>
+                    <div class="info">
+                        <label>Wind Speed</label>
+                        <span id="windSpeed">12.5 km/h</span>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon"><i class="ph-bold ph-eye"></i></div>
+                    <div class="info">
+                        <label>Visibility</label>
+                        <span id="visibility">10 km</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 5-Day Forecast -->
+        <section class="forecast-section">
+            <div class="forecast-title">5-Day Extended Forecast</div>
+            <div id="forecastGrid" class="forecast-grid">
+                <!-- Forecast items will be injected here -->
+            </div>
+        </section>
+
+        <footer style="text-align: center; color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem;">
+            Powered by SkyCast Pro | Hybrid API Engine (Open-Meteo & OpenWeather)
+        </footer>
+    </main>
+
+    <script>
+        const citySearch = document.getElementById('citySearch');
+        const searchBtn = document.getElementById('searchBtn');
+        const loadingBar = document.getElementById('loadingBar');
+        const bgLayer = document.getElementById('bgLayer');
+
+        // Elements
+        const cityName = document.getElementById('cityName');
+        const localDate = document.getElementById('localDate');
+        const tempVal = document.getElementById('tempVal');
+        const condText = document.getElementById('condText');
+        const condIcon = document.getElementById('condIcon');
+        const feelsLike = document.getElementById('feelsLike');
+        const humidity = document.getElementById('humidity');
+        const windSpeed = document.getElementById('windSpeed');
+        const visibility = document.getElementById('visibility');
+        const forecastGrid = document.getElementById('forecastGrid');
+
+        const OPENWEATHER_KEY = 'b98fc30988a70b9a4e4b2f10e67420da';
+
+        async function fetchWeather() {
+            const city = citySearch.value.trim();
+            if (!city) return;
+
+            loadingBar.classList.add('active');
+
+            try {
+                // First try Geocoding to get Lat/Lon (essential for the free Open-Meteo)
+                const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`);
+                const geoData = await geoRes.json();
+
+                if (!geoData.results) throw new Error("City not found");
+                
+                const { latitude, longitude, name, country_code } = geoData.results[0];
+
+                // Fetch current weather AND forecast using Open-Meteo (No Key Required, High Reliability)
+                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=6`);
+                const data = await weatherRes.json();
+
+                updateUI(data, name, country_code);
+
+            } catch (err) {
+                console.error("Weather Engine Error:", err);
+                alert("Could not fetch weather. Please try a different city name.");
+            } finally {
+                loadingBar.classList.remove('active');
+            }
+        }
+
+        function updateUI(data, city, country) {
+            const current = data.current;
+            const daily = data.daily;
+
+            // Update Header
+            cityName.innerText = `${city}, ${country}`;
+            const now = new Date();
+            localDate.innerText = now.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' });
+
+            // Update Hero
+            tempVal.innerText = Math.round(current.temperature_2m);
+            const condition = mapWeatherCode(current.weather_code);
+            condText.innerText = condition.label;
+            condIcon.className = `ph-fill ${condition.icon} cond-icon`;
+            condIcon.style.color = condition.color;
+
+            // Update Background
+            bgLayer.className = `bg-layer bg-${condition.theme}`;
+
+            // Update Stats
+            feelsLike.innerText = `${Math.round(current.apparent_temperature)}°C`;
+            humidity.innerText = `${current.relative_humidity_2m}%`;
+            windSpeed.innerText = `${current.wind_speed_10m} km/h`;
+            visibility.innerText = `10 km`; // Open-Meteo visibility varies by region
+
+            // Update Forecast
+            forecastGrid.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const date = new Date(daily.time[i]);
+                const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+                const cond = mapWeatherCode(daily.weather_code[i]);
+                
+                const div = document.createElement('div');
+                div.className = 'forecast-day';
+                div.innerHTML = `
+                    <div class="day">${dayName}</div>
+                    <i class="ph-fill ${cond.icon}" style="color: ${cond.color}"></i>
+                    <div class="temp">${Math.round(daily.temperature_2m_max[i])}°</div>
+                `;
+                forecastGrid.appendChild(div);
+            }
+        }
+
+        function mapWeatherCode(code) {
+            if (code === 0) return { label: 'Clear Sky', icon: 'ph-sun', theme: 'clear', color: '#fbbf24' };
+            if (code <= 3) return { label: 'Partly Cloudy', icon: 'ph-cloud-sun', theme: 'clouds', color: '#cbd5e1' };
+            if (code <= 48) return { label: 'Foggy', icon: 'ph-cloud-fog', theme: 'clouds', color: '#94a3b8' };
+            if (code <= 67) return { label: 'Rainy', icon: 'ph-cloud-rain', theme: 'rain', color: '#60a5fa' };
+            if (code <= 77) return { label: 'Snowy', icon: 'ph-snowflake', theme: 'clouds', color: '#f1f5f9' };
+            return { label: 'Thunderstorm', icon: 'ph-cloud-lightning', theme: 'rain', color: '#f87171' };
+        }
+
+        searchBtn.addEventListener('click', fetchWeather);
+        citySearch.addEventListener('keypress', (e) => { if (e.key === 'Enter') fetchWeather(); });
+
+        fetchWeather(); // Init
+    </script>
+</body>
+</html>

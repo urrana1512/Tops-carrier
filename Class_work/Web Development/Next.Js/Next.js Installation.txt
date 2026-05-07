@@ -1,0 +1,4 @@
+Next.Js is React Framework for Server side Rendering
+features : Dynamic Routing, 
+Step 1 : npx create-next-app@latest
+Step 2 : npm run dev

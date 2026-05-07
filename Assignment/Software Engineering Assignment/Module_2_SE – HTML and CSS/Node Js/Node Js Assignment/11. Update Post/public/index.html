@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Revision Editor | Task 11</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mesh-gradient"></div>
+    
+    <main class="container">
+        <header>
+            <div class="status-label">HTTP PUT Implementation</div>
+            <h1>Resource Editor</h1>
+            <p>Update an existing post from the JSONPlaceholder API.</p>
+        </header>
+
+        <section class="editor-workspace">
+            <div class="editor-card glass">
+                <div class="card-title">Active Resource: Post #1</div>
+                
+                <div class="field">
+                    <label>Title</label>
+                    <input type="text" id="updateTitle" value="Loading current title...">
+                </div>
+
+                <div class="field">
+                    <label>Content Body</label>
+                    <textarea id="updateBody">Loading current content...</textarea>
+                </div>
+
+                <button id="updateBtn" class="primary-btn">Save Changes (PUT)</button>
+            </div>
+
+            <div id="responseArea" class="response-card hidden">
+                <div class="response-header">
+                    <span>Server Synchronization Success</span>
+                    <div class="pulse-dot"></div>
+                </div>
+                <div class="log-preview">
+                    <div class="log-label">Console Response Preview:</div>
+                    <pre id="consoleLog"></pre>
+                </div>
+                <div class="visual-preview">
+                    <div class="log-label">Web Page Display:</div>
+                    <div class="updated-preview">
+                        <h3 id="displayTitle"></h3>
+                        <p id="displayBody"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            Node.js Assignment | PUT Request Logic
+        </footer>
+    </main>
+
+    <script>
+        const updateTitle = document.getElementById('updateTitle');
+        const updateBody = document.getElementById('updateBody');
+        const updateBtn = document.getElementById('updateBtn');
+        const responseArea = document.getElementById('responseArea');
+        const consoleLog = document.getElementById('consoleLog');
+        const displayTitle = document.getElementById('displayTitle');
+        const displayBody = document.getElementById('displayBody');
+
+        // Initial fetch to get the current state of Post #1
+        async function fetchOriginal() {
+            try {
+                const res = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+                const data = await res.json();
+                updateTitle.value = data.title;
+                updateBody.value = data.body;
+            } catch (err) {
+                console.error("Fetch Error:", err);
+            }
+        }
+
+        async function updatePost() {
+            updateBtn.innerText = 'Syncing...';
+            updateBtn.disabled = true;
+
+            const payload = {
+                id: 1,
+                title: updateTitle.value,
+                body: updateBody.value,
+                userId: 1
+            };
+
+            try {
+                // Task 11 Requirement: Use Fetch API to update a post (PUT)
+                const response = await fetch('https://jsonplaceholder.typicode.com/posts/1', {
+                    method: 'PUT',
+                    body: JSON.stringify(payload),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                });
+
+                const data = await response.json();
+
+                // Task 11 Requirement: Log the updated post to the console
+                console.log('%c [Task 11] Updated Post Object:', 'color: #10b981; font-weight: bold;', data);
+                
+                // Task 11 Requirement: Display it on the web page
+                consoleLog.innerText = JSON.stringify(data, null, 4);
+                displayTitle.innerText = data.title;
+                displayBody.innerText = data.body;
+
+                responseArea.classList.remove('hidden');
+                responseArea.style.animation = 'fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                
+                updateBtn.innerText = 'Update Again';
+                updateBtn.disabled = false;
+
+            } catch (err) {
+                console.error("PUT Error:", err);
+                alert("Update failed. See console.");
+                updateBtn.disabled = false;
+            }
+        }
+
+        updateBtn.addEventListener('click', updatePost);
+        fetchOriginal();
+    </script>
+</body>
+</html>

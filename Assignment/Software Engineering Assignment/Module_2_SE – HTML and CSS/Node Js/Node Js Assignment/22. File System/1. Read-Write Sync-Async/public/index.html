@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Bridge | Sync vs Async</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="blob-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">MODULE 22.1</div>
+            <h1>File Transfer Bridge</h1>
+            <p>Comparing Synchronous & Asynchronous Methodologies</p>
+        </header>
+
+        <section class="bridge-grid">
+            <!-- Sync Card -->
+            <div class="method-card glass">
+                <div class="card-icon sync"><i class="ph ph-lock"></i></div>
+                <h2>Synchronous (Blocking)</h2>
+                <p>Execution halts until the file is fully read and written. Simple but blocks the Event Loop.</p>
+                <button id="syncBtn" class="btn sync-btn">Execute Sync Clone</button>
+                <div id="syncStatus" class="status-panel">Awaiting Command...</div>
+            </div>
+
+            <!-- Async Card -->
+            <div class="method-card glass">
+                <div class="card-icon async"><i class="ph ph-clock-counter-clockwise"></i></div>
+                <h2>Asynchronous (Callback)</h2>
+                <p>Node.js handles file operations in the background, allowing the app to remain responsive.</p>
+                <button id="asyncBtn" class="btn async-btn">Execute Async Clone</button>
+                <div id="asyncStatus" class="status-panel">Awaiting Command...</div>
+            </div>
+        </section>
+
+        <div class="source-preview glass">
+            <div class="preview-header">SOURCE_FILE: input.txt</div>
+            <pre>
+This is the source data for Task 22.1.
+Node.js File System module (fs) is powerful and efficient.
+Testing Synchronous vs Asynchronous file operations.
+            </pre>
+        </div>
+    </main>
+
+    <script>
+        async function runOperation(method) {
+            const statusId = `${method}Status`;
+            const statusEl = document.getElementById(statusId);
+            
+            statusEl.innerText = "Processing I/O Operation...";
+            statusEl.className = "status-panel processing";
+
+            try {
+                const response = await fetch(`/api/file/${method}`, { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    statusEl.innerHTML = `
+                        <strong>SUCCESS</strong><br>
+                        Time: ${result.duration}<br>
+                        ${result.message}
+                    `;
+                    statusEl.className = "status-panel success";
+                }
+            } catch (error) {
+                statusEl.innerText = "Operation Failed.";
+                statusEl.className = "status-panel error";
+            }
+        }
+
+        document.getElementById('syncBtn').onclick = () => runOperation('sync');
+        document.getElementById('asyncBtn').onclick = () => runOperation('async');
+    </script>
+</body>
+</html>

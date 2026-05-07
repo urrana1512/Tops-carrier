@@ -1,0 +1,37 @@
+
+
+<!--
+Axios is a promise-based HTTP client for JavaScript, 
+which is used to make HTTP requests to fetch or send data to a server. 
+
+It simplifies the process of handling requests by providing a cleaner API, 
+better error handling, and support for features like request/response interceptors, 
+cancellation, and more. 
+
+It is also fully compatible with modern browsers and can be used in both the 
+browser and NodeJS environments.
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+-->
+
+	
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+	/*
+	
+	axios.get(`https://fakestoreapi.com/products`)
+	.then((obj)=> console.log(obj.data));
+	
+	*/
+	
+	
+	
+	const fetch=async()=>{
+		var obj=await axios.get(`https://fakestoreapi.com/products`);
+		console.log(obj.data);
+	}
+	fetch();
+	
+</script>
+	

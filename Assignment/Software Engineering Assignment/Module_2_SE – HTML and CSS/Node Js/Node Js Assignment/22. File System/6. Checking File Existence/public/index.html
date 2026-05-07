@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Prober | Task 22.6</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="orbit-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.EXISTSSYNC</div>
+            <h1>Existence Verification</h1>
+            <p>Probing the local directory for target assets</p>
+        </header>
+
+        <section class="probe-card glass">
+            <div class="status-display" id="statusDisplay">
+                <i class="ph-fill ph-circle-dashed spinner"></i>
+                <h2>Initializing Probe...</h2>
+            </div>
+
+            <div class="target-info">
+                <span>TARGET_OBJECT:</span>
+                <strong>check.txt</strong>
+            </div>
+
+            <div class="control-panel">
+                <button onclick="checkExistence()" class="btn-primary">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <span>Execute Probe</span>
+                </button>
+                
+                <div class="helper-buttons">
+                    <button onclick="toggleFile('create')" class="btn-sec">Create File</button>
+                    <button onclick="toggleFile('delete')" class="btn-sec">Delete File</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Probe results are logged to the <strong>System Console</strong> in real-time.</p>
+        </footer>
+    </main>
+
+    <script>
+        const statusDisplay = document.getElementById('statusDisplay');
+
+        async function checkExistence() {
+            statusDisplay.innerHTML = '<i class="ph-fill ph-circle-dashed spinner"></i> <h2>Probing...</h2>';
+            
+            try {
+                const response = await fetch('/api/check-file');
+                const { exists } = await response.json();
+
+                if (exists) {
+                    statusDisplay.innerHTML = '<i class="ph-fill ph-check-circle success-icon"></i> <h2 class="success-text">OBJECT_FOUND</h2>';
+                    statusDisplay.parentElement.classList.add('found');
+                    statusDisplay.parentElement.classList.remove('missing');
+                } else {
+                    statusDisplay.innerHTML = '<i class="ph-fill ph-x-circle error-icon"></i> <h2 class="error-text">OBJECT_MISSING</h2>';
+                    statusDisplay.parentElement.classList.add('missing');
+                    statusDisplay.parentElement.classList.remove('found');
+                }
+            } catch (error) {
+                statusDisplay.innerHTML = '<h2>SYSTEM_OFFLINE</h2>';
+            }
+        }
+
+        async function toggleFile(action) {
+            await fetch(`/api/${action}-test-file`, { method: 'POST' });
+            checkExistence();
+        }
+
+        // Initial check
+        checkExistence();
+    </script>
+</body>
+</html>

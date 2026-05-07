@@ -1,0 +1,6 @@
+[REPLICATION_SEED]
+Source Asset: original.txt
+Content: This data is scheduled for cloning across the storage registry.
+Author: Udit Rana
+Status: MASTER_COPY
+--------------------------------------------------

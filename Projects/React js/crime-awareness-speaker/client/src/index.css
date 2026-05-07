@@ -1,0 +1,248 @@
+:root {
+  --primary-color: #e63946;
+  --secondary-color: #457b9d;
+  --background-dark: #1d3557;
+  --text-light: #f1faee;
+  --accent: #a8dadc;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+  background: rgba(29, 53, 87, 0.95);
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+.nav-logo {
+  color: var(--text-light);
+  font-size: 2rem;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  text-align: center;
+}
+
+.nav-item {
+  height: 80px;
+}
+
+.nav-links {
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0 1rem;
+  height: 100%;
+  cursor: pointer;
+}
+
+.nav-links:hover {
+  color: var(--primary-color);
+  transition: all 0.2s ease-out;
+}
+
+.btn-login {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: #fff;
+  font-size: 18px;
+}
+
+.btn-login:hover {
+  background-color: #ff505f;
+  transition: all 0.3s ease-out;
+}
+
+/* Footer */
+.footer-container {
+  background-color: #101d2e;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-content p {
+  margin-bottom: 1rem;
+}
+
+.social-icons i {
+  color: var(--text-light);
+  font-size: 1.5rem;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.social-icons i:hover {
+  color: var(--primary-color);
+}
+
+/* Utility */
+.page-container {
+  min-height: calc(100vh - 160px);
+  /* Adjust for header/footer */
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Home Page */
+.hero-section {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1555435024-2c268fa3026c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-section h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-section p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #f1faee;
+}
+
+.btn-primary {
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.cards-wrapper {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.card {
+  background: #457b9d;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 300px;
+  margin: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card i {
+  font-size: 3rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+/* Video Grid */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.video-card {
+  background: #457b9d;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.video-thumbnail {
+  height: 180px;
+  background-color: #000;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+/* Auth Forms */
+.auth-form-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: rgba(69, 123, 157, 0.2);
+  border-radius: 10px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}

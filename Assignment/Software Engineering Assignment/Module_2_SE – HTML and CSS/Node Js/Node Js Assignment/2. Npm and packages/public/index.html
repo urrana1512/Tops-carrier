@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPM Package Explorer | Task 02</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="glow-container">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
+
+    <main class="container">
+        <header class="header">
+            <div class="badge">Node.js Task 02</div>
+            <h1 class="title">NPM & Package Integration</h1>
+            <p class="subtitle">Demonstrating Express & Nodemon in a professional environment.</p>
+        </header>
+
+        <section class="dashboard-grid">
+            <!-- Cards will be populated by JS or just hardcoded for design -->
+            <div class="card glass">
+                <div class="card-header">
+                    <span class="icon">📦</span>
+                    <h3>Express.js</h3>
+                </div>
+                <p>The standard web framework for Node.js. It's handling all HTTP requests and serving this dashboard.</p>
+                <div class="tag dependency">Dependency</div>
+            </div>
+
+            <div class="card glass">
+                <div class="card-header">
+                    <span class="icon">🔄</span>
+                    <h3>Nodemon</h3>
+                </div>
+                <p>Automatically restarts the application when file changes are detected in the directory.</p>
+                <div class="tag dev-dependency">Dev-Dependency</div>
+            </div>
+
+            <div class="card glass full-width">
+                <div class="card-header">
+                    <span class="icon">💻</span>
+                    <h3>Environment Status</h3>
+                </div>
+                <div class="stats-grid" id="stats">
+                    <div class="stat-item">
+                        <span class="label">Platform</span>
+                        <span class="value" id="platform">Loading...</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Node Version</span>
+                        <span class="value" id="node-version">Loading...</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Server Uptime</span>
+                        <span class="value" id="uptime">0s</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            Built with <span>&hearts;</span> using Node Package Manager
+        </footer>
+    </main>
+
+    <script>
+        async function fetchStats() {
+            try {
+                const response = await fetch('/api/package-info');
+                const data = await response.json();
+                document.getElementById('platform').innerText = data.environment.platform;
+                document.getElementById('node-version').innerText = data.environment.nodeVersion;
+                document.getElementById('uptime').innerText = data.environment.uptime;
+            } catch (err) {
+                console.error("Failed to fetch stats", err);
+            }
+        }
+        fetchStats();
+        setInterval(fetchStats, 5000);
+    </script>
+</body>
+</html>

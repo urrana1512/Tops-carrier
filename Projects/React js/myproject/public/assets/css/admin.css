@@ -1,0 +1,2505 @@
+/* Admin Login Start */
+/* 🌌 Dark Gradient Background */
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ✨ Floating Emojis */
+.floating-emoji {
+  position: absolute;
+  font-size: 2rem;
+  animation: floatEmoji 12s linear infinite;
+  opacity: 0.8;
+}
+
+.floating-emoji:nth-child(1) {
+  top: 10%;
+  left: 20%;
+  animation-delay: 0s;
+}
+.floating-emoji:nth-child(2) {
+  top: 30%;
+  left: 70%;
+  animation-delay: 3s;
+}
+.floating-emoji:nth-child(3) {
+  top: 60%;
+  left: 10%;
+  animation-delay: 6s;
+}
+.floating-emoji:nth-child(4) {
+  top: 80%;
+  left: 50%;
+  animation-delay: 9s;
+}
+
+@keyframes floatEmoji {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-40px) rotate(20deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* 💳 Login Card */
+/* Login Card With Mirror Reflection Motion */
+.login-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 16px;
+  padding: 30px;
+  width: 400px;
+  color: white;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.login-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.1) 60%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  transition: left 0.9s ease;
+}
+
+.login-card:hover {
+  transform: scale(1);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+}
+
+.login-card:hover::after {
+  left: 130%;
+}
+
+/* 🖼️ Logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.admin-logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: white;
+  padding: 8px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Inputs */
+.form-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+.form-group label {
+  color: black;
+  font-size: 14px;
+  font-weight: 600;
+}
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.138);
+  outline: none;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+/* Button */
+.login-btn {
+  background: linear-gradient(90deg, #ff512f, #dd2476);
+  border: none;
+  color: white;
+  padding: 8px;
+  border-radius: 3px;
+  width: 100%;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mirror Reflection Effect */
+.login-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.1) 60%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+
+.login-btn:hover {
+  transform: scale(1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.login-btn:hover::after {
+  left: 120%;
+}
+
+/* Admin Login End */
+
+/* Admin Dashboard Start  */
+/* Highlight Active Menu Item */
+.active-link {
+  color: #f28123 !important; /* orange highlight */
+  font-weight: bold;
+  border-bottom: 2px solid #f28123; /* underline */
+  transition: 0.3s ease;
+}
+
+/* ✅ Dashboard Cards */
+/* ✅ Chart Section */
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.dash-card {
+  background: #fff8f0;
+  padding: 25px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.dash-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.dash-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+  color: #f28123;
+}
+
+.dash-card h2 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  margin: 10px 0;
+}
+
+.chart-section {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.filter-dropdown {
+  padding: 8px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.filter-dropdown:hover {
+  border-color: #f28123;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+}
+
+.chart-box {
+  background: #fff8f0;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.dash-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.dash-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.dash-icon {
+  font-size: 35px;
+  margin-bottom: 15px;
+}
+
+.dash-icon.orders {
+  color: #ff9800;
+}
+.dash-icon.customers {
+  color: #4caf50;
+}
+.dash-icon.products {
+  color: #2196f3;
+}
+.dash-icon.revenue {
+  color: #e91e63;
+}
+
+.dash-card h4 {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.dash-card h2 {
+  font-size: 26px;
+  color: #051922;
+  margin-bottom: 8px;
+}
+
+.dash-card p {
+  font-size: 14px;
+  color: gray;
+}
+
+/* ✅ Quick Actions */
+.quick-actions h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.quick-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.qa-btn {
+  background: #f28123;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.qa-btn:hover {
+  background: #d96c0f;
+  transform: scale(1.05);
+}
+
+/* ✅ Recent Orders Table */
+.manage-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.manage-table thead {
+  background: #f28123;
+  color: #fff;
+}
+
+.manage-table th,
+.manage-table td {
+  padding: 14px;
+  font-size: 15px;
+}
+
+.manage-table tbody tr:hover {
+  background: #fff8f0;
+}
+
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.status.active {
+  background: #e8f7e2;
+  color: #3a9b27;
+}
+.status.pending {
+  background: #fff4e0;
+  color: #e68a00;
+}
+.status.cancelled {
+  background: #fde8e8;
+  color: #d43f3a;
+}
+
+/* ✅ Feedback Section */
+.feedback-section h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feedback-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.feedback-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-style: italic;
+  transition: 0.3s;
+}
+
+.feedback-card:hover {
+  transform: scale(1.03);
+}
+
+.feedback-card span {
+  display: block;
+  margin-top: 10px;
+  text-align: right;
+  font-weight: 600;
+  color: #f28123;
+}
+
+/* ✅ Animation */
+.fade-in-top {
+  animation: fadeInTop 0.8s ease-in-out;
+}
+
+@keyframes fadeInTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+/* Admin Dashboard End */
+/* Admin Footer Start */
+.admin-footer {
+  background-color: #051922; /* Dark Blue like theme */
+  padding: 20px 0;
+  color: #fff;
+  border-top: 1px solid #232a35;
+}
+
+.container p,
+strong {
+  margin: 0;
+  padding: 15px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.admin-footer-links a {
+  color: #f28123; /* Theme Orange */
+  text-decoration: none;
+  margin: 0 8px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.admin-footer-links a:hover {
+  color: #f59d53; /* Lighter Orange on hover */
+}
+/* Admin Footer End */
+
+/* Add Category Start */
+/* ✅ Form Panel */
+.section-title {
+  text-align: center; /* ✅ Applies to h3 + p */
+}
+
+.section-title p {
+  display: block;
+  margin: 10px auto 0;
+  color: #666; /* ✅ Softer color for paragraph */
+}
+
+.category-form-panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.form-heading {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  border-bottom: 2px solid #f28123;
+  padding-bottom: 10px;
+}
+
+/* ✅ Inputs */
+
+.image-upload-box {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #fdfdfd;
+  transition: 0.3s;
+}
+
+.image-upload-box:hover {
+  border-color: #f28123;
+  background: #fffaf4;
+}
+/* ✅ Right Preview Card */
+.preview-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.preview-title {
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.preview-placeholder {
+  padding: 50px 20px;
+  border: 2px dashed #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.preview-placeholder p {
+  margin-top: 10px;
+  color: #888;
+  font-size: 14px;
+}
+
+.preview-body img {
+  max-height: 220px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.preview-info {
+  font-size: 14px;
+  color: #666;
+}
+
+/* ✅ Button */
+.boxed-btn {
+  background: #f28123;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.boxed-btn:hover {
+  background: #d96b15;
+}
+
+/* Add Category End */
+
+/* Manage Categories Start */
+/* ✅ Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+.fade-in-top {
+  animation: fadeInTop 0.8s ease-in-out;
+}
+.slide-up {
+  animation: slideUp 0.8s ease-in-out;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeInTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Breadcrumb */
+.breadcrumb-text p {
+  color: #f28123;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.breadcrumb-text h1 {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+/* ✅ Page Title */
+.manage-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #051922;
+}
+
+/* ✅ Table Styling */
+.category-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.category-table thead {
+  background: #f28123;
+  color: #fff;
+}
+.category-table thead th {
+  padding: 14px;
+  font-weight: 600;
+}
+.category-table tbody tr {
+  transition: background 0.3s ease-in-out;
+}
+.category-table tbody tr:hover {
+  background: rgba(242, 129, 35, 0.05);
+}
+.category-table tbody td {
+  padding: 14px;
+  vertical-align: middle;
+  color: #333;
+}
+
+/* ✅ Category Image */
+.cat-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px dotted #eee;
+  transition: transform 0.3s ease;
+}
+.cat-img:hover {
+  transform: scale(1.1);
+}
+
+/* ✅ Action Buttons */
+.btn-edit,
+.btn-delete {
+  background: #f28123;
+  border: none;
+  font-size: 18px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition:
+    color 0.3s ease-in-out,
+    transform 0.2s ease;
+}
+
+.btn-edit:hover {
+  color: greenyellow;
+  transform: scale(1.1);
+}
+
+.btn-delete:hover {
+  color: red;
+  transform: scale(1.1);
+}
+
+/* ✅ Add New Button */
+.boxed-btn {
+  background: #f28123;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  border: none;
+}
+.boxed-btn:hover {
+  background: #051922;
+  color: #f28123;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .manage-title {
+    font-size: 20px;
+  }
+  .category-table thead {
+    display: none;
+  }
+  .category-table tbody tr {
+    display: block;
+    margin-bottom: 15px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+  }
+  .category-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+  }
+  .category-table tbody td:last-child {
+    border-bottom: none;
+  }
+}
+/* ✅ Search Bar */
+
+/* ✅ Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.pagination-btn {
+  background: #f28123;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.pagination-btn:hover {
+  background: #051922;
+  color: #f28123;
+}
+
+.pagination-btn.active {
+  background: #051922;
+  color: #f28123;
+  font-weight: bold;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ✅ Highlighted Search Match */
+mark {
+  background: #fdd835;
+  color: #000;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.modal-title {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+.modal-body label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.modal-body input,
+.modal-body textarea,
+.modal-body select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.btn-cancel {
+  background: #777;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-save {
+  background: #f28123;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Manage Categories End */
+
+/* Add Product Start */
+/* ✅ Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+.fade-in-top {
+  animation: fadeInTop 0.8s ease-in-out;
+}
+.slide-up {
+  animation: slideUp 0.8s ease-in-out;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeInTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Breadcrumb Text */
+.breadcrumb-text p {
+  color: #f28123;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.breadcrumb-text h1 {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+/* ✅ Section Title */
+.section-title h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #051922;
+}
+.section-title p {
+  color: #666;
+  font-size: 15px;
+}
+
+/* ✅ Form Box */
+.product-form-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+}
+.product-form-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Form Inputs */
+.theme-input {
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease-in-out;
+}
+.theme-input:focus {
+  border-color: #f28123;
+  box-shadow: 0 0 8px rgba(242, 129, 35, 0.3);
+  outline: none;
+}
+
+/* ✅ Image Preview */
+.img-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #eee;
+  transition: transform 0.3s ease;
+}
+.img-preview:hover {
+  transform: scale(1.05);
+}
+
+/* ✅ Save Button */
+.boxed-btn {
+  background: #f28123;
+  color: #fff;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 50px;
+  border: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-align: center;
+}
+.boxed-btn:hover {
+  background: #051922;
+  color: #f28123;
+}
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .breadcrumb-text h1 {
+    font-size: 28px;
+  }
+  .product-form-box {
+    padding: 20px;
+  }
+}
+/* Reuse Existing Add Category Styles */
+.section-title {
+  text-align: center;
+}
+.section-title p {
+  display: block;
+  margin: 10px auto 0;
+  color: #666;
+}
+.category-form-panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+.form-heading {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  border-bottom: 2px solid #f28123;
+  padding-bottom: 10px;
+}
+.elegant-input {
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+.elegant-input:focus {
+  border-color: #f28123;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(242, 129, 35, 0.2);
+}
+.image-upload-box {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #fdfdfd;
+  transition: 0.3s;
+}
+.image-upload-box:hover {
+  border-color: #f28123;
+  background: #fffaf4;
+}
+.preview-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+.preview-title {
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+.preview-placeholder {
+  padding: 50px 20px;
+  border: 2px dashed #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+}
+.preview-placeholder p {
+  margin-top: 10px;
+  color: #888;
+  font-size: 14px;
+}
+.preview-info {
+  font-size: 14px;
+  color: #666;
+}
+.boxed-btn {
+  background: #f28123;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: 0.3s;
+  display: inline-block;
+}
+.boxed-btn:hover {
+  background: #d96b15;
+}
+
+/* Add Product End */
+
+/* Manage Product Start */
+/* ✅ Manage Products Table */
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  background: #fff;
+}
+
+.admin-table thead {
+  background: #f28123;
+  color: #fff;
+  text-align: center;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: center;
+  padding: 12px;
+  font-size: 15px;
+  vertical-align: middle;
+}
+
+.admin-table tbody tr {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: 0.3s ease;
+}
+
+.admin-table tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ Product Image */
+.admin-table img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+/* ✅ Status Badge */
+.badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.bg-success {
+  background: #28a745;
+  color: #fff;
+}
+
+.bg-secondary {
+  background: #6c757d;
+  color: #fff;
+}
+
+/* ✅ Action Buttons */
+.btn-edit,
+.btn-delete {
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.btn-edit {
+  background: #007bff;
+}
+
+.btn-edit:hover {
+  background: #0056b3;
+}
+
+.btn-delete {
+  background: #e53935;
+}
+
+.btn-delete:hover {
+  background: #c62828;
+}
+
+/* ✅ Search Bar */
+.search-bar-box input {
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  font-size: 15px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+.search-bar-box input:focus {
+  border-color: #f28123;
+  box-shadow: 0px 0px 10px rgba(242, 129, 35, 0.3);
+  outline: none;
+}
+
+/* ✅ Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ✅ Modal Content */
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 95%;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.modal-content h4 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 100px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.modal-textarea {
+  width: 100%;
+  min-height: 80px; /* keeps it neat */
+  max-height: 200px; /* avoid too large */
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical; /* user can expand only vertically */
+  outline: none;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.modal-actions button:first-child {
+  background: #28a745;
+  color: #fff;
+}
+
+.modal-actions button:first-child:hover {
+  background: #218838;
+}
+
+.modal-actions button:last-child {
+  background: #6c757d;
+  color: #fff;
+}
+
+.modal-actions button:last-child:hover {
+  background: #5a6268;
+}
+
+/* ✅ Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .search-bar-box {
+    justify-content: center;
+  }
+
+  .search-bar-box input {
+    width: 100%;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+}
+/* ✅ Disabled Row Style */
+.disabled-row {
+  opacity: 0.5;
+  pointer-events: none; /* disables all buttons */
+}
+
+/* ✅ But keep badge clickable */
+.disabled-row td:nth-child(7) {
+  pointer-events: auto;
+}
+
+/* ✅ Modal Labels */
+.modal-label {
+  display: block;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+
+/* ✅ Keep normal table hover for active rows only */
+.admin-table tbody tr:hover:not(.disabled-row) {
+  background: #f8f9fa;
+  cursor: pointer;
+}
+.filter-btn-icon {
+  background: #f28123;
+  border: none;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 0px 8px 8px 0px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.filter-btn-icon:hover {
+  background: #000;
+}
+
+.filter-panel {
+  background: #fff;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.filter-row label {
+  min-width: 80px;
+  font-weight: 600;
+}
+/* ✅ Make table scrollable */
+.table-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 10px;
+}
+.wide-table th,
+.wide-table td {
+  white-space: nowrap;
+}
+.wide-table td {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* ✅ Keeps one line */
+}
+
+/* ✅ Modal Styling */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+.modal-label {
+  font-weight: 600;
+  margin-top: 10px;
+  display: block;
+}
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+.modal-actions button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.modal-actions button:first-child {
+  background: #28a745;
+  color: #fff;
+}
+.modal-actions button:last-child {
+  background: #dc3545;
+  color: #fff;
+}
+
+/* ✅ Disabled Row Styling */
+.disabled-row {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.disabled-row td:nth-child(8) {
+  pointer-events: auto !important; /* Enable only Status column */
+}
+
+/* Manage Product End */
+
+/* Manage Contact Start */
+/* ✅ Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+.fade-in-top {
+  animation: fadeInTop 0.8s ease-in-out;
+}
+.slide-up {
+  animation: slideUp 0.8s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Breadcrumb */
+.breadcrumb-text p {
+  color: #f28123;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+.breadcrumb-text h1 {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+/* ✅ Section Title */
+.section-title h3 {
+  font-size: 28px;
+  font-weight: 700;
+}
+.section-title p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* ✅ Search Bar */
+.search-bar-box input {
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  font-size: 15px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+.search-bar-box input:focus {
+  border-color: #f28123;
+  box-shadow: 0px 0px 10px rgba(242, 129, 35, 0.3);
+  outline: none;
+}
+
+/* ✅ Table Box */
+.category-table-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+.category-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+.category-table thead {
+  background: #f28123;
+  color: #fff;
+}
+.category-table th,
+.category-table td {
+  text-align: center;
+  padding: 15px;
+  font-size: 15px;
+  vertical-align: middle;
+}
+.category-table tbody tr {
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: 0.3s ease;
+}
+.category-table tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ Message Column */
+.message-cell {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ✅ Buttons */
+.btn-edit,
+.btn-delete,
+.btn-action {
+  border: none;
+  color: #fff;
+  padding: 8px 15px;
+  margin: 5px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+/* ✅ Status Badge */
+.badge {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.bg-danger {
+  background: #ff4d4d;
+  color: #fff;
+}
+.bg-success {
+  background: #28a745;
+  color: #fff;
+}
+
+/* ✅ Pagination */
+.pagination-box {
+  gap: 8px;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .breadcrumb-text h1 {
+    font-size: 28px;
+  }
+  .category-table thead {
+    display: none;
+  }
+  .category-table tbody tr {
+    display: block;
+    margin-bottom: 15px;
+  }
+  .category-table tbody td {
+    display: block;
+    text-align: left;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+  }
+  .category-table tbody td:last-child {
+    border-bottom: none;
+  }
+}
+/* ✅ Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ✅ Modal Box */
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  width: 450px;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.4s ease-in-out;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f28123;
+  padding-bottom: 10px;
+}
+
+.modal-message {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 15px 0;
+  color: #444;
+}
+
+.modal-actions {
+  text-align: right;
+}
+
+/* Manage Contact End */
+
+/* Manage Customer Start */
+/* ✅ Animations */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+.slide-up {
+  animation: slideUp 0.6s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Container */
+.manage-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 40px auto;
+  max-width: 98%;
+}
+
+/* ✅ Title */
+.section-title h2 {
+  font-size: 26px;
+  font-weight: 700;
+}
+.section-title p {
+  font-size: 15px;
+  color: #777;
+}
+
+/* ✅ Admin Table (same design as Manage Contact/Orders) */
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+.admin-table thead {
+  background: #f28123;
+  color: #fff;
+}
+.admin-table th,
+.admin-table td {
+  text-align: center;
+  padding: 14px;
+  font-size: 15px;
+  vertical-align: middle;
+}
+.admin-table tbody tr {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: 0.3s ease;
+}
+.admin-table tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ Status Badge */
+.badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.bg-success {
+  background: #28a745;
+  color: #fff;
+}
+.bg-danger {
+  background: #e53935;
+  color: #fff;
+}
+
+/* ✅ Action Buttons */
+
+/* Block Button */
+.btn-blocked {
+  background: #ff9800;
+  color: #fff;
+}
+.btn-blocked:hover {
+  background: #e68a00;
+}
+
+/* Unblock Button */
+.btn-unblocked {
+  background: #4caf50;
+  color: #fff;
+}
+.btn-unblocked:hover {
+  background: #3d8b40;
+}
+/* ✅ Blocked Row Effect */
+.disabled-customer-row td:not(:last-child) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.disabled-customer-row td:last-child {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .admin-table thead {
+    display: none;
+  }
+  .admin-table tr {
+    display: block;
+    margin-bottom: 12px;
+  }
+  .admin-table td {
+    display: block;
+    text-align: left;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+  }
+  .admin-table td:last-child {
+    border-bottom: none;
+  }
+}
+/* Manage Customer End */
+/* Manage Orders Start  */
+/* ✅ Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+.fade-in-top {
+  animation: fadeInTop 0.8s ease-in-out;
+}
+.slide-up {
+  animation: slideUp 0.8s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Breadcrumb */
+.breadcrumb-text {
+  padding-top: 150px;
+  padding-bottom: 150px;
+}
+.breadcrumb-text p {
+  color: #f28123;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+.breadcrumb-text h1 {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+/* ✅ Section Title */
+.section-title h3 {
+  font-size: 28px;
+  font-weight: 700;
+}
+.section-title p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* ✅ Search Bar */
+.search-bar {
+  padding: 12px 15px;
+  border-radius: 50px;
+  border: 2px solid #eee;
+  text-align: center;
+  transition: 0.3s ease;
+}
+.search-bar:focus {
+  border-color: #f28123;
+  box-shadow: 0 0 8px rgba(242, 129, 35, 0.3);
+  outline: none;
+}
+
+/* ✅ Table Box */
+.category-table-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+.category-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+.category-table thead {
+  background: #f28123;
+  color: #fff;
+}
+.category-table th,
+.category-table td {
+  text-align: center;
+  padding: 15px;
+  font-size: 15px;
+  vertical-align: middle;
+}
+.category-table tbody tr {
+  background: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: 0.3s ease;
+}
+.category-table tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 20px;
+}
+.status-badge.active {
+  background: #2ecc71;
+  color: #fff;
+}
+.status-badge.pending {
+  background: #f39c12;
+  color: #fff;
+}
+.status-badge.cancelled {
+  background: #e74c3c;
+  color: #fff;
+}
+
+/* ✅ Buttons */
+.btn-edit,
+.btn-delete,
+.btn-success {
+  border: none;
+  padding: 8px 15px;
+  margin: 5px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.btn-edit {
+  background: #3498db;
+  color: #fff;
+}
+.btn-edit:hover {
+  background: #2980b9;
+}
+.btn-success {
+  background: #2ecc71;
+  color: #fff;
+}
+.btn-success:hover {
+  background: #27ae60;
+}
+.btn-delete {
+  background: #e74c3c;
+  color: #fff;
+}
+.btn-delete:hover {
+  background: #c0392b;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .breadcrumb-text h1 {
+    font-size: 28px;
+  }
+  .category-table thead {
+    display: none;
+  }
+  .category-table tbody tr {
+    display: block;
+    margin-bottom: 15px;
+  }
+  .category-table tbody td {
+    display: block;
+    text-align: left;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+  }
+  .category-table tbody td:last-child {
+    border-bottom: none;
+  }
+}
+
+/* Manage Orders End */
+
+/* Manage Feedback Start */
+
+/* ✅ Reuse Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+.fade-in-top {
+  animation: fadeInTop 0.8s ease-in-out;
+}
+.slide-up {
+  animation: slideUp 0.8s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Breadcrumb */
+.breadcrumb-text p {
+  color: #f28123;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+.breadcrumb-text h1 {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+/* ✅ Table & Rating */
+.category-table tbody td {
+  vertical-align: middle;
+}
+.message-cell {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.text-muted {
+  color: #888;
+  font-size: 12px;
+}
+
+/* ✅ Badge Status */
+.badge {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+.bg-danger {
+  background: #ff4d4d;
+  color: #fff;
+}
+.bg-success {
+  background: #28a745;
+  color: #fff;
+}
+
+/* ✅ Pagination */
+
+.page-btn {
+  background: #f28123;
+  border: 1px solid #ddd;
+  color: white;
+  padding: 8px 14px;
+  margin: 0 5px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+.page-btn:hover {
+  background: black;
+  color: #f28123;
+}
+.page-btn.active {
+  background: black;
+  color: #fff;
+}
+
+/* ✅ Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  width: 450px;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.4s ease-in-out;
+}
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f28123;
+  padding-bottom: 10px;
+}
+.modal-message {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 15px 0;
+  color: #444;
+}
+.modal-actions {
+  text-align: right;
+}
+
+/* Manage Feedback End */
+
+/* Add Employee Start */
+/* ✅ Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+.fade-in-top {
+  animation: fadeInTop 0.8s ease-in-out;
+}
+.slide-up {
+  animation: slideUp 0.8s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Breadcrumb */
+.breadcrumb-text p {
+  color: #f28123;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+.breadcrumb-text h1 {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 800;
+}
+
+/* ✅ Section Title */
+.section-title h3 {
+  font-size: 28px;
+  font-weight: 700;
+}
+.section-title p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* ✅ Form Box */
+.employee-form-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  transition: 0.3s ease;
+}
+.employee-form-box:hover {
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ✅ Input Fields */
+.theme-input {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1.5px solid #ddd;
+  transition: 0.3s ease;
+  width: 100%;
+}
+.theme-input:focus {
+  border-color: #f28123;
+  box-shadow: 0 0 8px rgba(242, 129, 35, 0.3);
+  outline: none;
+}
+
+/* ✅ Image Preview */
+.img-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+.img-preview:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Save Button */
+.boxed-btn {
+  background: #f28123;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 50px;
+  border: none;
+  transition: 0.3s ease-in-out;
+  font-weight: 600;
+}
+.boxed-btn:hover {
+  background: #051922;
+  color: #f28123;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .breadcrumb-text h1 {
+    font-size: 28px;
+  }
+}
+
+/* Add Employee End */
+
+/* Manage Employee Start */
+/* ✅ Table Styling */
+.theme-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.theme-table thead {
+  background: #f28123;
+  color: #fff;
+}
+
+.theme-table th,
+.theme-table td {
+  padding: 14px 18px;
+  text-align: center;
+  font-size: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.theme-table tbody tr:hover {
+  background: #fff7f0;
+  transition: 0.3s ease-in-out;
+}
+
+/* ✅ Action Buttons */
+.edit-btn,
+.delete-btn {
+  border: none;
+  padding: 8px 12px;
+  margin: 3px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-btn {
+  background: #ffc107;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  background: #e0a800;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: #fff;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
+
+/* ✅ Table Animation */
+.slide-up {
+  animation: slideUp 0.6s ease-in-out;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Manage Employee End */
+
+/* Add Coupon Start */
+/* ✅ Form Box Styling */
+.category-form-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease-in-out;
+}
+.category-form-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* ✅ Input Fields */
+.theme-input {
+  border: 2px solid #f3f3f3;
+  padding: 12px 15px;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+.theme-input:focus {
+  border-color: #f28123;
+  box-shadow: 0 0 8px rgba(242, 129, 35, 0.2);
+  outline: none;
+}
+
+/* ✅ Save Button Hover */
+.hover-scale {
+  transition: all 0.3s ease-in-out;
+}
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* ✅ Smooth Slide Animation */
+.slide-up {
+  animation: slideUp 0.6s ease-in-out;
+}
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Add Coupon End */
+
+/* Manage Coupon Start */
+/* ✅ Table Styling */
+.manage-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.manage-table thead {
+  background: #f28123;
+  color: #fff;
+}
+
+.manage-table thead th {
+  padding: 15px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.manage-table tbody tr {
+  transition: 0.3s;
+}
+
+.manage-table tbody tr:hover {
+  background: #fff8f0;
+  transform: scale(1.01);
+}
+
+.manage-table tbody td {
+  padding: 14px;
+  font-size: 15px;
+  color: #333;
+  vertical-align: middle;
+}
+
+/* ✅ Status Badges */
+.status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.status.active {
+  background: #e8f7e2;
+  color: #3a9b27;
+}
+
+.status.expired {
+  background: #fde8e8;
+  color: #d43f3a;
+}
+
+/* ✅ Buttons */
+.btn-edit,
+.btn-delete {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-edit {
+  background: #f6b26b;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background: #e69138;
+}
+
+.btn-delete {
+  background: #f46a6a;
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background: #d63f3f;
+}
+
+/* ✅ Animation */
+.slide-up {
+  animation: slideUp 0.6s ease-in-out;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Manage Coupon Ena */

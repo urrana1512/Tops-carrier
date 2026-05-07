@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Directory | Task 05</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-decoration"></div>
+    
+    <main class="container">
+        <header>
+            <div class="chip">Public API Integration</div>
+            <h1>Global User Directory</h1>
+            <p>Real-time data fetched from JSONPlaceholder using Axios.</p>
+        </header>
+
+        <div id="userGrid" class="user-grid">
+            <!-- Loading State -->
+            <div class="loader">Fetching users...</div>
+        </div>
+
+        <footer class="footer">
+            Data provided by JSONPlaceholder API
+        </footer>
+    </main>
+
+    <script>
+        async function fetchUsers() {
+            const userGrid = document.getElementById('userGrid');
+            try {
+                const response = await fetch('/api/users');
+                const users = await response.json();
+                
+                userGrid.innerHTML = ''; // Clear loader
+
+                users.forEach(user => {
+                    const card = document.createElement('div');
+                    card.className = 'user-card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="avatar">${user.name.charAt(0)}</div>
+                            <div class="info">
+                                <h3>${user.name}</h3>
+                                <span>@${user.username}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Email:</strong> ${user.email}</p>
+                            <p><strong>Company:</strong> ${user.company.name}</p>
+                            <p><strong>City:</strong> ${user.address.city}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="http://${user.website}" target="_blank">Visit Website</a>
+                        </div>
+                    `;
+                    userGrid.appendChild(card);
+                });
+            } catch (err) {
+                userGrid.innerHTML = '<div class="error">Failed to load users. Please try again.</div>';
+            }
+        }
+
+        fetchUsers();
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!-- Task: Create a simple HTML webpage that includes:
+-> A header (<header>), footer (<footer>), main section (<main>), and aside section(<aside>).
+-> A paragraph with some basic text.
+-> A list (both ordered and unordered).
+-> A link that opens in a new tab. -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webpage</title>
+    <style>
+      .mian {
+        width: 100%;
+      }
+      .header {
+        width: 100%;
+        height: 100px;
+        font-size: 35px;
+        text-align: center;
+        background-color: magenta;
+      }
+      .sidebar {
+        width: 20%;
+        height: 500px;
+        text-align: center;
+        background-color: blueviolet;
+        float: left;
+      }
+      .content {
+        width: 80%;
+        height: 500px;
+        background-color: burlywood;
+        text-align: center;
+        float: left;
+      }
+      .list1 {
+        width: 50%;
+        background-color: brown;
+        color: white;
+        float: left;
+        /* border: 2px solid black; */
+      }
+      .list2 {
+        width: 50%;
+        background-color: mediumspringgreen;
+        color: black;
+        float: left;
+        /* border: 2px solid black; */
+      }
+      .link {
+        a {
+          font-size: 24px;
+        }
+      }
+      .footer {
+        width: 100%;
+        height: 200px;
+        color: white;
+        float: left;
+        text-align: center;
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <header>Header</header>
+      </div>
+
+      <div class="sidebar">
+        <h2>Sidebar</h2>
+      </div>
+
+      <div class="content">
+        <header><h1>Main content</h1></header>
+
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita
+          fuga cumque animi totam, at hic quod aspernatur optio sunt eius libero
+          vero in ex temporibus vitae aliquam consequuntur perspiciatis facere!
+        </p>
+        <hr />
+        <main>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia
+          blanditiis sit a perferendis atque. Omnis illo rerum consectetur
+          repudiandae non. Lorem ipsum dolor sit amet consectetur adipisicing
+          elit. Velit, non?
+        </main>
+
+        <div class="list1">
+          <h2>Ordered List</h2>
+          <ol type="1">
+            <li>Apple</li>
+            <li>Orange</li>
+            <li>Banana</li>
+            <li>Grapes</li>
+          </ol>
+        </div>
+        <div class="list2">
+          <h2>Unordered List</h2>
+          <ul type="square">
+            <li>Apple</li>
+            <li>Orange</li>
+            <li>Banana</li>
+            <li>Grapes</li>
+          </ul>
+        </div>
+
+        <div class="link">
+          <h1>Link in New Tab</h1>
+          <a href="Theory.txt" target="_blank">Click Here for assignment</a>
+        </div>
+        <aside>This is Aside Tag</aside>
+      </div>
+
+      <div class="footer">
+        <footer><h1>Footer</h1></footer>
+      </div>
+    </div>
+  </body>
+</html>

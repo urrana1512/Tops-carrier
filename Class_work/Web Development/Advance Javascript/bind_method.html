@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let user1={
+            Name:"Mahesh",
+            age:25
+        };
+        let user2={
+            Name:"Akash",
+            age:30
+        };
+        let printdetails=function()
+        {
+            document.write(this.Name+" "+this.age);
+        }
+        let result=printdetails.bind(user1);
+        result();
+    </script>
+</body>
+</html>

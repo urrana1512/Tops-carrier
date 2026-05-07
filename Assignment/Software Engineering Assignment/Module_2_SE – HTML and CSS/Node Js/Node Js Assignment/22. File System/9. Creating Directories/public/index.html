@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory Architect | Task 22.9</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="blueprint-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.MKDIR</div>
+            <h1>Structural Architect</h1>
+            <p>Initializing new namespaces in the local storage registry</p>
+        </header>
+
+        <section class="architect-card glass">
+            <div class="blueprint-view" id="blueprintView">
+                <div class="root-node">
+                    <i class="ph-fill ph-folder-open"></i>
+                    <span>./9. Creating Directories/</span>
+                </div>
+                <div class="connector hidden" id="connector"></div>
+                <div class="target-node hidden" id="targetNode">
+                    <i class="ph-fill ph-folder-simple-plus"></i>
+                    <span>newDirectory/</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="constructBtn" class="btn-main">
+                    <i class="ph-bold ph-hammer"></i>
+                    <span>Execute Construction</span>
+                </button>
+                <button id="cleanupBtn" class="btn-sub">
+                    <i class="ph ph-trash"></i>
+                    <span>Clear Registry</span>
+                </button>
+            </div>
+
+            <div id="statusMsg" class="status-box hidden">
+                <i class="ph-fill ph-check-circle"></i>
+                <span>Structure successfully initialized!</span>
+            </div>
+        </section>
+
+        <footer>
+            <p>Check the <strong>System Console</strong> for success confirmation.</p>
+        </footer>
+    </main>
+
+    <script>
+        const constructBtn = document.getElementById('constructBtn');
+        const cleanupBtn = document.getElementById('cleanupBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const connector = document.getElementById('connector');
+        const targetNode = document.getElementById('targetNode');
+
+        constructBtn.onclick = async () => {
+            constructBtn.disabled = true;
+            try {
+                const response = await fetch('/api/create-directory', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    connector.classList.remove('hidden');
+                    targetNode.classList.remove('hidden');
+                    statusMsg.classList.remove('hidden');
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert("Construction failure. Registry locked.");
+            } finally {
+                constructBtn.disabled = false;
+            }
+        };
+
+        cleanupBtn.onclick = async () => {
+            await fetch('/api/cleanup', { method: 'POST' });
+            connector.classList.add('hidden');
+            targetNode.classList.add('hidden');
+            statusMsg.classList.add('hidden');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Nexus | Task 23</title>
+    <style>
+        :root {
+            --bg: #000;
+            --accent: #fff;
+            --sub: #666;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--accent);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
+            z-index: -1;
+        }
+        .content { text-align: center; }
+        .badge {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--sub);
+            margin-bottom: 1rem;
+            animation: fadeIn 2s ease;
+        }
+        h1 {
+            font-size: 8rem;
+            font-weight: 900;
+            letter-spacing: -5px;
+            line-height: 1;
+            margin-bottom: 2rem;
+            background: linear-gradient(180deg, #fff 0%, #333 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: reveal 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--sub);
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff00;
+            animation: pulse 2s infinite;
+        }
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(100px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas"></div>
+    <div class="content">
+        <div class="badge">Native HTTP Server Established</div>
+        <h1>Hello World</h1>
+        <div class="status">
+            <div class="dot"></div>
+            <span>Core Engine: Operational</span>
+        </div>
+    </div>
+</body>
+</html>

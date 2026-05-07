@@ -1,0 +1,37 @@
+Question 1: What are HTML forms used for? Describe the purpose of the input, textarea,
+            select, and button elements.
+Ans 1 : -> HTML forms are used to collect user input and send it to a server for processing.
+        -> input : It is used to get input data from the form in various types such as text, password, 
+                   email, etc by changing its type.
+        -> textarea : It is used to get input long text content.
+        -> select : It is used to create a drop-down list.
+        -> button : It is defines a clickable button.
+
+Question 2: Explain the difference between the GET and POST methods in form submission.
+            When should each be used?
+Ans 2 : -> GET Method : 
+                - GET is used for retrieving data like searching, filtering, or paging.
+                - Values are contained in the URL
+                - Has a length limitation of 255 characters.
+        -> POST Method : 
+                - POST is used for submitting forms, modifying data, or creating new resources.
+                - Values are not contained in the URL
+                - Does not have length limitation.
+        -> Use GET for retrieving data without side effects, 
+           while use POST for sending data that will result in a change on the server. 
+           Prefer the POST method over GET for sensitive data. 
+           GET has limitations on data size, while POST can handle large amounts of data, 
+           making it suitable for forms and file uploads.
+
+Question 3: What is the purpose of the label element in a form, and how does it improve
+            accessibility?
+Ans 3 : -> Make forms accessible : 
+                The label element helps screen reader users understand what data should be entered into a form.  
+        -> Improve usability
+                The label element provides a larger clickable area for focusing the input, 
+                which is especially helpful on touch-screen devices.
+        -> Create a caption for a form control
+                The label element can be associated with a form control either implicitly or explicitly. 
+        -> The label element in HTML improves the accessibility of forms by associating text with form controls, 
+           such as checkboxes, radio buttons, and text inputs. 
+           This association helps users understand what data to enter and how to interact with the form. 

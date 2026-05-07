@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Governor | Task 37</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030405;
+            --accent: #f87171;
+            --safe: #4ade80;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top right, #1a1a1a 0%, #000 70%);
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(248, 113, 113, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3rem; letter-spacing: -2px; }
+
+        .governor-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+        }
+
+        .meter {
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .slot {
+            width: 40px; height: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .slot.active { background: var(--safe); box-shadow: 0 0 10px var(--safe); }
+        .slot.danger { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        .btn-request {
+            width: 100%;
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+        .btn-request:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1); }
+        .btn-request:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .console-output {
+            margin-top: 2rem;
+            background: #000;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            min-height: 80px;
+        }
+        .status-ok { color: var(--safe); }
+        .status-error { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">THROTTLING_ENGINE // RATE_LIMITER</div>
+            <h1>Traffic Governor</h1>
+        </header>
+
+        <section class="governor-card">
+            <p style="color: #64748b; margin-bottom: 1rem;">System Quota: 5 Requests / 60 Seconds</p>
+            
+            <div class="meter" id="quotaMeter">
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+            </div>
+
+            <button class="btn-request" id="reqBtn" onclick="fireRequest()">
+                <i class="ph-bold ph-lightning"></i>
+                DISPATCH REQUEST
+            </button>
+
+            <div class="console-output" id="consoleView">
+                // System monitoring active...
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const reqBtn = document.getElementById('reqBtn');
+        const consoleView = document.getElementById('consoleView');
+        const slots = document.querySelectorAll('.slot');
+        let requestCount = 0;
+
+        const fireRequest = async () => {
+            try {
+                const res = await fetch('/api/secure-data');
+                const data = await res.json();
+
+                if (res.status === 200) {
+                    requestCount++;
+                    updateMeter('safe');
+                    consoleView.innerHTML = `<span class="status-ok">> SUCCESS: ${data.data}</span><br>// Quota Remaining: ${data.remaining}`;
+                } else if (res.status === 429) {
+                    updateMeter('danger');
+                    consoleView.innerHTML = `<span class="status-error">> ERROR 429: ${data.message}</span><br>// Retry after: ${data.retryAfter}`;
+                }
+            } catch (e) {
+                consoleView.innerHTML = `<span class="status-error">> Link Severed.</span>`;
+            }
+        };
+
+        const updateMeter = (type) => {
+            if (type === 'danger') {
+                slots.forEach(s => s.classList.add('danger'));
+                return;
+            }
+            if (requestCount <= 5) {
+                slots[requestCount - 1].classList.add('active');
+            }
+        };
+
+        // Reset logic visual only (server handles real reset)
+        setInterval(() => {
+            requestCount = 0;
+            slots.forEach(s => s.classList.remove('active', 'danger'));
+            consoleView.innerHTML = `// Quota window reset initiated...`;
+        }, 60000);
+    </script>
+</body>
+</html>

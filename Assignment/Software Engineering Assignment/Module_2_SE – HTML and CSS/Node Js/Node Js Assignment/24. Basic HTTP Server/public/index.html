@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base Layer | Task 24</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Outfit:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --accent: #00ff88;
+            --sub: #444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container { text-align: center; }
+        .badge {
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--sub);
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 7rem;
+            font-weight: 700;
+            letter-spacing: -4px;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #fff 0%, var(--sub) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .port-info {
+            font-size: 0.9rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .dot {
+            width: 10px; height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--accent);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="badge">Low Level Node.js Listener</div>
+        <h1>Hello, World!</h1>
+        <div class="port-info">
+            <div class="dot"></div>
+            ACTIVE ON PORT 3000
+        </div>
+    </div>
+</body>
+</html>

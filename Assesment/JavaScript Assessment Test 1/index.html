@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Restaurant Booking Form</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+      }
+      label {
+        font-weight: bold;
+      }
+      .form-field {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Restaurant Booking Form</h2>
+    <div id="booking-form"></div>
+
+    <script>
+      function createInput(type, name, placeholder) {
+        let input = document.createElement("input");
+        input.type = type;
+        input.name = name;
+        input.placeholder = placeholder;
+        input.required = true;
+        return input;
+      }
+
+      function createLabel(text) {
+        let label = document.createElement("label");
+        label.textContent = text;
+        return label;
+      }
+
+      function createOption(value, text) {
+        let option = document.createElement("option");
+        option.value = value;
+        option.text = text;
+        return option;
+      }
+
+      function createSelect(name, optionsArray) {
+        let select = document.createElement("select");
+        select.name = name;
+        select.required = true;
+        optionsArray.forEach((opt) => {
+          select.appendChild(createOption(opt, opt));
+        });
+        return select;
+      }
+
+      function clearDynamicFields() {
+        let dynamic = document.getElementById("dynamic-fields");
+        if (dynamic) dynamic.remove();
+      }
+
+      // Main Form Generator
+      function createBookingForm() {
+        let form = document.createElement("form");
+
+        // Booking Choice
+        let bookingTypeDiv = document.createElement("div");
+        bookingTypeDiv.className = "form-field";
+        bookingTypeDiv.appendChild(createLabel("Choice Of Booking: "));
+        let bookingChoice = createSelect("booking-type", [
+          "Full day booking",
+          "Half day booking",
+          "Hourly booking",
+        ]);
+        bookingChoice.id = "booking-choice";
+        bookingTypeDiv.appendChild(bookingChoice);
+        form.appendChild(bookingTypeDiv);
+
+        // Common Fields
+        const fields = [
+          { type: "text", name: "username", placeholder: "Enter Name" },
+          { type: "tel", name: "mobile", placeholder: "Enter Mobile Number" },
+          { type: "email", name: "email", placeholder: "Enter Email" },
+          { type: "number", name: "person", placeholder: "No Of Persons" },
+        ];
+
+        fields.forEach((field) => {
+          let div = document.createElement("div");
+          div.className = "form-field";
+          div.appendChild(createLabel(field.placeholder + ": "));
+          div.appendChild(
+            createInput(field.type, field.name, field.placeholder)
+          );
+          form.appendChild(div);
+        });
+
+        // Dynamic Fields Area
+        let dynamicDiv = document.createElement("div");
+        dynamicDiv.id = "dynamic-fields";
+        form.appendChild(dynamicDiv);
+
+        // Trigger On Change
+        bookingChoice.addEventListener("change", function () {
+          clearDynamicFields();
+          let dynamic = document.createElement("div");
+          dynamic.id = "dynamic-fields";
+
+          let selected = bookingChoice.value;
+
+          if (selected === "Full day booking") {
+            // Date Only
+            let div = document.createElement("div");
+            div.className = "form-field";
+            div.appendChild(createLabel("Date: "));
+            div.appendChild(createInput("date", "date", ""));
+            dynamic.appendChild(div);
+          } else if (selected === "Half day booking") {
+            // Date + Slot
+            let dateDiv = document.createElement("div");
+            dateDiv.className = "form-field";
+            dateDiv.appendChild(createLabel("Date: "));
+            dateDiv.appendChild(createInput("date", "date", ""));
+            dynamic.appendChild(dateDiv);
+
+            let slotDiv = document.createElement("div");
+            slotDiv.className = "form-field";
+            slotDiv.appendChild(createLabel("Slot: "));
+            let slotSelect = createSelect("slot", [
+              "Breakfast",
+              "Lunch",
+              "Dinner",
+            ]);
+            slotDiv.appendChild(slotSelect);
+            dynamic.appendChild(slotDiv);
+          } else if (selected === "Hourly booking") {
+            // Date + Time
+            let dateDiv = document.createElement("div");
+            dateDiv.className = "form-field";
+            dateDiv.appendChild(createLabel("Date: "));
+            dateDiv.appendChild(createInput("date", "date", ""));
+            dynamic.appendChild(dateDiv);
+
+            let timeDiv = document.createElement("div");
+            timeDiv.className = "form-field";
+            timeDiv.appendChild(createLabel("Time: "));
+            timeDiv.appendChild(createInput("time", "time", ""));
+            dynamic.appendChild(timeDiv);
+          }
+
+          // Append Dynamic Fields
+          form.appendChild(dynamic);
+        });
+
+        // Submit Button
+        let submit = document.createElement("button");
+        submit.type = "submit";
+        submit.textContent = "Book Now";
+        form.appendChild(submit);
+
+        document.getElementById("booking-form").appendChild(form);
+      }
+
+      // Init
+      createBookingForm();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let obj1={
+            name:"Mahesh",
+            age:25,
+            getdetails:function()
+            {
+                document.writeln(this.name);
+            }
+        }
+        let obj2={
+            name:"Akash",
+            age:30,
+        }
+        let unbounded=obj1.getdetails;
+        let bounded=unbounded.bind(obj2);
+        bounded();
+    </script>
+</body>
+</html>

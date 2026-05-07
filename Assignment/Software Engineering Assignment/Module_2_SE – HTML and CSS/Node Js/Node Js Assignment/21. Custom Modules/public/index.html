@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modular Engine | Node.js Architecture</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="grid-layer"></div>
+
+    <main class="container">
+        <header>
+            <div class="header-icon"><i class="ph-fill ph-circles-three-plus"></i></div>
+            <h1>Modular Intelligence</h1>
+            <p>Orchestrating Custom Node.js Libraries</p>
+        </header>
+
+        <section class="modular-grid">
+            <!-- Module 1: Time Helper -->
+            <div class="module-card glass">
+                <div class="card-tag">LIB/TIMEHELPER.JS</div>
+                <div class="card-content">
+                    <i class="ph ph-clock"></i>
+                    <h2 id="greeting">Loading...</h2>
+                    <p>Temporal greeting engine logic applied.</p>
+                </div>
+            </div>
+
+            <!-- Module 2: Math Utils -->
+            <div class="module-card glass">
+                <div class="card-tag">LIB/MATHUTILS.JS</div>
+                <div class="card-content">
+                    <i class="ph ph-math-operations"></i>
+                    <h2 id="calculation">Loading...</h2>
+                    <p>Geometry calculation module verified.</p>
+                </div>
+            </div>
+
+            <!-- Module 3: Logger -->
+            <div class="module-card glass full">
+                <div class="card-tag">LIB/LOGGER.JS</div>
+                <div class="card-content">
+                    <i class="ph ph-list-checks"></i>
+                    <code id="logEntry">Initializing System Log Stream...</code>
+                    <p>Custom formatted log string successfully generated.</p>
+                </div>
+            </div>
+        </section>
+
+        <button id="refreshBtn" class="refresh-btn">
+            <i class="ph-bold ph-arrows-clockwise"></i>
+            <span>Refresh Modules</span>
+        </button>
+    </main>
+
+    <script>
+        async function fetchSystemStatus() {
+            try {
+                const response = await fetch('/api/system-status');
+                const data = await response.json();
+
+                document.getElementById('greeting').innerText = data.greeting;
+                document.getElementById('calculation').innerText = data.calculation;
+                document.getElementById('logEntry').innerText = data.log;
+            } catch (error) {
+                console.error("Module synchronization failed:", error);
+            }
+        }
+
+        document.getElementById('refreshBtn').onclick = fetchSystemStatus;
+        
+        // Initial Fetch
+        fetchSystemStatus();
+    </script>
+</body>
+</html>

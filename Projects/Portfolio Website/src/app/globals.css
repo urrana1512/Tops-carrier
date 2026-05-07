@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: 221.2 83.2% 53.3%;
+  --glass: rgba(255, 255, 255, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.6);
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --primary: 217.2 91.2% 59.8%;
+  --glass: rgba(0, 0, 0, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: hsl(var(--primary));
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    @apply transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply backdrop-blur-md border border-(--glass-border) bg-(--glass);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 font-bold;
+  }
+}
+
+canvas {
+  @apply touch-none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500/20 rounded-full hover:bg-gray-500/40 transition-colors;
+}

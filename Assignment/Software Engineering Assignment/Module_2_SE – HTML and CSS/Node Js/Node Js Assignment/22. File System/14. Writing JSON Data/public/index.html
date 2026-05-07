@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schema Architect | Task 22.14</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="circuit-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.WRITEFILE + JSON.STRINGIFY</div>
+            <h1>Schema Architect</h1>
+            <p>Serializing dynamic application state to structured persistent storage</p>
+        </header>
+
+        <section class="architect-card glass">
+            <div class="object-preview">
+                <div class="label">LIVE_OBJECT_STREAM</div>
+                <div id="objectDisplay" class="display-box">
+                    {
+                        "id": "USR-7721",
+                        "name": "Udit Rana",
+                        "status": "Verified",
+                        "technologies": ["Node.js", "Express", "MongoDB", "React"]
+                    }
+                </div>
+            </div>
+
+            <div class="connector">
+                <div class="stream-line"></div>
+                <i class="ph-bold ph-caret-circle-down"></i>
+            </div>
+
+            <div class="file-output">
+                <div class="label">SERIALIZED_OUTPUT</div>
+                <div id="fileDisplay" class="display-box empty">
+                    Waiting for serialization...
+                </div>
+            </div>
+
+            <button id="serializeBtn" class="btn-main">
+                <i class="ph-bold ph-floppy-disk"></i>
+                <span>Commit to output.json</span>
+            </button>
+        </section>
+
+        <footer>
+            <p>Success confirmation is mirrored to the <strong>System Console</strong>.</p>
+        </footer>
+    </main>
+
+    <script>
+        const serializeBtn = document.getElementById('serializeBtn');
+        const fileDisplay = document.getElementById('fileDisplay');
+
+        serializeBtn.onclick = async () => {
+            serializeBtn.disabled = true;
+            try {
+                const response = await fetch('/api/write-json', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    fileDisplay.classList.remove('empty');
+                    fileDisplay.innerText = JSON.stringify(result.data, null, 2);
+                    serializeBtn.innerHTML = '<i class="ph-bold ph-check"></i> <span>Schema Finalized</span>';
+                }
+            } catch (error) {
+                alert("Serialization failed. Stream parity error.");
+            } finally {
+                setTimeout(() => serializeBtn.disabled = false, 1500);
+            }
+        };
+    </script>
+</body>
+</html>

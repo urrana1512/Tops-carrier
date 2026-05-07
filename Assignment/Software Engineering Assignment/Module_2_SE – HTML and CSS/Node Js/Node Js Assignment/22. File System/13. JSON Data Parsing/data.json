@@ -1,0 +1,15 @@
+{
+  "system": "Node.js File Manager",
+  "version": "1.0.0",
+  "developer": {
+    "name": "Udit Rana",
+    "role": "MERN Stack Developer"
+  },
+  "modules": [
+    "fs.readFile",
+    "JSON.parse",
+    "Structured UI"
+  ],
+  "status": "ACTIVE_SURVEILLANCE"
+} 
+

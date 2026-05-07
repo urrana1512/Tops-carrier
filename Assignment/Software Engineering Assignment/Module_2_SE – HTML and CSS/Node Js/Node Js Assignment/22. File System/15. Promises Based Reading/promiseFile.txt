@@ -1,0 +1,6 @@
+[PROMISE_RESOLVED]
+Status: SUCCESS
+Logic: fs.promises.readFile
+Author: Udit Rana
+Message: This data was retrieved using modern asynchronous Promise-based architecture.
+--------------------------------------------------

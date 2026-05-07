@@ -1,0 +1,9 @@
+{
+  "files.associations": {
+    "TABLES.C": "cpp",
+    "ARRAY.C": "cpp",
+    "DO_WHILE.C": "cpp",
+    "FUNCTION.C": "cpp",
+    "MULTI_DIMENTIONAL_ARRAY.C": "cpp"
+  }
+}

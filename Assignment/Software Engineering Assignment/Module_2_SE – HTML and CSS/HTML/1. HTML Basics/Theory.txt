@@ -1,0 +1,61 @@
+Question 1 : Define HTML. What is the purpose of HTML in web development?
+Ans 1 : -> HTML is stands for HyperText Markup Language. HTML is a text-based language used to structure and define the content of a web page.
+        -> HTML file must have an .htm or .html file extension
+        -> Main purpose of HTML is tells web browsers how to display a web page's content, including text, images, and other media.
+        -> HTML is used to create well-designed and functional web pages. 
+
+Question 2 : Explain the basic structure of an HTML document. Identify the mandatory tags
+             and their purposes.
+Ans 2 : -> Basic structure of HTML
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Page Title</title>
+                </head>
+                <body>
+                    <h1>My First Heading</h1>
+                    <p>My first paragraph.</p>
+                </body>
+                </html>
+             1) DOCTYPE: The document type declaration, which indicates that the document is HTML5.
+             2) HTML: The root element that contains all other elements.
+             3) Head: Contains elements that describe the document, but are not visible on the page.
+             4) Title: Defines the page title that appears in the browser's title bar.
+             5) Body: Contains the content of the page.
+        
+        -> Here are some other HTML tags and their purposes:
+            1) Paragraph: Defines a paragraph on the page
+            2) Heading: Defines the heading of the page, with <h1> being the most important and <h6> being the least
+            3) Meta: Provides information like the character set or viewport settings
+            4) Link: Links external stylesheets or resources
+            5) Style: Embeds internal CSS styles
+            6) Script: Embeds JavaScript for functionality 
+
+Question 3: What is the difference between block-level elements and inline elements in
+            HTML? Provide examples of each.
+Ans 3 : 1) Block-level elements: 
+            -> Always start on a new line and take up the full width of their parent element.
+            -> Block-level elements also have top and bottom margins.
+            -> Examples : <div>, <nav>, <header>, <section>, <footer>, and <ul>. 
+        2) Inline elements: 
+            -> Do not start on a new line and only take up the space required by their content.            
+            -> Inline elements do not have top and bottom margins.
+            -> Examples : <span>, <input>, <label>, <select>, and <anchor>.
+
+Question 4: Discuss the role of semantic HTML. Why is it important for accessibility and SEO?
+            Provide examples of semantic elements.
+Ans 4 : -> Semantic HTML, also known as semantic markup, helps search engines, screen readers and other user devices understand the content of a web page.
+        -> Semantic HTML is important for accessibility and SEO because it helps to create well-structured, accessible, and SEO-friendly web pages.
+            Here Some benifits of using Semantic HTML :
+            1) Improved accessibility
+            2) Improved SEO
+            3) Improved Readability and Maintainability
+            4) Better Adaptability
+        -> Here are some examples of semantic elements in HTML:
+            1) <header>: Defines a header for a document or section, and can contain introductory content or navigational links 
+            2) <footer>: Defines a footer for a document or section, and can contain copyright information, contact details, or navigation links 
+            3) <main>: Specifies the main page content 
+            4) <summary>: Specifies a header for the <details> element 
+            5) <nav>: Defines blocks of navigation links, such as navigation menus, navigation bars, or tables of contents 
+            6) <aside>: Defines content aside from the main body of the content on the page, such as sidebars 
+            7) <figure>: Specifies self-contained content, such as illustrations, diagrams, photos, or code listings 

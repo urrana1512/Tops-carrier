@@ -1,0 +1,7 @@
+Step 1 : (In project Folder)
+    Command : npm run build
+
+Step 2 : Check "build" Folder is exist or not 
+        Command : serve -s build
+
+Step 3 : Copy all the content of "build" Folder and then paste in Hostinger/Netlifire server in File Manager

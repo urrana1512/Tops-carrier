@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Architect | Task 22.3</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="pattern-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.WRITEFILE</div>
+            <h1>Asynchronous Data Architect</h1>
+            <p>Committing digital assets to the storage layer</p>
+        </header>
+
+        <section class="writer-card glass">
+            <div class="input-header">
+                <i class="ph ph-note-pencil"></i>
+                <span>TARGET: output.txt</span>
+            </div>
+            
+            <textarea id="dataInput" placeholder="Enter the data you want to persist in the file system...">Hello, my name is Udit Rana. I am a MERN Stack Developer building high-performance Node.js systems.</textarea>
+            
+            <button id="writeBtn" class="write-btn">
+                <span>Commit to Disk</span>
+                <i class="ph-bold ph-hard-drive"></i>
+            </button>
+
+            <div id="statusMsg" class="status-banner hidden">
+                <i class="ph-fill ph-check-circle"></i>
+                <span>Data successfully written to output.txt</span>
+            </div>
+        </section>
+
+        <footer>
+            <p>Check the <strong>Terminal Console</strong> for the system verification log.</p>
+        </footer>
+    </main>
+
+    <script>
+        const writeBtn = document.getElementById('writeBtn');
+        const dataInput = document.getElementById('dataInput');
+        const statusMsg = document.getElementById('statusMsg');
+
+        writeBtn.onclick = async () => {
+            const content = dataInput.value;
+            writeBtn.disabled = true;
+            writeBtn.innerText = "Writing...";
+
+            try {
+                const response = await fetch('/api/write-file', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    statusMsg.classList.remove('hidden');
+                    setTimeout(() => statusMsg.classList.add('hidden'), 5000);
+                }
+            } catch (error) {
+                alert("Storage failure. System offline.");
+            } finally {
+                writeBtn.disabled = false;
+                writeBtn.innerHTML = '<span>Commit to Disk</span> <i class="ph-bold ph-hard-drive"></i>';
+            }
+        };
+    </script>
+</body>
+</html>

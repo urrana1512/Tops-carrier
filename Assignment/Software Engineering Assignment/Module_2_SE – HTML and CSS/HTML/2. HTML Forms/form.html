@@ -1,0 +1,61 @@
+<!-- Task: Create a contact form with the following fields:
+-> Full name (text input)
+-> Email (email input)
+-> Phone number (tel input)
+-> Subject (dropdown menu)
+-> Message (textarea)
+-> Submit button -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+    <style>
+      form {
+        padding: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <fieldset>
+        <legend align="center">Form</legend>
+        <form action="" method="post">
+          <!-- Full Name -->
+          <label for="name">Full Name : </label>
+          <input type="text" name="fullname" id="" required /><br /><br />
+
+          <!-- Email -->
+          <label for="email">Email : </label>
+          <input type="email" name="email" id="" required /><br /><br />
+
+          <!-- Phone Number -->
+          <label for="number">Phone Number : </label>
+          <input type="tel" name="number" id="" required /><br />
+          <br />
+
+          <!-- Dropdown Menu -->
+          <label for="menu">Select Subject : </label>
+          <select name="Subject" id="" required>
+            <option value="---Select Subject---">---Select Subject---</option>
+            <option value="Gujarati">Gujarati</option>
+            <option value="English">English</option>
+            <option value="Science">Science</option>
+            <option value="Maths">Maths</option></select
+          ><br /><br />
+
+          <!-- Messege -->
+          <label for="message">Message : </label>
+          <textarea name="message" id="" rows="5" cols="30" required></textarea
+          ><br />
+          <br />
+
+          <!-- Submit button -->
+          <input type="submit" name="submit" id="" />
+        </form>
+      </fieldset>
+    </div>
+  </body>
+</html>

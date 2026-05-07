@@ -1,0 +1,4 @@
+This file is about to undergo an identity transformation.
+Current Name: oldname.txt
+Target Name: newname.txt
+Task: 22.7 Renaming Files

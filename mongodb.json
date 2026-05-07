@@ -1,0 +1,80 @@
+[
+  {
+    "_id": 1,
+    "name": "Udit Rana",
+    "bio": "A passionate software developer with expertise in MongoDB and NodeJS.",
+    "age": 21,
+    "marks": 85,
+    "department": "IT",
+    "city": "Ahmedabad",
+    "isActive": true,
+    "skills": ["MongoDB", "NodeJS", "React"],
+    "salary": 25000,
+    "joiningYear": 2023
+  },
+  {
+    "_id": 2,
+    "name": "Riya Sharma",
+    "bio": "A skilled software developer with expertise in Python and Django.",
+    "age": 22,
+    "marks": 90,
+    "department": "CE",
+    "city": "Surat",
+    "isActive": false,
+    "skills": ["Python", "Django"],
+    "salary": 30000,
+    "joiningYear": 2022
+  },
+  {
+    "_id": 3,
+    "name": "Aman Verma",
+    "bio": "A talented software developer with expertise in Java and Spring.",
+    "age": 20,
+    "marks": 70,
+    "department": "IT",
+    "city": "Mumbai",
+    "isActive": true,
+    "skills": ["Java", "Spring"],
+    "salary": 20000,
+    "joiningYear": 2024
+  },
+  {
+    "_id": 4,
+    "name": "Neha Patel",
+    "bio": "A skilled software developer with expertise in AutoCAD and SolidWorks.",
+    "age": 23,
+    "marks": 95,
+    "department": "ME",
+    "city": "Ahmedabad",
+    "isActive": true,
+    "skills": ["AutoCAD", "SolidWorks"],
+    "salary": 28000,
+    "joiningYear": 2021
+  },
+  {
+    "_id": 5,
+    "name": "Karan Mehta",
+    "bio": "A passionate software developer with expertise in MongoDB and Express.",
+    "age": 21,
+    "marks": 60,
+    "department": "CE",
+    "city": "Pune",
+    "isActive": false,
+    "skills": ["MongoDB", "Express"],
+    "salary": 18000,
+    "joiningYear": 2023
+  },
+  {
+    "_id": 6,
+    "name": "Priya Singh",
+    "bio": "A talented software developer with expertise in React and Redux.",
+    "age": 24,
+    "marks": 88,
+    "department": "IT",
+    "city": "Delhi",
+    "isActive": true,
+    "skills": ["React", "NodeJS", "MongoDB"],
+    "salary": 32000,
+    "joiningYear": 2020
+  }
+]

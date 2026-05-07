@@ -1,0 +1,174 @@
+:root {
+    --bg: #f3f4f6;
+    --white: #ffffff;
+    --primary: #2563eb;
+    --text-dark: #111827;
+    --text-light: #6b7280;
+    --accent: #dbeafe;
+    --border: #e5e7eb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-dark);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.bg-decoration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.05), transparent),
+                radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.05), transparent);
+    z-index: -1;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.chip {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--accent);
+    color: var(--primary);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+.user-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.user-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.user-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.info span {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.card-body {
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+}
+
+.card-body p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+.card-body strong {
+    color: var(--text-dark);
+}
+
+.card-footer a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-block;
+    transition: transform 0.2s;
+}
+
+.card-footer a:hover {
+    transform: translateX(5px);
+}
+
+.loader {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.footer {
+    margin-top: 5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 600px) {
+    h1 { font-size: 2.25rem; }
+}

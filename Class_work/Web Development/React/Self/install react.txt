@@ -1,0 +1,63 @@
+==========================================================================================================================================
+
+Topic : Installation Steps of React & Node.js
+
+1) Download Node.js ("https://nodejs.org/en/download")
+
+2) Install Node.js
+
+3) check Version of both Node and npm 
+   Command : node -v 
+	          npm -v
+
+4) install react app
+   Command : npm -g install create-react-app
+
+5) check Version of react
+   Command : create-react-app --version
+
+6) create your personal "demoapp" folder
+   Command : npx create-react-app demoapp
+
+7) Select your "demoapp" folder in cmd and then
+   Command : npm start
+
+==========================================================================================================================================
+
+Topic : Make Custom React File Structure
+
+1) node_modules : when we delete this folder we have to use 
+                  Command : npm install
+      
+2) Public : When we delete this folder we have to create Custom folder & name is public.
+            In public folder we have to create index.html file.
+            In this file(index.html) we have to create a div with id="root".
+            EX : <div class="root"></div>
+
+3) src : when we delete this folder we have to create js file "index.js"
+         In this file we have to write this code -->
+
+   Code: import React from 'react';
+         import ReactDOM from 'react-dom/client';
+
+         const root = ReactDOM.createRoot(document.getElementById('root'));
+         root.render(
+         <React.StrictMode>
+            
+         </React.StrictMode>
+         );
+
+Note : all other files are required for the file structure of react which is copy from the other react file structure
+       File Names : 1) .gitignore
+                    2) package.json
+                    3) package-lock.json
+                    4) README.md
+
+==========================================================================================================================================
+
+In VS Code We have to Install Extensions : 
+
+1) ES7+ React/Redux/React-Native snippets
+2) html to JSX
+
+==========================================================================================================================================

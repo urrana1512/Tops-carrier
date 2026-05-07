@@ -1,0 +1,22 @@
+*** React Toastify ***
+
+Step 1 : install react-toastify
+        Command : npm install --save react-toastify
+
+Step 2 : Pass in App.js
+        import { ToastContainer, toast } from 'react-toastify';
+        import 'react-toastify/dist/ReactToastify.css';
+
+    Routing : pass <ToastContainer/> in app.js
+
+Step:3 when you want use add in that component
+        import { toast } from 'react-toastify’
+
+
+
+*** Sweet Alert ***
+Step 1 : install sweet Alert    
+        Command : npm install sweetalert --save
+
+Step 2 : when you want use add in that component
+        import swal from 'sweetalert';

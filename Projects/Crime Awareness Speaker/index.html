@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crime awareness speaker</title>
+
+    <!-- Google font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- External css -->
+    <link rel="stylesheet" href="/css/index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <header>
+      <nav class="transparent">
+        <div class="logo">Chirag Rana</div>
+
+        <div class="menu-toggle" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <ul id="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="topics.html">Topics</a></li>
+          <li><a href="#">Programs</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <!-- <section class="hero">
+      <h1>Creating awareness to prevent crime before it happens</h1>
+      <br />
+      <p>
+        I conduct crime awareness sessions for schools, colleges, corporates,
+        and communities to educate people about safety, cyber crime, and social
+        responsibility.
+      </p>
+      <button onclick="bookSession()">Book a session</button>
+    </section> -->
+
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <h1>Creating awareness to prevent crime before it happens</h1>
+        <p>
+          I conduct crime awareness sessions for schools, colleges, corporates,
+          and communities to educate people about safety, cyber crime, and
+          social responsibility.
+        </p>
+        <button onclick="openBooking()">Book session</button>
+      </div>
+    </section>
+
+    <!-- Topics -->
+    <!-- <section>
+      <div class="section-title">
+        <h2>Crime awareness topics</h2>
+        <p>Key areas covered in awareness sessions</p>
+      </div>
+      <div class="topics">
+        <div class="topic-card">
+          <h3>Cyber crime awareness</h3>
+          <p>
+            Online frauds, phishing, social media safety, and digital privacy.
+          </p>
+        </div>
+        <div class="topic-card">
+          <h3>Women safety</h3>
+          <p>Self awareness, legal rights, and preventive safety measures.</p>
+        </div>
+        <div class="topic-card">
+          <h3>Child safety</h3>
+          <p>Good touch bad touch, online safety, and child protection.</p>
+        </div>
+        <div class="topic-card">
+          <h3>Financial fraud prevention</h3>
+          <p>ATM frauds, banking scams, and digital payment safety.</p>
+        </div>
+      </div>
+    </section> -->
+    <!-- Topics -->
+    <section>
+      <div class="section-title">
+        <h2>Crime awareness topics</h2>
+        <p>Key areas covered in awareness sessions</p>
+      </div>
+
+      <div class="topics">
+        <div class="topic-card" onclick="openTopic('cyber-crime')">
+          <h3>Cyber crime awareness</h3>
+          <p>
+            Online frauds, phishing, social media safety, and digital privacy.
+          </p>
+          <button>Read more</button>
+        </div>
+
+        <div class="topic-card" onclick="openTopic('women-safety')">
+          <h3>Women safety</h3>
+          <p>Self awareness, legal rights, and preventive safety measures.</p>
+          <button>Read more</button>
+        </div>
+
+        <div class="topic-card" onclick="openTopic('child-safety')">
+          <h3>Child safety</h3>
+          <p>Good touch bad touch, online safety, and child protection.</p>
+          <button>Read more</button>
+        </div>
+
+        <div class="topic-card" onclick="openTopic('financial-fraud')">
+          <h3>Financial fraud prevention</h3>
+          <p>ATM frauds, banking scams, and digital payment safety.</p>
+          <button>Read more</button>
+        </div>
+
+        <!-- New topics -->
+        <div class="topic-card" onclick="openTopic('drug-abuse')">
+          <h3>Drug abuse awareness</h3>
+          <p>
+            Effects of drugs, prevention methods, and rehabilitation guidance.
+          </p>
+          <button>Read more</button>
+        </div>
+
+        <div class="topic-card" onclick="openTopic('road-safety')">
+          <h3>Road safety</h3>
+          <p>Traffic rules, accident prevention, and responsible driving.</p>
+          <button>Read more</button>
+        </div>
+
+        <div class="topic-card" onclick="openTopic('legal-rights')">
+          <h3>Legal rights awareness</h3>
+          <p>Basic laws, FIR process, and citizen legal rights.</p>
+          <button>Read more</button>
+        </div>
+
+        <div class="topic-card" onclick="openTopic('senior-citizen-safety')">
+          <h3>Senior citizen safety</h3>
+          <p>Fraud prevention, physical safety, and emergency support.</p>
+          <button>Read more</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Programs -->
+    <section class="programs">
+      <div class="section-title">
+        <h2>Programs & sessions</h2>
+      </div>
+      <div class="program-list">
+        <div class="program">
+          <h3>School programs</h3>
+          <p>Age appropriate awareness programs for students.</p>
+        </div>
+        <div class="program">
+          <h3>College seminars</h3>
+          <p>Interactive sessions on cyber safety and social responsibility.</p>
+        </div>
+        <div class="program">
+          <h3>Corporate training</h3>
+          <p>Workplace safety, cyber security, and legal awareness.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section>
+      <div class="testimonial">
+        <p>
+          “This session was very informative and practical. It helped our
+          students understand real-life crime risks.”
+        </p>
+        <strong>— School principal</strong>
+      </div>
+    </section>
+
+    <!-- CTA + Contact Form Section -->
+    <section class="contact-section">
+      <div class="contact-container">
+        <div class="contact-text">
+          <h2>Get in touch</h2>
+          <p>
+            Reach out to invite a crime awareness speaker for workshops,
+            seminars, and community programs.
+          </p>
+        </div>
+
+        <div class="contact-form">
+          <form id="contactForm">
+            <input type="text" name="name" placeholder="Full name *" required />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email address *"
+              required
+            />
+            <input
+              type="text"
+              name="subject"
+              placeholder="Subject *"
+              required
+            />
+            <textarea
+              name="message"
+              placeholder="Your message *"
+              required
+            ></textarea>
+
+            <button type="submit">Let’s talk!</button>
+
+            <!-- Success message -->
+            <p
+              id="successMsg"
+              style="display: none; color: green; margin-top: 15px"
+            >
+              ✅ Your message has been sent successfully.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>© 2025 Crime awareness speaker. All rights reserved.</footer>
+
+    <!-- External js -->
+    <script src="/js/index.js"></script>
+  </body>
+</html>

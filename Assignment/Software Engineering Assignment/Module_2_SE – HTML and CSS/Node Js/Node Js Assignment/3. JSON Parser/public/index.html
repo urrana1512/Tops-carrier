@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Safe Parser | Task 03</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mesh-background"></div>
+    
+    <main class="container">
+        <header>
+            <div class="badge">Error Handling Task</div>
+            <h1>Safe JSON Parser</h1>
+            <p>Enter a JSON string below to see the <code>try...catch</code> logic in action.</p>
+        </header>
+
+        <section class="parser-box glass">
+            <div class="input-area">
+                <label>Input JSON String</label>
+                <textarea id="jsonInput" placeholder='{"name": "John", "age": 30}'></textarea>
+            </div>
+            
+            <button id="parseBtn" class="primary-btn">Parse & Validate</button>
+
+            <div id="resultArea" class="result-area hidden">
+                <div class="result-header">
+                    <span id="statusLabel">Status</span>
+                    <span id="indicator" class="dot"></span>
+                </div>
+                <pre id="output"></pre>
+            </div>
+        </section>
+
+        <footer class="footer">
+            Module 2 | Software Engineering Assignment
+        </footer>
+    </main>
+
+    <script>
+        const parseBtn = document.getElementById('parseBtn');
+        const jsonInput = document.getElementById('jsonInput');
+        const resultArea = document.getElementById('resultArea');
+        const output = document.getElementById('output');
+        const statusLabel = document.getElementById('statusLabel');
+        const indicator = document.getElementById('indicator');
+
+        parseBtn.addEventListener('click', async () => {
+            const jsonString = jsonInput.value;
+            
+            try {
+                const response = await fetch('/api/parse', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ jsonString })
+                });
+                
+                const result = await response.json();
+                
+                resultArea.classList.remove('hidden');
+                
+                if (result.success) {
+                    statusLabel.innerText = "Successfully Parsed";
+                    indicator.className = "dot success";
+                    output.innerText = JSON.stringify(result.data, null, 4);
+                    output.className = "success-text";
+                } else {
+                    statusLabel.innerText = "Parsing Error Caught";
+                    indicator.className = "dot error";
+                    output.innerText = `Error: ${result.error}\n\nTip: ${result.hint}`;
+                    output.className = "error-text";
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>

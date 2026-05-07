@@ -1,0 +1,41 @@
+Question 1: Explain the structure of an HTML table and the purpose of each of the following
+            elements: <table>, <tr>, <th>, <td>, and <thead>.
+Ans 1 : -> Structure of HTML Table : 
+                <table>
+                    <tr>
+                        <th>Company</th>
+                        <th>Contact</th>
+                        <th>Country</th>
+                    </tr>
+                    <tr>
+                        <td>Alfreds Futterkiste</td>
+                        <td>Maria Anders</td>
+                        <td>Germany</td>
+                    </tr>
+                    <tr>
+                        <td>Centro comercial Moctezuma</td>
+                        <td>Francisco Chang</td>
+                        <td>Mexico</td>
+                    </tr>
+                </table>
+
+        -> <table> : Defines a table
+        -> <tr> : Defines a row in a table
+        -> <th> : Defines a header cell in a table
+        -> <td> : Defines a cell in a table
+        -> <thead> : Groups the header content in a table
+
+Question 2: What is the difference between colspan and rowspan in tables? Provide
+            examples.
+Ans 2 : -> The rowspan attribute is for merging rows and 
+           the colspan attribute is for merging columns of the table in HTML.
+        -> For example, <td Colspan = "4"> would make the cells span across four columns.
+        -> For example, <td Rowspan = "3"> would make the cells span across three rows.
+
+Question 3: Why should tables be used sparingly for layout purposes? What is a better
+            alternative?
+Ans 3 : -> Tables should be used sparingly for layout purposes because they are not designed for 
+           structural organization on a webpage, can create accessibility issues for users with screen readers, 
+           are difficult to maintain with complex layouts,
+           and modern web development standards encourage using CSS for styling and positioning content instead,
+           making layouts more flexible and responsive across different devices.

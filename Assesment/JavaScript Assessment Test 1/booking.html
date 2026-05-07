@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Restaurant Booking Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        padding: 20px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+
+      form {
+        background: #fff;
+        padding: 25px;
+        max-width: 500px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      label {
+        display: block;
+        margin-top: 15px;
+        color: #444;
+        font-weight: bold;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      #submitBtn {
+        margin-top: 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 4px;
+        width: 100%;
+      }
+
+      #submitBtn:hover {
+        background-color: #218838;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Restaurant Booking Form</h2>
+    <div id="formContainer"></div>
+
+    <script>
+      function createLabel(text, forId) {
+        const label = document.createElement("label");
+        label.textContent = text;
+        label.htmlFor = forId;
+        return label;
+      }
+
+      function createInput(type, id) {
+        const input = document.createElement("input");
+        input.type = type;
+        input.id = id;
+        input.name = id;
+        return input;
+      }
+
+      function createSelect(id, options) {
+        const select = document.createElement("select");
+        select.id = id;
+        select.name = id;
+
+        options.forEach((opt) => {
+          const option = document.createElement("option");
+          option.value = opt.toLowerCase().replace(" ", "_");
+          option.textContent = opt;
+          select.appendChild(option);
+        });
+
+        return select;
+      }
+
+      function createBookingForm() {
+        const container = document.getElementById("formContainer");
+        const form = document.createElement("form");
+
+        // Booking Type
+        form.appendChild(createLabel("Choice Of Booking", "bookingType"));
+        const bookingSelect = createSelect("bookingType", [
+          "Full Day Booking",
+          "Half Day Booking",
+          "Hourly Booking",
+        ]);
+        form.appendChild(bookingSelect);
+
+        // Name
+        form.appendChild(createLabel("User Name", "username"));
+        form.appendChild(createInput("text", "username"));
+
+        // Mobile
+        form.appendChild(createLabel("Mobile Number", "mobile"));
+        form.appendChild(createInput("tel", "mobile"));
+
+        // Email
+        form.appendChild(createLabel("Email", "email"));
+        form.appendChild(createInput("email", "email"));
+
+        // No. of Persons
+        form.appendChild(createLabel("No Of Person", "persons"));
+        form.appendChild(createInput("number", "persons"));
+
+        // Dynamic Fields
+        const dynamicFields = document.createElement("div");
+        dynamicFields.id = "dynamicFields";
+        form.appendChild(dynamicFields);
+
+        // Submit Button
+        const submitBtn = document.createElement("button");
+        submitBtn.type = "submit";
+        submitBtn.id = "submitBtn";
+        submitBtn.textContent = "Submit Booking";
+        form.appendChild(submitBtn);
+
+        container.appendChild(form);
+
+        // Handle Booking Type Changes
+        bookingSelect.addEventListener("change", function () {
+          dynamicFields.innerHTML = ""; // Clear previous fields
+
+          // Date Field (Common)
+          if (
+            this.value === "full_day_booking" ||
+            this.value === "half_day_booking" ||
+            this.value === "hourly_booking"
+          ) {
+            dynamicFields.appendChild(createLabel("Date", "date"));
+            dynamicFields.appendChild(createInput("date", "date"));
+          }
+
+          // Slot Field (Only for Half Day)
+          if (this.value === "half_day_booking") {
+            dynamicFields.appendChild(createLabel("Slot", "slot"));
+            const slotSelect = createSelect("slot", [
+              "Breakfast",
+              "Lunch",
+              "Dinner",
+            ]);
+            dynamicFields.appendChild(slotSelect);
+          }
+
+          // Time Field (Only for Hourly)
+          if (this.value === "hourly_booking") {
+            dynamicFields.appendChild(createLabel("Time", "time"));
+            dynamicFields.appendChild(createInput("time", "time"));
+          }
+        });
+      }
+
+      createBookingForm();
+    </script>
+  </body>
+</html>

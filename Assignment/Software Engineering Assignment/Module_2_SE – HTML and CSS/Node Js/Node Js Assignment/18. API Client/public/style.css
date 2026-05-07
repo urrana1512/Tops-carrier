@@ -1,0 +1,226 @@
+/* 
+  Task 18: Professional API Client Styling
+  Modern Card Layout, Responsive Design, and Smooth Transitions 
+*/
+
+:root {
+    --primary: #0f172a;
+    --accent: #6366f1;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    
+    /* Method Colors */
+    --get: #22c55e;
+    --post: #3b82f6;
+    --put: #eab308;
+    --delete: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* Loader Overlay */
+.loader-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 40px; height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Layout Structure */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Sidebar */
+.sidebar h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+}
+
+.quick-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.quick-links button {
+    background: #f1f5f9;
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.quick-links button:hover { background: var(--accent); color: white; }
+
+.history-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.history-item {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    background: #f8fafc;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.history-item:hover { border-color: var(--accent); background: white; }
+.history-item strong { color: var(--accent); margin-right: 5px; }
+
+/* Workspace */
+.workspace { display: flex; flex-direction: column; gap: 1.5rem; }
+
+header .header-content { display: flex; align-items: center; gap: 1.2rem; }
+header i { font-size: 2.5rem; color: var(--accent); }
+header h1 { font-size: 1.5rem; font-weight: 700; }
+header p { font-size: 0.9rem; color: var(--text-light); }
+
+/* Form Styling */
+.form-row { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: stretch; }
+
+.method-dropdown {
+    padding: 0 1rem;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    font-weight: 700;
+    background: #f8fafc;
+    outline: none;
+}
+
+#urlInput {
+    flex: 1;
+    padding: 12px 1.5rem;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+#urlInput:focus { border-color: var(--accent); }
+
+.send-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.send-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3); }
+
+.json-editor-wrapper { width: 100%; }
+.json-editor-wrapper label { font-size: 0.8rem; font-weight: 600; color: var(--text-light); margin-bottom: 8px; display: block; }
+
+#jsonInput {
+    width: 100%;
+    height: 120px;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    resize: none;
+    background: #f8fafc;
+}
+
+#jsonInput:disabled { background: #f1f5f9; cursor: not-allowed; }
+
+/* Response Section */
+.response-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.header-actions { display: flex; align-items: center; gap: 1rem; }
+
+.badge {
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    background: #f1f5f9;
+}
+
+.badge.success { background: #dcfce7; color: #166534; }
+.badge.error { background: #fee2e2; color: #991b1b; }
+.badge.pending { background: #fef9c3; color: #854d0e; }
+
+.code-container {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#responseArea {
+    font-family: 'Fira Code', monospace;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+}
+
+.btn-icon, .btn-text {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-light);
+    transition: 0.2s;
+}
+
+.btn-text { font-size: 0.8rem; font-weight: 600; }
+.btn-icon:hover, .btn-text:hover { color: var(--accent); }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .app-container { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .form-row { flex-direction: column; }
+}
+
+.hidden { display: none !important; }

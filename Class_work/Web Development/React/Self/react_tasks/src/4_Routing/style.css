@@ -1,0 +1,28 @@
+/* Nvabar Start */
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 20px;
+  overflow: hidden;
+  background-color: #333;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0px;
+}
+
+li {
+  float: left;
+}
+
+.navlink {
+  color: white;
+  text-align: center;
+  padding: 100% 30px;
+  text-decoration: none;
+}
+
+.navlink:hover {
+  background-color: #111;
+}
+/* Nvabar End */

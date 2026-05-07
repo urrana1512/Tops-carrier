@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Destination | Task 35</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030712;
+            --accent: #10b981;
+            --text: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .card {
+            background: rgba(17, 24, 39, 0.6);
+            padding: 4rem;
+            border-radius: 40px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            backdrop-filter: blur(20px);
+        }
+        i { font-size: 4rem; color: var(--accent); margin-bottom: 2rem; }
+        h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; margin-bottom: 1rem; }
+        p { color: var(--text); margin-bottom: 2rem; }
+        .badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <i class="ph-fill ph-check-circle"></i>
+        <h1>New Destination</h1>
+        <p>You have been successfully rerouted to the optimized endpoint.</p>
+        <span class="badge">STATUS: MOVED_PERMANENTLY (301)</span>
+        <br><br><br>
+        <a href="/" style="color: #444; font-size: 0.7rem; text-decoration: none; letter-spacing: 1px;">BACK_TO_MIGRATOR</a>
+    </div>
+</body>
+</html>

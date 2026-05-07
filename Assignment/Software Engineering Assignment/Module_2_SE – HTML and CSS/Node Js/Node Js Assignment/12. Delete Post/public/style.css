@@ -1,0 +1,177 @@
+:root {
+    --bg: #ffffff;
+    --card: #f9fafb;
+    --primary: #111827;
+    --danger: #ef4444;
+    --text: #374151;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg);
+    color: var(--primary);
+    min-height: 100vh;
+    padding: 4rem 1.5rem;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 10%, rgba(239, 68, 68, 0.03) 0%, transparent 40%);
+    z-index: -1;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.chip {
+    display: inline-block;
+    padding: 5px 14px;
+    background: #fee2e2;
+    color: var(--danger);
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: var(--muted);
+    font-size: 1.1rem;
+}
+
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.post-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.post-card:hover {
+    border-color: var(--danger);
+    transform: translateX(5px);
+}
+
+.post-id {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--danger);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.card-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.delete-btn {
+    padding: 10px 20px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--danger);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+
+.delete-btn:hover {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.delete-btn.loading {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.empty, .loader {
+    text-align: center;
+    padding: 4rem;
+    color: var(--muted);
+    font-style: italic;
+    border: 1px dashed var(--border);
+    border-radius: 20px;
+}
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    animation: slideInUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 100;
+}
+
+.hidden { display: none; }
+
+.footer {
+    margin-top: 5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateX(20px); }
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+    h1 { font-size: 2.25rem; }
+    .post-card { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .delete-btn { width: 100%; }
+}

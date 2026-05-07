@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async Reader | Task 22.2</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="line-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.READFILE</div>
+            <h1>Async Stream Reader</h1>
+            <p>Capturing data from the file system buffer</p>
+        </header>
+
+        <section class="console-view glass">
+            <div class="console-header">
+                <i class="ph-bold ph-terminal-window"></i>
+                <span>SYSTEM_CONSOLE_MIRROR</span>
+            </div>
+            <div id="output" class="console-body">
+                <div class="log-line">> Initiating Asynchronous Read...</div>
+                <div id="fileContent" class="file-data">Loading buffer...</div>
+            </div>
+        </section>
+
+        <div class="action-footer">
+            <p>Contents are also logged to your <strong>Terminal Console</strong>.</p>
+        </div>
+    </main>
+
+    <script>
+        async function fetchFileData() {
+            try {
+                const response = await fetch('/api/read-sample');
+                const data = await response.json();
+                
+                document.getElementById('fileContent').innerText = data.content;
+            } catch (error) {
+                document.getElementById('fileContent').innerText = "Error reading stream.";
+            }
+        }
+
+        fetchFileData();
+    </script>
+</body>
+</html>

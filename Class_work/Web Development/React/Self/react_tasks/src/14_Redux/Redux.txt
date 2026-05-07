@@ -1,0 +1,31 @@
+React Redux : Redux is an open-source JavaScript library used to manage application state. React Redux is the official React binding for Redux. It allows React components to read
+data from a Redux Store, and dispatch Actions to the Store to update data.
+
+=======================================================================================================================================
+
+Step 1 : Open React-redux -> Install Redux-Toolkit
+        Command : npm install @reduxjs/toolkit react-redux
+
+Step 2 : Create a new folder in src folder "Name : (app)"
+        after that Create a file : "Name : (store.js)"
+
+Step 3 : Import "ConfigureStore"
+        After that create "reducer"
+
+Step 4 : Store Provider in index.js
+
+Step 5 : Make New Folder in src Name : "features"
+
+Step 6 : Make New Folder in "features" Name : "features\mytasks"
+        and then make a task.jsx file and perform a task and make a route in app.js
+
+Step 7 : create a new file in mytask folder name : "taskslice.js"
+        and import createSlice (make in Variable Name : "taskSlice") After that make initialState.
+        In taskSlice add initialState and reducer and then make multiple state in reducer.
+
+Step 8 : 
+
+=======================================================================================================================================
+
+Note : For the Calling State We have to use "useSelector"
+        For the Calling Action We have to use "dispatch"

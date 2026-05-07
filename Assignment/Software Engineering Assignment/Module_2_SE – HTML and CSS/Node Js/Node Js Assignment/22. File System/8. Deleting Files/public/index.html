@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Shredder | Task 22.8</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="danger-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.UNLINK</div>
+            <h1>Secure Data Shredder</h1>
+            <p>Permanent decommissioning of target file assets</p>
+        </header>
+
+        <section class="shredder-card glass">
+            <div class="target-zone" id="targetZone">
+                <div class="file-icon">
+                    <i class="ph-fill ph-file-text"></i>
+                </div>
+                <div class="file-info">
+                    <strong>deleteMe.txt</strong>
+                    <span>System Object #8-22-FS</span>
+                </div>
+            </div>
+
+            <div class="action-zone">
+                <button id="shredBtn" class="btn-shred">
+                    <i class="ph-bold ph-trash"></i>
+                    <span>Execute Shred</span>
+                </button>
+                <button id="restoreBtn" class="btn-restore">
+                    <i class="ph ph-arrows-counter-clockwise"></i>
+                    <span>Restore Asset</span>
+                </button>
+            </div>
+
+            <div id="statusBox" class="status-box hidden">
+                <i class="ph-fill ph-check-circle"></i>
+                <span>Asset decommissioned successfully.</span>
+            </div>
+        </section>
+
+        <footer>
+            <p>Check the <strong>System Console</strong> for success confirmation.</p>
+        </footer>
+    </main>
+
+    <script>
+        const shredBtn = document.getElementById('shredBtn');
+        const restoreBtn = document.getElementById('restoreBtn');
+        const statusBox = document.getElementById('statusBox');
+        const targetZone = document.getElementById('targetZone');
+
+        shredBtn.onclick = async () => {
+            if(!confirm("Are you sure? This operation cannot be undone.")) return;
+
+            shredBtn.disabled = true;
+            try {
+                const response = await fetch('/api/delete-file', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    targetZone.classList.add('shredded');
+                    statusBox.classList.remove('hidden');
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert("Shredder failure. System restricted.");
+            } finally {
+                shredBtn.disabled = false;
+            }
+        };
+
+        restoreBtn.onclick = async () => {
+            await fetch('/api/restore-file', { method: 'POST' });
+            targetZone.classList.remove('shredded');
+            statusBox.classList.add('hidden');
+        };
+    </script>
+</body>
+</html>

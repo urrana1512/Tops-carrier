@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Magazine | Task 06</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="line-bg"></div>
+    
+    <main class="container">
+        <header class="main-header">
+            <div class="date" id="currentDate"></div>
+            <h1>The Node Times</h1>
+            <div class="divider"></div>
+            <p class="tagline">Demonstrating Native Fetch API Integration</p>
+        </header>
+
+        <section id="postGrid" class="posts-grid">
+            <div class="loading">Loading news feed...</div>
+        </section>
+
+        <footer class="main-footer">
+            &copy; 2026 Node.js Mastery Assignment
+        </footer>
+    </main>
+
+    <script>
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        async function loadPosts() {
+            const grid = document.getElementById('postGrid');
+            try {
+                const response = await fetch('/api/posts');
+                const posts = await response.json();
+                
+                grid.innerHTML = '';
+                posts.slice(0, 12).forEach(post => {
+                    const article = document.createElement('article');
+                    article.className = 'post-card';
+                    article.innerHTML = `
+                        <div class="post-meta">Article #${post.id}</div>
+                        <h2 class="post-title">${post.title}</h2>
+                        <p class="post-excerpt">${post.body.substring(0, 100)}...</p>
+                        <a href="#" class="read-more">Read Full Story</a>
+                    `;
+                    grid.appendChild(article);
+                });
+            } catch (err) {
+                grid.innerHTML = '<p class="error">System error: Unable to load articles.</p>';
+            }
+        }
+        loadPosts();
+    </script>
+</body>
+</html>

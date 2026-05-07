@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Replicator | Task 22.11</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="glow-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.COPYFILE</div>
+            <h1>Data Replication Engine</h1>
+            <p>Executing bit-for-bit cloning of persistent assets</p>
+        </header>
+
+        <section class="replicator-card glass">
+            <div class="replication-flow">
+                <div class="file-node" id="sourceNode">
+                    <div class="icon-box">
+                        <i class="ph-fill ph-file-text"></i>
+                    </div>
+                    <span>original.txt</span>
+                </div>
+
+                <div class="connector" id="connector">
+                    <div class="pulse-line"></div>
+                </div>
+
+                <div class="file-node empty" id="copyNode">
+                    <div class="icon-box">
+                        <i class="ph ph-file-plus"></i>
+                    </div>
+                    <span>copy.txt</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="replicateBtn" class="btn-main">
+                    <i class="ph-bold ph-copy"></i>
+                    <span>Initiate Replication</span>
+                </button>
+                <button id="resetBtn" class="btn-sub">
+                    <i class="ph ph-arrows-counter-clockwise"></i>
+                    <span>Reset Registry</span>
+                </button>
+            </div>
+
+            <div id="statusMsg" class="status-box hidden">
+                <i class="ph-fill ph-check-circle"></i>
+                <span>Replication successful! Asset cloned to copy.txt</span>
+            </div>
+        </section>
+
+        <footer>
+            <p>Verification logs are generated in the <strong>Node.js Console</strong>.</p>
+        </footer>
+    </main>
+
+    <script>
+        const replicateBtn = document.getElementById('replicateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const connector = document.getElementById('connector');
+        const copyNode = document.getElementById('copyNode');
+
+        replicateBtn.onclick = async () => {
+            replicateBtn.disabled = true;
+            connector.classList.add('active');
+            
+            try {
+                const response = await fetch('/api/copy-file', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    setTimeout(() => {
+                        copyNode.classList.remove('empty');
+                        copyNode.querySelector('i').className = 'ph-fill ph-file-text';
+                        statusMsg.classList.remove('hidden');
+                    }, 1000);
+                }
+            } catch (error) {
+                alert("Replication failure. Storage parity error.");
+            } finally {
+                setTimeout(() => replicateBtn.disabled = false, 1500);
+            }
+        };
+
+        resetBtn.onclick = async () => {
+            await fetch('/api/cleanup', { method: 'POST' });
+            connector.classList.remove('active');
+            copyNode.classList.add('empty');
+            copyNode.querySelector('i').className = 'ph ph-file-plus';
+            statusMsg.classList.add('hidden');
+        };
+
+        // Initial check
+        fetch('/api/check-copy').then(res => res.json()).then(data => {
+            if (data.exists) {
+                copyNode.classList.remove('empty');
+                copyNode.querySelector('i').className = 'ph-fill ph-file-text';
+            }
+        });
+    </script>
+</body>
+</html>

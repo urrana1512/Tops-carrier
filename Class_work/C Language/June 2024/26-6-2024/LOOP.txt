@@ -1,0 +1,15 @@
+LOOP:
+
+tow types of loop
+(1) Entry Control Loop
+	1. While Loop
+	2. For Loop
+
+(2) Exit Control Loop
+	1. Do While Loop
+
+
+*Three steps to follow:
+1. Start - Initialize
+2. Stop - Condition
+3. Increment

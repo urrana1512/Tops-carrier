@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Ingestor | Task 22.13</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.READFILE + JSON.PARSE</div>
+            <h1>Structured Data Ingestor</h1>
+            <p>Decoding and deserializing persistent JSON objects</p>
+        </header>
+
+        <section class="ingestor-card glass">
+            <div class="readout-header">
+                <i class="ph-fill ph-database"></i>
+                <span>registry_source: data.json</span>
+            </div>
+
+            <div id="dataReadout" class="data-readout hidden">
+                <pre id="jsonDisplay"></pre>
+            </div>
+
+            <button id="ingestBtn" class="btn-main">
+                <i class="ph-bold ph-lightning"></i>
+                <span>Ingest & Parse</span>
+            </button>
+        </section>
+
+        <footer>
+            <p>Serialized output is mirrored to the <strong>Node.js Console</strong>.</p>
+        </footer>
+    </main>
+
+    <script>
+        const ingestBtn = document.getElementById('ingestBtn');
+        const dataReadout = document.getElementById('dataReadout');
+        const jsonDisplay = document.getElementById('jsonDisplay');
+
+        ingestBtn.onclick = async () => {
+            ingestBtn.disabled = true;
+            try {
+                const response = await fetch('/api/read-json');
+                const result = await response.json();
+
+                if (result.success) {
+                    dataReadout.classList.remove('hidden');
+                    jsonDisplay.innerText = JSON.stringify(result.data, null, 2);
+                    ingestBtn.innerHTML = '<i class="ph-bold ph-check"></i> <span>Data Finalized</span>';
+                }
+            } catch (error) {
+                alert("Ingestion failure. Buffer corrupted.");
+            } finally {
+                setTimeout(() => ingestBtn.disabled = false, 1000);
+            }
+        };
+    </script>
+</body>
+</html>

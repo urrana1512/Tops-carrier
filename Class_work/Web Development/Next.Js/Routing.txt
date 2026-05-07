@@ -1,0 +1,5 @@
+Step 1 : Create a Next.js Project
+
+Step 2 : Understanding the Next.js Router Systembecome Route.
+    - In Next.js every file inside the app(folder)/ directory will autometically   
+    EX : if we have a file like app(folder)/about(folder)/page.jsx, it will become the /about Route 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory Scanner | Task 22.10</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="scan-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.READDIR</div>
+            <h1>Namespace Auditor</h1>
+            <p>Traversing the myFiles registry for resident assets</p>
+        </header>
+
+        <section class="scanner-card glass">
+            <div class="audit-header">
+                <div class="status">
+                    <span class="dot pulse"></span>
+                    SCAN_ACTIVE
+                </div>
+                <div id="fileCount" class="count">0 Files Detected</div>
+            </div>
+
+            <div id="fileGrid" class="file-grid">
+                <!-- Files will be injected here -->
+            </div>
+
+            <button id="refreshBtn" class="refresh-btn">
+                <i class="ph-bold ph-radar"></i>
+                <span>Initiate Audit</span>
+            </button>
+        </section>
+
+        <footer>
+            <p>Full audit logs are mirrored to the <strong>System Console</strong>.</p>
+        </footer>
+    </main>
+
+    <script>
+        const refreshBtn = document.getElementById('refreshBtn');
+        const fileGrid = document.getElementById('fileGrid');
+        const fileCount = document.getElementById('fileCount');
+
+        async function performAudit() {
+            refreshBtn.disabled = true;
+            fileGrid.innerHTML = "";
+            
+            try {
+                const response = await fetch('/api/list-files');
+                const { files } = await response.json();
+
+                fileCount.innerText = `${files.length} Assets Detected`;
+
+                files.forEach((file, index) => {
+                    setTimeout(() => {
+                        const card = document.createElement('div');
+                        card.className = 'file-card';
+                        card.innerHTML = `
+                            <i class="ph-fill ph-file-text"></i>
+                            <div class="info">
+                                <span class="name">${file}</span>
+                                <span class="tag">#${index + 1}</span>
+                            </div>
+                        `;
+                        fileGrid.appendChild(card);
+                    }, index * 150);
+                });
+            } catch (error) {
+                fileGrid.innerHTML = "<p class='error'>Audit Interrupted.</p>";
+            } finally {
+                setTimeout(() => refreshBtn.disabled = false, 1000);
+            }
+        }
+
+        refreshBtn.onclick = performAudit;
+        performAudit(); // Initial audit
+    </script>
+</body>
+</html>

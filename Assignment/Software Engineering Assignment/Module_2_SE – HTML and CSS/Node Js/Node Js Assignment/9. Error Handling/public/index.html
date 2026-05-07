@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe API Client | Task 09</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mesh-bg"></div>
+    
+    <main class="container">
+        <header>
+            <div class="chip">Robust Error Handling</div>
+            <h1>Safe API Client</h1>
+            <p>Demonstrating <code>.catch()</code> for resilient applications.</p>
+        </header>
+
+        <section class="actions">
+            <button id="successBtn" class="btn success-btn">Fetch Success</button>
+            <button id="failBtn" class="btn fail-btn">Force Error</button>
+        </section>
+
+        <div id="statusBox" class="status-box hidden">
+            <div class="status-header">
+                <span id="statusIcon"></span>
+                <span id="statusTitle"></span>
+            </div>
+            <p id="statusMsg"></p>
+        </div>
+
+        <div id="dataList" class="data-list"></div>
+
+        <footer class="footer">
+            Node.js Assignment | Error Handling Best Practices
+        </footer>
+    </main>
+
+    <script>
+        const successBtn = document.getElementById('successBtn');
+        const failBtn = document.getElementById('failBtn');
+        const statusBox = document.getElementById('statusBox');
+        const statusIcon = document.getElementById('statusIcon');
+        const statusTitle = document.getElementById('statusTitle');
+        const statusMsg = document.getElementById('statusMsg');
+        const dataList = document.getElementById('dataList');
+
+        function showStatus(type, title, message) {
+            statusBox.className = `status-box ${type}`;
+            statusIcon.innerText = type === 'success' ? '✅' : '❌';
+            statusTitle.innerText = title;
+            statusMsg.innerText = message;
+            statusBox.classList.remove('hidden');
+        }
+
+        function fetchData(url) {
+            dataList.innerHTML = '';
+            statusBox.classList.add('hidden');
+
+            // Task 9 Core Requirement: Use Fetch and Implement .catch()
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error("HTTP error " + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    showStatus('success', 'Connection Successful', 'Data retrieved successfully from the API.');
+                    
+                    const posts = Array.isArray(data) ? data.slice(0, 3) : [data];
+                    posts.forEach(post => {
+                        const div = document.createElement('div');
+                        div.className = 'data-item';
+                        div.innerHTML = `<strong>${post.title}</strong><br>${post.body}`;
+                        dataList.appendChild(div);
+                    });
+                })
+                .catch(error => {
+                    // Task 9 Core Requirement: Handle errors and display user-friendly message
+                    console.error("Caught error:", error);
+                    showStatus('error', 'Connection Failed', 'We could not reach the server. Please check your internet or the API URL.');
+                });
+        }
+
+        successBtn.addEventListener('click', () => fetchData('https://jsonplaceholder.typicode.com/posts'));
+        failBtn.addEventListener('click', () => fetchData('https://jsonplaceholder.typicode.com/invalid-url-to-trigger-error'));
+    </script>
+</body>
+</html>

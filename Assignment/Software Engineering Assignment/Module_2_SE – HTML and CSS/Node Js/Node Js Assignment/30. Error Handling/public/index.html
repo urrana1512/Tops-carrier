@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resilience Sentinel | Task 30</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #09090b;
+            --accent: #ef4444;
+            --glass: rgba(39, 39, 42, 0.4);
+            --border: rgba(239, 68, 68, 0.2);
+            --text: #a1a1aa;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .container { width: 100%; max-width: 600px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent);
+            padding: 4px 14px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; color: #fff; letter-spacing: -2px; }
+
+        .sentinel-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 32px;
+            backdrop-filter: blur(20px);
+        }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+        
+        .btn-error {
+            background: none;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-error:hover { background: rgba(239, 68, 68, 0.1); border-color: var(--accent); transform: translateY(-5px); }
+        .btn-error i { font-size: 2rem; color: var(--accent); }
+        .btn-error span { font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
+
+        #responseArea {
+            margin-top: 2rem;
+            background: #000;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: left;
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: #6ee7b7;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">SYSTEM_INTEGRITY // ERROR_CATCHER</div>
+            <h1>Resilience Sentinel</h1>
+        </header>
+
+        <section class="sentinel-card">
+            <p>Select a scenario to test the server's resilience interception.</p>
+            
+            <div class="action-grid">
+                <button class="btn-error" onclick="trigger404()">
+                    <i class="ph-bold ph-magnifying-glass"></i>
+                    <span>TEST 404 PATH</span>
+                </button>
+                <button class="btn-error" onclick="trigger500()">
+                    <i class="ph-bold ph-warning-octagon"></i>
+                    <span>TRIGGER 500 ERROR</span>
+                </button>
+            </div>
+
+            <div id="responseArea" class="hidden"></div>
+        </section>
+    </div>
+
+    <script>
+        const respArea = document.getElementById('responseArea');
+
+        const trigger404 = () => {
+            // Redirect to a random non-existent path
+            window.location.href = "/undefined-nexus-route-" + Date.now();
+        };
+
+        const trigger500 = async () => {
+            respArea.classList.remove('hidden');
+            respArea.innerText = "// Requesting fault injection...";
+            
+            try {
+                const res = await fetch('/api/trigger-error');
+                const data = await res.json();
+                respArea.innerText = JSON.stringify(data, null, 2);
+                respArea.style.color = "#fca5a5";
+            } catch (e) {
+                respArea.innerText = "// Fault Captured: Server returned 500 status.";
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+:root {
+    --bg-dark: #050505;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --accent-blue: #00d2ff;
+    --accent-purple: #9d50bb;
+    --text-main: #e0e0e0;
+    --text-muted: #888;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Background Glows */
+.glow-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+}
+
+.glow-1 {
+    background: var(--accent-blue);
+    top: -200px;
+    left: -200px;
+}
+
+.glow-2 {
+    background: var(--accent-purple);
+    bottom: -200px;
+    right: -200px;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    padding: 2rem;
+    animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 15px;
+    background: rgba(0, 210, 255, 0.1);
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 600;
+    background: linear-gradient(to right, #fff, #888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.card {
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.icon {
+    font-size: 1.5rem;
+}
+
+.card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.dependency {
+    background: rgba(0, 210, 255, 0.1);
+    color: var(--accent-blue);
+}
+
+.dev-dependency {
+    background: rgba(157, 80, 187, 0.1);
+    color: var(--accent-purple);
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+}
+
+.label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--accent-blue);
+}
+
+.footer {
+    margin-top: 4rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.footer span {
+    color: #ff4d4d;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .full-width { grid-column: span 1; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .title { font-size: 2rem; }
+}

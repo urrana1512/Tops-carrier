@@ -1,0 +1,16 @@
+Firebase : Firebase is a mobile and web application development platform provided by Google. It offers a suite of tools and services to help developers build, improve, and scale their apps. Firebase is used for tasks like building apps, managing databases, handling authentication, and analyzing user behavior. 
+
+URL : https://firebase.google.com/
+
+step 1 : Signup
+step 2 : Build(menu) -> Real time database(select)
+step 3 : click on "Get Started"
+step 4 : Create Project
+step 5 : Create database
+step 6 : select Test Mode (Public)
+                OR
+            Lock Mode (Private)
+Step 7 : Click "Rules" 
+Step 8 : Copy URL("")
+Step 9 : Use this URL in React File  
+        Ex : URL : "...url/TableName.json"

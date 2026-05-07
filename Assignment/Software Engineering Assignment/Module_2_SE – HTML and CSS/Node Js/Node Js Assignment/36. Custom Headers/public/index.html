@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Architect | Task 36</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #a855f7;
+            --glass: rgba(24, 24, 27, 0.8);
+            --border: rgba(168, 85, 247, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background-image: radial-gradient(circle at top right, #1e1b4b 0%, #000 50%);
+        }
+        .container { width: 100%; max-width: 650px; text-align: center; }
+        header { margin-bottom: 3.5rem; }
+        .badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; }
+
+        .header-card {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            text-align: left;
+        }
+
+        .terminal {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            line-height: 1.8;
+            color: #94a3b8;
+        }
+
+        .line { margin-bottom: 8px; }
+        .key { color: var(--accent); font-weight: 700; }
+        .val { color: #fff; }
+
+        .btn-inspect {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: 0.3s;
+            margin-top: 2rem;
+        }
+
+        .btn-inspect:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3); }
+        .hint { margin-top: 1.5rem; font-size: 0.75rem; color: #52525b; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">PROTOCOL_META // CUSTOM_HEADERS</div>
+            <h1>Header Architect</h1>
+        </header>
+
+        <section class="header-card">
+            <p style="margin-bottom: 2rem; color: #94a3b8;">The server has injected custom X-Headers into this response. Inspect the data stream below.</p>
+            
+            <div class="terminal" id="headerOutput">
+                <div class="line">// Fetching metadata...</div>
+            </div>
+
+            <button class="btn-inspect" onclick="fetchHeaders()">
+                <i class="ph-bold ph-magnifying-glass"></i>
+                INTERCEPT DATA PACKET
+            </button>
+
+            <div class="hint">
+                💡 Check the <b>Network Tab</b> in DevTools for full protocol verification.
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const output = document.getElementById('headerOutput');
+
+        const fetchHeaders = async () => {
+            output.innerHTML = '<div class="line">📡 Intercepting response...</div>';
+            
+            try {
+                const response = await fetch('/');
+                output.innerHTML = '';
+                
+                // Inspecting Headers
+                for (let [key, value] of response.headers.entries()) {
+                    if (key.startsWith('x-') || key === 'content-type') {
+                        output.innerHTML += `
+                            <div class="line">
+                                <span class="key">${key.toUpperCase()}:</span> 
+                                <span class="val">${value}</span>
+                            </div>
+                        `;
+                    }
+                }
+            } catch (e) {
+                output.innerHTML = '<div class="line" style="color: #ef4444;">❌ Link Severed.</div>';
+            }
+        };
+    </script>
+</body>
+</html>

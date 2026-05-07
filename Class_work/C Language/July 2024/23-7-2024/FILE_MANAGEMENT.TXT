@@ -1,0 +1,12 @@
+**File Management**
+
+3 main Operation
+    1. write
+    2. read
+    3. append
+
+3 steps to perfoem any Operation
+    1. file Open
+    2. content
+    3. file close
+    

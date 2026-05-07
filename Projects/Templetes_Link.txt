@@ -1,0 +1,23 @@
+1) https://preview.themeforest.net/item/gitar-music-band-musician-html-template/full_screen_preview/57087321?_ga=	2.235310017.1582278791.1742306973-undefined
+
+2) https://www.niviasports.com/
+
+3) https://www.sulekha.com/
+
+4) https://www.boat-lifestyle.com/
+
+
+
+
+
+I want a prompt to make a Fully Production ready MERN Stack Website which Definition is "JobFest" for "Tops Technologies". Tops Technologies is classes for the different perticular technology courses like Full stack, MERN stack, python, graphic designing, Etc...
+
+"JobFest" : JobFest is the like Many companies are coming at one place to hire the Tops Technologies student For JObs or Internships
+
+Problem : So the reason behind to make this plateform(website) is that, Many students are coming at one place to give internview to many companies, so there is many collision and crowd are there. so many time is waste and looks very inappropriate.
+
+so, to avoid this problem I want to make this system(Website) with all the Required features, Functional & non-functional Requirements(Which you suggest) provide robust security + Authentication + Privacy & Maintain the data. and also prove the Clean & Professional UI design which is Responsive and Very attractive also add some normal Animation(components are visible when page slide or reaload). also add this feature is dark view and light view(by default) at one button.
+
+This JobFest is comes once in a year so I want the feature like tabs (2027,2028,2029....) so, when 2027 Jobfest is coming then all the data of students and companies are store in that "2027" tab(Read-only)
+
+so firstly you give me the tech stack we used to make this system and also suggest me how to make this at advanced level and which features we can add. also give me the what we can make in this full website + admin panel. after that when I tell you then you have to start coding & give it to me Step by step according my command

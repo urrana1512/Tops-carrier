@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Processor | Task 22.16</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="stream-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.CREATEREADSTREAM + FS.CREATEWRITESTREAM</div>
+            <h1>Fluid Stream Processor</h1>
+            <p>Executing high-efficiency chunked data transfers</p>
+        </header>
+
+        <section class="stream-card glass">
+            <div class="pipeline-view">
+                <div class="node" id="inputNode">
+                    <i class="ph-fill ph-file-text"></i>
+                    <span>largeFile.txt</span>
+                </div>
+                
+                <div class="flow-pipe" id="flowPipe">
+                    <div class="chunks-container" id="chunksContainer">
+                        <!-- Chunks will fly through here -->
+                    </div>
+                </div>
+
+                <div class="node" id="outputNode">
+                    <i class="ph-fill ph-file-arrow-down"></i>
+                    <span>outputStream.txt</span>
+                </div>
+            </div>
+
+            <div class="stats-panel">
+                <div class="stat">
+                    <span class="label">TOTAL_CHUNKS</span>
+                    <span id="chunkCount" class="val">0</span>
+                </div>
+                <div class="stat">
+                    <span class="label">DATA_VOLUME</span>
+                    <span id="byteCount" class="val">0 B</span>
+                </div>
+            </div>
+
+            <button id="processBtn" class="btn-main">
+                <i class="ph-bold ph-waves"></i>
+                <span>Open Data Pipeline</span>
+            </button>
+        </section>
+
+        <footer>
+            <p>Chunk arrival logs are mirrored to the <strong>System Console</strong>.</p>
+        </footer>
+    </main>
+
+    <script>
+        const processBtn = document.getElementById('processBtn');
+        const chunkCount = document.getElementById('chunkCount');
+        const byteCount = document.getElementById('byteCount');
+        const chunksContainer = document.getElementById('chunksContainer');
+
+        processBtn.onclick = async () => {
+            processBtn.disabled = true;
+            chunkCount.innerText = "0";
+            byteCount.innerText = "0 B";
+            
+            try {
+                const response = await fetch('/api/process-stream', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    // Simulate chunk visualization
+                    for(let i = 0; i < result.chunks; i++) {
+                        setTimeout(() => {
+                            const chunk = document.createElement('div');
+                            chunk.className = 'data-chunk';
+                            chunksContainer.appendChild(chunk);
+                            
+                            chunkCount.innerText = i + 1;
+                            byteCount.innerText = `${Math.round(result.size / result.chunks * (i+1))} B`;
+                            
+                            setTimeout(() => chunk.remove(), 1000);
+                        }, i * 100);
+                    }
+                    
+                    setTimeout(() => {
+                        processBtn.innerHTML = '<i class="ph-bold ph-check"></i> <span>Transfer Finalized</span>';
+                    }, result.chunks * 100);
+                }
+            } catch (error) {
+                alert("Pipeline rupture detected.");
+            } finally {
+                setTimeout(() => processBtn.disabled = false, 3000);
+            }
+        };
+    </script>
+</body>
+</html>

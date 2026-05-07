@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel Watcher | Task 22.12</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="radar-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.WATCH</div>
+            <h1>Sentinel Watcher</h1>
+            <p>Real-time surveillance of file system event streams</p>
+        </header>
+
+        <section class="watcher-card glass">
+            <div class="monitoring-status">
+                <div class="status-indicator">
+                    <span class="dot pulse"></span>
+                    ACTIVE_SURVEILLANCE
+                </div>
+                <div class="target-file">
+                    <i class="ph-bold ph-file-search"></i>
+                    <span>watch.txt</span>
+                </div>
+            </div>
+
+            <div class="event-display" id="eventDisplay">
+                <div class="placeholder">Standing by for change events...</div>
+            </div>
+
+            <div class="controls">
+                <button id="triggerBtn" class="btn-main">
+                    <i class="ph-bold ph-pencil-simple"></i>
+                    <span>Modify Target File</span>
+                </button>
+            </div>
+        </section>
+
+        <footer>
+            <p>Verification events are mirrored to the <strong>Node.js Console</strong>.</p>
+        </footer>
+    </main>
+
+    <script>
+        const eventDisplay = document.getElementById('eventDisplay');
+        const triggerBtn = document.getElementById('triggerBtn');
+        let currentTimestamp = null;
+
+        // Polling for changes (since we aren't using WebSockets for simplicity)
+        async function checkStatus() {
+            try {
+                const response = await fetch('/api/watch-status');
+                const data = await response.json();
+
+                if (data.lastChange && data.lastChange.timestamp !== currentTimestamp) {
+                    currentTimestamp = data.lastChange.timestamp;
+                    
+                    const entry = document.createElement('div');
+                    entry.className = 'event-entry';
+                    entry.innerHTML = `
+                        <div class="entry-header">
+                            <span class="type">[${data.lastChange.eventType.toUpperCase()}]</span>
+                            <span class="time">${data.lastChange.timestamp}</span>
+                        </div>
+                        <div class="entry-body">
+                            Asset '${data.lastChange.filename}' state mutated in core registry.
+                        </div>
+                    `;
+                    
+                    if (eventDisplay.querySelector('.placeholder')) {
+                        eventDisplay.innerHTML = "";
+                    }
+                    
+                    eventDisplay.prepend(entry);
+                }
+            } catch (e) {
+                console.error("Polling failed");
+            }
+        }
+
+        triggerBtn.onclick = async () => {
+            await fetch('/api/trigger-change', { method: 'POST' });
+        };
+
+        setInterval(checkStatus, 1000);
+    </script>
+</body>
+</html>

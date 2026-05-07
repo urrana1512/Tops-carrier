@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Ingestor | Task 22.15</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="diamond-bg"></div>
+
+    <main class="container">
+        <header>
+            <div class="badge">FS.PROMISES.READFILE</div>
+            <h1>Promise Ingestor</h1>
+            <p>Orchestrating asynchronous asset retrieval via modern control flows</p>
+        </header>
+
+        <section class="promise-card glass">
+            <div class="status-panel">
+                <div class="status-item" id="resolveStatus">
+                    <i class="ph ph-circle-dashed"></i>
+                    <span>Awaiting Promise Resolution</span>
+                </div>
+            </div>
+
+            <div id="contentBox" class="content-box hidden">
+                <div class="label">STREAMED_CONTENT</div>
+                <pre id="textContent"></pre>
+            </div>
+
+            <button id="resolveBtn" class="btn-main">
+                <i class="ph-bold ph-diamond"></i>
+                <span>Resolve Registry Asset</span>
+            </button>
+        </section>
+
+        <footer>
+            <p>Verification logs are mirrored to the <strong>Node.js Console</strong>.</p>
+        </footer>
+    </main>
+
+    <script>
+        const resolveBtn = document.getElementById('resolveBtn');
+        const resolveStatus = document.getElementById('resolveStatus');
+        const contentBox = document.getElementById('contentBox');
+        const textContent = document.getElementById('textContent');
+
+        resolveBtn.onclick = async () => {
+            resolveBtn.disabled = true;
+            resolveStatus.innerHTML = '<i class="ph ph-circle-notch-bold spin"></i> <span>Processing Promise...</span>';
+            
+            try {
+                const response = await fetch('/api/read-promise');
+                const result = await response.json();
+
+                if (result.success) {
+                    resolveStatus.innerHTML = '<i class="ph-fill ph-check-circle success"></i> <span class="success">Promise Resolved Successfully</span>';
+                    contentBox.classList.remove('hidden');
+                    textContent.innerText = result.content;
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                resolveStatus.innerHTML = '<i class="ph-fill ph-x-circle error"></i> <span class="error">Promise Rejected: Asset Missing</span>';
+            } finally {
+                setTimeout(() => resolveBtn.disabled = false, 1000);
+            }
+        };
+    </script>
+</body>
+</html>
